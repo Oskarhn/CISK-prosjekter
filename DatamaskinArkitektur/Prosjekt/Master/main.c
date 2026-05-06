@@ -1,19 +1,3 @@
-/*
- * main.c - Master: Touch + LCD + I2C
- * ATmega32 @ 1MHz
- *
- * PD2 (INT0) : Touch sensor
- * PD0        : LCD RS
- * PD3        : LCD E
- * PB0-PB3    : LCD D4-D7
- * PC0 (SCL)  : I2C
- * PC1 (SDA)  : I2C
- *
- * All logikk kjoerer i ISR-er - while-loopen er tom (sleep_mode).
- *   INT0          : touch-flag settes, debounce startes
- *   TIMER0_COMP   : ms-teller, debounce, touch-haandtering, slave-polling
- */
-
 #define F_CPU 1000000UL
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -62,13 +46,6 @@ static void lcd_update(uint8_t state)
     }
 }
 
-/*
- * Timer0 COMP - kjoerer hvert 1ms.
- * Haandterer: debounce, touch-respons, slave-polling.
- *
- * Merk: send_to_slaves + I2C_Master_Read kaller kun naar tilstand endres
- * (ikke hvert ms), saa ISR-tiden er neglisjerbar i normal drift.
- */
 ISR(TIMER0_COMP_vect)
 {
     static uint8_t  system_state = STATE_DISARMED;
@@ -87,7 +64,7 @@ ISR(TIMER0_COMP_vect)
                 system_state = STATE_ARMED;
                 send_to_slaves(CMD_ARMED);
                 break;
-            default:  /* ARMED eller ALARM */
+            default: 
                 system_state = STATE_DISARMED;
                 send_to_slaves(CMD_DISARMED);
                 break;
@@ -115,7 +92,6 @@ int main(void)
     MCUCR |= (1 << ISC01) | (1 << ISC00);
     GICR  |= (1 << INT0);
 
-    /* Timer0 CTC 1ms: 1MHz / 8 / 125 = 1000 Hz */
     TCCR0  = (1 << WGM01) | (1 << CS01);
     OCR0   = 124;
     TIMSK |= (1 << OCIE0);

@@ -1,16 +1,3 @@
-/*
- * lcd.h - LCD 16x2 HD44780, 4-bit modus
- *
- * Kobling:
- *   RS  -> PD0
- *   E   -> PD3
- *   RW  -> GND
- *   D4  -> PB0
- *   D5  -> PB1
- *   D6  -> PB2
- *   D7  -> PB3
- */
-
 #ifndef LCD_H
 #define LCD_H
 
@@ -30,7 +17,6 @@ static void LCD_enable(void)
     _delay_us(100);
 }
 
-/* Sender 4 bit via PB0-PB3 (= LCD D4-D7) */
 static void LCD_write_nibble(uint8_t nibble)
 {
     PORTB = (PORTB & 0xF0) | (nibble & 0x0F);
@@ -47,7 +33,7 @@ void LCD_Command(uint8_t cmd)
 
 void LCD_Char(unsigned char c)
 {
-    PORTD |=  (1 << RS);         /* RS=1: data */
+    PORTD |=  (1 << RS);      
     LCD_write_nibble(c >> 4);
     LCD_write_nibble(c & 0x0F);
     _delay_us(200);
@@ -69,15 +55,15 @@ void LCD_String_xy(uint8_t row, uint8_t col, char *str)
 
 void LCD_Init(void)
 {
-    DDRB |=  0x0F;                          /* PB0-PB3 som utgang (data) */
-    DDRD |=  (1 << RS) | (1 << E);          /* PD0, PD3 som utgang       */
+    DDRB |=  0x0F;             
+    DDRD |=  (1 << RS) | (1 << E);        
     PORTB &= ~0x0F;
     PORTD &= ~((1 << RS) | (1 << E));
 
-    _delay_ms(100);                          /* Vent paa power-on         */
+    _delay_ms(100);                         
 
-    /* Tving 8-bit modus 3 ganger (spesiell oppstartsekvens) */
-    PORTD &= ~(1 << RS);                     /* RS=0 */
+   
+    PORTD &= ~(1 << RS);                    
 
     PORTB = (PORTB & 0xF0) | 0x03;          /* nibble 0x3 */
     LCD_enable();
@@ -104,4 +90,4 @@ void LCD_Init(void)
     LCD_Command(0x06);                       /* Entry mode: inkrement    */
 }
 
-#endif /* LCD_H */
+#endif
