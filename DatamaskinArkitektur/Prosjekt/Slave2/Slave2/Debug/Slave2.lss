@@ -1,0 +1,670 @@
+
+Slave2.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000358  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000010  00800060  00000358  000003ec  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          0000000b  00800070  00800070  000003fc  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  000003fc  2**0
+                  CONTENTS, READONLY
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  0000042c  2**2
+                  CONTENTS, READONLY
+  5 .debug_aranges 00000098  00000000  00000000  00000468  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   00000a5d  00000000  00000000  00000500  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 000006fd  00000000  00000000  00000f5d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   000006d1  00000000  00000000  0000165a  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  00000180  00000000  00000000  00001d2c  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    0000047f  00000000  00000000  00001eac  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_loc    00000364  00000000  00000000  0000232b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_ranges 00000088  00000000  00000000  0000268f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+   8:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+   c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  10:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  14:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  18:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  1c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  20:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  24:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  28:	0c 94 f4 00 	jmp	0x1e8	; 0x1e8 <__vector_10>
+  2c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  30:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  34:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  38:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  3c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  40:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  44:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  48:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  4c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  50:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_copy_data>:
+  60:	10 e0       	ldi	r17, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	e8 e5       	ldi	r30, 0x58	; 88
+  68:	f3 e0       	ldi	r31, 0x03	; 3
+  6a:	02 c0       	rjmp	.+4      	; 0x70 <__do_copy_data+0x10>
+  6c:	05 90       	lpm	r0, Z+
+  6e:	0d 92       	st	X+, r0
+  70:	a0 37       	cpi	r26, 0x70	; 112
+  72:	b1 07       	cpc	r27, r17
+  74:	d9 f7       	brne	.-10     	; 0x6c <__do_copy_data+0xc>
+
+00000076 <__do_clear_bss>:
+  76:	20 e0       	ldi	r18, 0x00	; 0
+  78:	a0 e7       	ldi	r26, 0x70	; 112
+  7a:	b0 e0       	ldi	r27, 0x00	; 0
+  7c:	01 c0       	rjmp	.+2      	; 0x80 <.do_clear_bss_start>
+
+0000007e <.do_clear_bss_loop>:
+  7e:	1d 92       	st	X+, r1
+
+00000080 <.do_clear_bss_start>:
+  80:	ab 37       	cpi	r26, 0x7B	; 123
+  82:	b2 07       	cpc	r27, r18
+  84:	e1 f7       	brne	.-8      	; 0x7e <.do_clear_bss_loop>
+  86:	0e 94 8a 01 	call	0x314	; 0x314 <main>
+  8a:	0c 94 aa 01 	jmp	0x354	; 0x354 <_exit>
+
+0000008e <__bad_interrupt>:
+  8e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000092 <I2C_Status>:
+    if (I2C_Status() != 0x40) { I2C_Stop(); return 0xFF; }
+
+    uint8_t data = I2C_Read_NACK();    /* Eneste byte -> NACK -> STOP */
+    I2C_Stop();
+    return data;
+}
+  92:	81 b1       	in	r24, 0x01	; 1
+  94:	88 7f       	andi	r24, 0xF8	; 248
+  96:	08 95       	ret
+
+00000098 <I2C_Slave_Init>:
+ *  SLAVE-FUNKSJONER (polling)
+ * ========================================================== */
+
+void I2C_Slave_Init(uint8_t own_addr)
+{
+    TWAR  = (own_addr << 1);                /* Sett slave-adresse  */
+  98:	88 0f       	add	r24, r24
+  9a:	82 b9       	out	0x02, r24	; 2
+    TWCR  = (1 << TWEN) | (1 << TWEA);     /* Aktiver TWI + ACK   */
+  9c:	84 e4       	ldi	r24, 0x44	; 68
+  9e:	86 bf       	out	0x36, r24	; 54
+    PORTC |= (1 << PC0) | (1 << PC1);      /* Interne pull-ups    */
+  a0:	85 b3       	in	r24, 0x15	; 21
+  a2:	83 60       	ori	r24, 0x03	; 3
+  a4:	85 bb       	out	0x15, r24	; 21
+  a6:	08 95       	ret
+
+000000a8 <I2C_Slave_Poll>:
+ *   1 = data mottatt fra master (SR) - rx_data er oppdatert
+ *   2 = data sendt til master   (ST)
+ *   0 = ingen fullstendig transaksjon ennaa
+ */
+uint8_t I2C_Slave_Poll(uint8_t *rx_data, uint8_t tx_data)
+{
+  a8:	0f 93       	push	r16
+  aa:	1f 93       	push	r17
+  ac:	cf 93       	push	r28
+    if (!(TWCR & (1 << TWINT)))
+  ae:	06 b6       	in	r0, 0x36	; 54
+  b0:	07 fe       	sbrs	r0, 7
+  b2:	33 c0       	rjmp	.+102    	; 0x11a <I2C_Slave_Poll+0x72>
+  b4:	c6 2f       	mov	r28, r22
+  b6:	8c 01       	movw	r16, r24
+        return 0;
+
+    switch (I2C_Status())
+  b8:	0e 94 49 00 	call	0x92	; 0x92 <I2C_Status>
+  bc:	80 3a       	cpi	r24, 0xA0	; 160
+  be:	29 f1       	breq	.+74     	; 0x10a <I2C_Slave_Poll+0x62>
+  c0:	28 f4       	brcc	.+10     	; 0xcc <I2C_Slave_Poll+0x24>
+  c2:	80 36       	cpi	r24, 0x60	; 96
+  c4:	51 f0       	breq	.+20     	; 0xda <I2C_Slave_Poll+0x32>
+  c6:	80 38       	cpi	r24, 0x80	; 128
+  c8:	61 f0       	breq	.+24     	; 0xe2 <I2C_Slave_Poll+0x3a>
+  ca:	23 c0       	rjmp	.+70     	; 0x112 <I2C_Slave_Poll+0x6a>
+  cc:	88 3b       	cpi	r24, 0xB8	; 184
+  ce:	a9 f0       	breq	.+42     	; 0xfa <I2C_Slave_Poll+0x52>
+  d0:	80 3c       	cpi	r24, 0xC0	; 192
+  d2:	b9 f0       	breq	.+46     	; 0x102 <I2C_Slave_Poll+0x5a>
+  d4:	88 3a       	cpi	r24, 0xA8	; 168
+  d6:	e9 f4       	brne	.+58     	; 0x112 <I2C_Slave_Poll+0x6a>
+  d8:	0b c0       	rjmp	.+22     	; 0xf0 <I2C_Slave_Poll+0x48>
+    {
+        case 0x60: /* SLA+W mottatt, ACK sendt */
+            TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWEA);
+  da:	84 ec       	ldi	r24, 0xC4	; 196
+  dc:	86 bf       	out	0x36, r24	; 54
+        default:
+            /* Feil eller ukjent status - reset TWI */
+            TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWEA);
+            break;
+    }
+    return 0;
+  de:	80 e0       	ldi	r24, 0x00	; 0
+
+    switch (I2C_Status())
+    {
+        case 0x60: /* SLA+W mottatt, ACK sendt */
+            TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWEA);
+            break;
+  e0:	1d c0       	rjmp	.+58     	; 0x11c <I2C_Slave_Poll+0x74>
+
+        case 0x80: /* Data mottatt, ACK sendt */
+            *rx_data = TWDR;
+  e2:	83 b1       	in	r24, 0x03	; 3
+  e4:	f8 01       	movw	r30, r16
+  e6:	80 83       	st	Z, r24
+            TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWEA);
+  e8:	84 ec       	ldi	r24, 0xC4	; 196
+  ea:	86 bf       	out	0x36, r24	; 54
+            return 1;
+  ec:	81 e0       	ldi	r24, 0x01	; 1
+  ee:	16 c0       	rjmp	.+44     	; 0x11c <I2C_Slave_Poll+0x74>
+
+        case 0xA8: /* SLA+R mottatt - master vil lese */
+            TWDR = tx_data;
+  f0:	c3 b9       	out	0x03, r28	; 3
+            TWCR = (1 << TWINT) | (1 << TWEN); /* TWEA=0: siste byte */
+  f2:	84 e8       	ldi	r24, 0x84	; 132
+  f4:	86 bf       	out	0x36, r24	; 54
+        default:
+            /* Feil eller ukjent status - reset TWI */
+            TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWEA);
+            break;
+    }
+    return 0;
+  f6:	80 e0       	ldi	r24, 0x00	; 0
+            return 1;
+
+        case 0xA8: /* SLA+R mottatt - master vil lese */
+            TWDR = tx_data;
+            TWCR = (1 << TWINT) | (1 << TWEN); /* TWEA=0: siste byte */
+            break;
+  f8:	11 c0       	rjmp	.+34     	; 0x11c <I2C_Slave_Poll+0x74>
+
+        case 0xB8: /* Data sendt, ACK mottatt */
+            TWCR = (1 << TWINT) | (1 << TWEN);
+  fa:	84 e8       	ldi	r24, 0x84	; 132
+  fc:	86 bf       	out	0x36, r24	; 54
+        default:
+            /* Feil eller ukjent status - reset TWI */
+            TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWEA);
+            break;
+    }
+    return 0;
+  fe:	80 e0       	ldi	r24, 0x00	; 0
+            TWCR = (1 << TWINT) | (1 << TWEN); /* TWEA=0: siste byte */
+            break;
+
+        case 0xB8: /* Data sendt, ACK mottatt */
+            TWCR = (1 << TWINT) | (1 << TWEN);
+            break;
+ 100:	0d c0       	rjmp	.+26     	; 0x11c <I2C_Slave_Poll+0x74>
+
+        case 0xC0: /* Data sendt, NACK mottatt - ferdig */
+            TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWEA);
+ 102:	84 ec       	ldi	r24, 0xC4	; 196
+ 104:	86 bf       	out	0x36, r24	; 54
+            return 2;
+ 106:	82 e0       	ldi	r24, 0x02	; 2
+ 108:	09 c0       	rjmp	.+18     	; 0x11c <I2C_Slave_Poll+0x74>
+
+        case 0xA0: /* STOP eller Repeated START mottatt */
+            TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWEA);
+ 10a:	84 ec       	ldi	r24, 0xC4	; 196
+ 10c:	86 bf       	out	0x36, r24	; 54
+        default:
+            /* Feil eller ukjent status - reset TWI */
+            TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWEA);
+            break;
+    }
+    return 0;
+ 10e:	80 e0       	ldi	r24, 0x00	; 0
+            TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWEA);
+            return 2;
+
+        case 0xA0: /* STOP eller Repeated START mottatt */
+            TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWEA);
+            break;
+ 110:	05 c0       	rjmp	.+10     	; 0x11c <I2C_Slave_Poll+0x74>
+
+        default:
+            /* Feil eller ukjent status - reset TWI */
+            TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWEA);
+ 112:	84 ec       	ldi	r24, 0xC4	; 196
+ 114:	86 bf       	out	0x36, r24	; 54
+            break;
+    }
+    return 0;
+ 116:	80 e0       	ldi	r24, 0x00	; 0
+            break;
+
+        default:
+            /* Feil eller ukjent status - reset TWI */
+            TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWEA);
+            break;
+ 118:	01 c0       	rjmp	.+2      	; 0x11c <I2C_Slave_Poll+0x74>
+ *   0 = ingen fullstendig transaksjon ennaa
+ */
+uint8_t I2C_Slave_Poll(uint8_t *rx_data, uint8_t tx_data)
+{
+    if (!(TWCR & (1 << TWINT)))
+        return 0;
+ 11a:	80 e0       	ldi	r24, 0x00	; 0
+            /* Feil eller ukjent status - reset TWI */
+            TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWEA);
+            break;
+    }
+    return 0;
+}
+ 11c:	cf 91       	pop	r28
+ 11e:	1f 91       	pop	r17
+ 120:	0f 91       	pop	r16
+ 122:	08 95       	ret
+
+00000124 <Buzzer_Init>:
+static uint8_t mel_idx  = 0;
+static uint8_t mel_tick = 0;
+
+void Buzzer_Init(void)
+{
+    DDRD   |=  (1 << PD5);
+ 124:	81 b3       	in	r24, 0x11	; 17
+ 126:	80 62       	ori	r24, 0x20	; 32
+ 128:	81 bb       	out	0x11, r24	; 17
+    TCCR1A  = (1 << COM1A0);                          /* Toggle OC1A ved compare */
+ 12a:	80 e4       	ldi	r24, 0x40	; 64
+ 12c:	8f bd       	out	0x2f, r24	; 47
+    TCCR1B  = (1 << WGM13) | (1 << WGM12) | (1 << CS11); /* CTC modus 12, prescaler 8 */
+ 12e:	8a e1       	ldi	r24, 0x1A	; 26
+ 130:	8e bd       	out	0x2e, r24	; 46
+    ICR1    = melody[0].icr;
+ 132:	89 e6       	ldi	r24, 0x69	; 105
+ 134:	90 e0       	ldi	r25, 0x00	; 0
+ 136:	97 bd       	out	0x27, r25	; 39
+ 138:	86 bd       	out	0x26, r24	; 38
+    TCCR1A &= ~(1 << COM1A0);                         /* Start stille */
+ 13a:	8f b5       	in	r24, 0x2f	; 47
+ 13c:	8f 7b       	andi	r24, 0xBF	; 191
+ 13e:	8f bd       	out	0x2f, r24	; 47
+    PORTD  &= ~(1 << PD5);
+ 140:	82 b3       	in	r24, 0x12	; 18
+ 142:	8f 7d       	andi	r24, 0xDF	; 223
+ 144:	82 bb       	out	0x12, r24	; 18
+ 146:	08 95       	ret
+
+00000148 <Buzzer_On>:
+}
+
+void Buzzer_On(void)
+{
+    mel_idx  = 0;
+ 148:	10 92 7a 00 	sts	0x007A, r1	; 0x80007a <mel_idx>
+    mel_tick = 0;
+ 14c:	10 92 79 00 	sts	0x0079, r1	; 0x800079 <mel_tick>
+    ICR1     = melody[0].icr;
+ 150:	89 e6       	ldi	r24, 0x69	; 105
+ 152:	90 e0       	ldi	r25, 0x00	; 0
+ 154:	97 bd       	out	0x27, r25	; 39
+ 156:	86 bd       	out	0x26, r24	; 38
+    TCCR1A  |= (1 << COM1A0);   /* Koble OC1A til timer -> lyd */
+ 158:	8f b5       	in	r24, 0x2f	; 47
+ 15a:	80 64       	ori	r24, 0x40	; 64
+ 15c:	8f bd       	out	0x2f, r24	; 47
+ 15e:	08 95       	ret
+
+00000160 <Buzzer_Off>:
+}
+
+void Buzzer_Off(void)
+{
+    TCCR1A &= ~(1 << COM1A0);   /* Koble fra OC1A -> stille */
+ 160:	8f b5       	in	r24, 0x2f	; 47
+ 162:	8f 7b       	andi	r24, 0xBF	; 191
+ 164:	8f bd       	out	0x2f, r24	; 47
+    PORTD  &= ~(1 << PD5);
+ 166:	82 b3       	in	r24, 0x12	; 18
+ 168:	8f 7d       	andi	r24, 0xDF	; 223
+ 16a:	82 bb       	out	0x12, r24	; 18
+    mel_idx  = 0;
+ 16c:	10 92 7a 00 	sts	0x007A, r1	; 0x80007a <mel_idx>
+    mel_tick = 0;
+ 170:	10 92 79 00 	sts	0x0079, r1	; 0x800079 <mel_tick>
+ 174:	08 95       	ret
+
+00000176 <Buzzer_Melody_Update>:
+ * Buzzer_Melody_Update - Kalles fra Timer0 ISR hvert 50 ms.
+ * Stegvis avspilling av meloditabellen.
+ */
+void Buzzer_Melody_Update(void)
+{
+    if (++mel_tick < melody[mel_idx].len)
+ 176:	90 91 79 00 	lds	r25, 0x0079	; 0x800079 <mel_tick>
+ 17a:	9f 5f       	subi	r25, 0xFF	; 255
+ 17c:	90 93 79 00 	sts	0x0079, r25	; 0x800079 <mel_tick>
+ 180:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <mel_idx>
+ 184:	28 2f       	mov	r18, r24
+ 186:	30 e0       	ldi	r19, 0x00	; 0
+ 188:	f9 01       	movw	r30, r18
+ 18a:	ee 0f       	add	r30, r30
+ 18c:	ff 1f       	adc	r31, r31
+ 18e:	e2 0f       	add	r30, r18
+ 190:	f3 1f       	adc	r31, r19
+ 192:	e0 5a       	subi	r30, 0xA0	; 160
+ 194:	ff 4f       	sbci	r31, 0xFF	; 255
+ 196:	42 81       	ldd	r20, Z+2	; 0x02
+ 198:	94 17       	cp	r25, r20
+ 19a:	28 f1       	brcs	.+74     	; 0x1e6 <Buzzer_Melody_Update+0x70>
+        return;
+
+    /* Gaa til neste note */
+    mel_tick = 0;
+ 19c:	10 92 79 00 	sts	0x0079, r1	; 0x800079 <mel_tick>
+    mel_idx  = (mel_idx + 1 >= MELODY_LEN) ? 0 : (mel_idx + 1);
+ 1a0:	2f 5f       	subi	r18, 0xFF	; 255
+ 1a2:	3f 4f       	sbci	r19, 0xFF	; 255
+ 1a4:	25 30       	cpi	r18, 0x05	; 5
+ 1a6:	31 05       	cpc	r19, r1
+ 1a8:	14 f4       	brge	.+4      	; 0x1ae <Buzzer_Melody_Update+0x38>
+ 1aa:	8f 5f       	subi	r24, 0xFF	; 255
+ 1ac:	01 c0       	rjmp	.+2      	; 0x1b0 <Buzzer_Melody_Update+0x3a>
+ 1ae:	80 e0       	ldi	r24, 0x00	; 0
+ 1b0:	80 93 7a 00 	sts	0x007A, r24	; 0x80007a <mel_idx>
+
+    if (melody[mel_idx].icr == 0)
+ 1b4:	90 e0       	ldi	r25, 0x00	; 0
+ 1b6:	fc 01       	movw	r30, r24
+ 1b8:	ee 0f       	add	r30, r30
+ 1ba:	ff 1f       	adc	r31, r31
+ 1bc:	8e 0f       	add	r24, r30
+ 1be:	9f 1f       	adc	r25, r31
+ 1c0:	fc 01       	movw	r30, r24
+ 1c2:	e0 5a       	subi	r30, 0xA0	; 160
+ 1c4:	ff 4f       	sbci	r31, 0xFF	; 255
+ 1c6:	80 81       	ld	r24, Z
+ 1c8:	91 81       	ldd	r25, Z+1	; 0x01
+ 1ca:	00 97       	sbiw	r24, 0x00	; 0
+ 1cc:	39 f4       	brne	.+14     	; 0x1dc <Buzzer_Melody_Update+0x66>
+    {
+        TCCR1A &= ~(1 << COM1A0); /* Pause: koble fra OC1A */
+ 1ce:	8f b5       	in	r24, 0x2f	; 47
+ 1d0:	8f 7b       	andi	r24, 0xBF	; 191
+ 1d2:	8f bd       	out	0x2f, r24	; 47
+        PORTD  &= ~(1 << PD5);
+ 1d4:	82 b3       	in	r24, 0x12	; 18
+ 1d6:	8f 7d       	andi	r24, 0xDF	; 223
+ 1d8:	82 bb       	out	0x12, r24	; 18
+ 1da:	08 95       	ret
+    }
+    else
+    {
+        ICR1    = melody[mel_idx].icr;
+ 1dc:	97 bd       	out	0x27, r25	; 39
+ 1de:	86 bd       	out	0x26, r24	; 38
+        TCCR1A |= (1 << COM1A0);  /* Note: koble til OC1A */
+ 1e0:	8f b5       	in	r24, 0x2f	; 47
+ 1e2:	80 64       	ori	r24, 0x40	; 64
+ 1e4:	8f bd       	out	0x2f, r24	; 47
+ 1e6:	08 95       	ret
+
+000001e8 <__vector_10>:
+
+volatile uint16_t ms         = 0;
+volatile uint8_t  buzzer_paa = 0;
+
+ISR(TIMER0_COMP_vect)
+{
+ 1e8:	1f 92       	push	r1
+ 1ea:	0f 92       	push	r0
+ 1ec:	0f b6       	in	r0, 0x3f	; 63
+ 1ee:	0f 92       	push	r0
+ 1f0:	11 24       	eor	r1, r1
+ 1f2:	2f 93       	push	r18
+ 1f4:	3f 93       	push	r19
+ 1f6:	4f 93       	push	r20
+ 1f8:	5f 93       	push	r21
+ 1fa:	6f 93       	push	r22
+ 1fc:	7f 93       	push	r23
+ 1fe:	8f 93       	push	r24
+ 200:	9f 93       	push	r25
+ 202:	af 93       	push	r26
+ 204:	bf 93       	push	r27
+ 206:	ef 93       	push	r30
+ 208:	ff 93       	push	r31
+    static uint8_t  system_state = STATE_DISARMED;
+    static uint8_t  rx_cmd       = 0;
+    static uint8_t  led_state    = 0;
+    static uint16_t last_blink   = 0;
+
+    ms++;
+ 20a:	80 91 77 00 	lds	r24, 0x0077	; 0x800077 <ms>
+ 20e:	90 91 78 00 	lds	r25, 0x0078	; 0x800078 <ms+0x1>
+ 212:	01 96       	adiw	r24, 0x01	; 1
+ 214:	90 93 78 00 	sts	0x0078, r25	; 0x800078 <ms+0x1>
+ 218:	80 93 77 00 	sts	0x0077, r24	; 0x800077 <ms>
+
+    /* Melodioppdatering hvert 50ms naar buzzer er paa */
+    if (buzzer_paa && ++siren_tick >= 50)
+ 21c:	80 91 76 00 	lds	r24, 0x0076	; 0x800076 <buzzer_paa>
+ 220:	88 23       	and	r24, r24
+ 222:	59 f0       	breq	.+22     	; 0x23a <__vector_10+0x52>
+ 224:	80 91 75 00 	lds	r24, 0x0075	; 0x800075 <siren_tick.1806>
+ 228:	8f 5f       	subi	r24, 0xFF	; 255
+ 22a:	80 93 75 00 	sts	0x0075, r24	; 0x800075 <siren_tick.1806>
+ 22e:	82 33       	cpi	r24, 0x32	; 50
+ 230:	20 f0       	brcs	.+8      	; 0x23a <__vector_10+0x52>
+        { siren_tick = 0; Buzzer_Melody_Update(); }
+ 232:	10 92 75 00 	sts	0x0075, r1	; 0x800075 <siren_tick.1806>
+ 236:	0e 94 bb 00 	call	0x176	; 0x176 <Buzzer_Melody_Update>
+
+    /* I2C: ta imot kommando fra master */
+    if (I2C_Slave_Poll(&rx_cmd, STATUS_OK) == 1)
+ 23a:	60 e0       	ldi	r22, 0x00	; 0
+ 23c:	84 e7       	ldi	r24, 0x74	; 116
+ 23e:	90 e0       	ldi	r25, 0x00	; 0
+ 240:	0e 94 54 00 	call	0xa8	; 0xa8 <I2C_Slave_Poll>
+ 244:	81 30       	cpi	r24, 0x01	; 1
+ 246:	69 f5       	brne	.+90     	; 0x2a2 <__vector_10+0xba>
+    {
+        switch (rx_cmd)
+ 248:	80 91 74 00 	lds	r24, 0x0074	; 0x800074 <rx_cmd.1808>
+ 24c:	81 30       	cpi	r24, 0x01	; 1
+ 24e:	81 f0       	breq	.+32     	; 0x270 <__vector_10+0x88>
+ 250:	18 f0       	brcs	.+6      	; 0x258 <__vector_10+0x70>
+ 252:	8a 3a       	cpi	r24, 0xAA	; 170
+ 254:	d9 f0       	breq	.+54     	; 0x28c <__vector_10+0xa4>
+ 256:	25 c0       	rjmp	.+74     	; 0x2a2 <__vector_10+0xba>
+        {
+            case CMD_DISARMED:
+                system_state = STATE_DISARMED;
+ 258:	10 92 73 00 	sts	0x0073, r1	; 0x800073 <system_state.1807>
+                buzzer_paa   = 0;
+ 25c:	10 92 76 00 	sts	0x0076, r1	; 0x800076 <buzzer_paa>
+                Buzzer_Off();
+ 260:	0e 94 b0 00 	call	0x160	; 0x160 <Buzzer_Off>
+                PORTB       &= ~((1 << PB0) | (1 << PB1));
+ 264:	88 b3       	in	r24, 0x18	; 24
+ 266:	8c 7f       	andi	r24, 0xFC	; 252
+ 268:	88 bb       	out	0x18, r24	; 24
+                led_state    = 0;
+ 26a:	10 92 72 00 	sts	0x0072, r1	; 0x800072 <led_state.1809>
+                break;
+ 26e:	19 c0       	rjmp	.+50     	; 0x2a2 <__vector_10+0xba>
+            case CMD_ARMED:
+                system_state = STATE_ARMED;
+ 270:	81 e0       	ldi	r24, 0x01	; 1
+ 272:	80 93 73 00 	sts	0x0073, r24	; 0x800073 <system_state.1807>
+                buzzer_paa   = 0;
+ 276:	10 92 76 00 	sts	0x0076, r1	; 0x800076 <buzzer_paa>
+                Buzzer_Off();
+ 27a:	0e 94 b0 00 	call	0x160	; 0x160 <Buzzer_Off>
+                PORTB = (PORTB & ~(1 << PB0)) | (1 << PB1);
+ 27e:	88 b3       	in	r24, 0x18	; 24
+ 280:	8c 7f       	andi	r24, 0xFC	; 252
+ 282:	82 60       	ori	r24, 0x02	; 2
+ 284:	88 bb       	out	0x18, r24	; 24
+                led_state = 0;
+ 286:	10 92 72 00 	sts	0x0072, r1	; 0x800072 <led_state.1809>
+                break;
+ 28a:	0b c0       	rjmp	.+22     	; 0x2a2 <__vector_10+0xba>
+            case CMD_ALARM:
+                system_state = STATE_ALARM;
+ 28c:	82 e0       	ldi	r24, 0x02	; 2
+ 28e:	80 93 73 00 	sts	0x0073, r24	; 0x800073 <system_state.1807>
+                PORTB       |= (1 << PB1);
+ 292:	88 b3       	in	r24, 0x18	; 24
+ 294:	82 60       	ori	r24, 0x02	; 2
+ 296:	88 bb       	out	0x18, r24	; 24
+                buzzer_paa   = 1;
+ 298:	81 e0       	ldi	r24, 0x01	; 1
+ 29a:	80 93 76 00 	sts	0x0076, r24	; 0x800076 <buzzer_paa>
+                Buzzer_On();
+ 29e:	0e 94 a4 00 	call	0x148	; 0x148 <Buzzer_On>
+                break;
+        }
+    }
+
+    /* Roed LED blinker hvert 250ms under alarm */
+    if (system_state == STATE_ALARM && (uint16_t)(ms - last_blink) >= 250)
+ 2a2:	80 91 73 00 	lds	r24, 0x0073	; 0x800073 <system_state.1807>
+ 2a6:	82 30       	cpi	r24, 0x02	; 2
+ 2a8:	21 f5       	brne	.+72     	; 0x2f2 <__vector_10+0x10a>
+ 2aa:	80 91 77 00 	lds	r24, 0x0077	; 0x800077 <ms>
+ 2ae:	90 91 78 00 	lds	r25, 0x0078	; 0x800078 <ms+0x1>
+ 2b2:	20 91 70 00 	lds	r18, 0x0070	; 0x800070 <__data_end>
+ 2b6:	30 91 71 00 	lds	r19, 0x0071	; 0x800071 <__data_end+0x1>
+ 2ba:	82 1b       	sub	r24, r18
+ 2bc:	93 0b       	sbc	r25, r19
+ 2be:	8a 3f       	cpi	r24, 0xFA	; 250
+ 2c0:	91 05       	cpc	r25, r1
+ 2c2:	b8 f0       	brcs	.+46     	; 0x2f2 <__vector_10+0x10a>
+    {
+        last_blink = ms;
+ 2c4:	80 91 77 00 	lds	r24, 0x0077	; 0x800077 <ms>
+ 2c8:	90 91 78 00 	lds	r25, 0x0078	; 0x800078 <ms+0x1>
+ 2cc:	90 93 71 00 	sts	0x0071, r25	; 0x800071 <__data_end+0x1>
+ 2d0:	80 93 70 00 	sts	0x0070, r24	; 0x800070 <__data_end>
+        led_state ^= 1;
+ 2d4:	90 91 72 00 	lds	r25, 0x0072	; 0x800072 <led_state.1809>
+ 2d8:	81 e0       	ldi	r24, 0x01	; 1
+ 2da:	89 27       	eor	r24, r25
+ 2dc:	80 93 72 00 	sts	0x0072, r24	; 0x800072 <led_state.1809>
+        if (led_state) PORTB |=  (1 << PB0);
+ 2e0:	88 23       	and	r24, r24
+ 2e2:	21 f0       	breq	.+8      	; 0x2ec <__vector_10+0x104>
+ 2e4:	88 b3       	in	r24, 0x18	; 24
+ 2e6:	81 60       	ori	r24, 0x01	; 1
+ 2e8:	88 bb       	out	0x18, r24	; 24
+ 2ea:	03 c0       	rjmp	.+6      	; 0x2f2 <__vector_10+0x10a>
+        else           PORTB &= ~(1 << PB0);
+ 2ec:	88 b3       	in	r24, 0x18	; 24
+ 2ee:	8e 7f       	andi	r24, 0xFE	; 254
+ 2f0:	88 bb       	out	0x18, r24	; 24
+    }
+}
+ 2f2:	ff 91       	pop	r31
+ 2f4:	ef 91       	pop	r30
+ 2f6:	bf 91       	pop	r27
+ 2f8:	af 91       	pop	r26
+ 2fa:	9f 91       	pop	r25
+ 2fc:	8f 91       	pop	r24
+ 2fe:	7f 91       	pop	r23
+ 300:	6f 91       	pop	r22
+ 302:	5f 91       	pop	r21
+ 304:	4f 91       	pop	r20
+ 306:	3f 91       	pop	r19
+ 308:	2f 91       	pop	r18
+ 30a:	0f 90       	pop	r0
+ 30c:	0f be       	out	0x3f, r0	; 63
+ 30e:	0f 90       	pop	r0
+ 310:	1f 90       	pop	r1
+ 312:	18 95       	reti
+
+00000314 <main>:
+
+int main(void)
+{
+    DDRB  |=  (1 << PB0) | (1 << PB1);
+ 314:	87 b3       	in	r24, 0x17	; 23
+ 316:	83 60       	ori	r24, 0x03	; 3
+ 318:	87 bb       	out	0x17, r24	; 23
+    PORTB &= ~((1 << PB0) | (1 << PB1));
+ 31a:	88 b3       	in	r24, 0x18	; 24
+ 31c:	8c 7f       	andi	r24, 0xFC	; 252
+ 31e:	88 bb       	out	0x18, r24	; 24
+
+    Buzzer_Init();
+ 320:	0e 94 92 00 	call	0x124	; 0x124 <Buzzer_Init>
+    Buzzer_Off();
+ 324:	0e 94 b0 00 	call	0x160	; 0x160 <Buzzer_Off>
+
+    /* Timer0 CTC 1ms: 1MHz / 8 / 125 = 1000 Hz */
+    TCCR0  = (1 << WGM01) | (1 << CS01);
+ 328:	8a e0       	ldi	r24, 0x0A	; 10
+ 32a:	83 bf       	out	0x33, r24	; 51
+    OCR0   = 124;
+ 32c:	8c e7       	ldi	r24, 0x7C	; 124
+ 32e:	8c bf       	out	0x3c, r24	; 60
+    TIMSK |= (1 << OCIE0);
+ 330:	89 b7       	in	r24, 0x39	; 57
+ 332:	82 60       	ori	r24, 0x02	; 2
+ 334:	89 bf       	out	0x39, r24	; 57
+
+    I2C_Slave_Init(SLAVE2_ADDR);
+ 336:	80 e2       	ldi	r24, 0x20	; 32
+ 338:	0e 94 4c 00 	call	0x98	; 0x98 <I2C_Slave_Init>
+    sei();
+ 33c:	78 94       	sei
+
+    set_sleep_mode(SLEEP_MODE_IDLE);
+ 33e:	85 b7       	in	r24, 0x35	; 53
+ 340:	8f 78       	andi	r24, 0x8F	; 143
+ 342:	85 bf       	out	0x35, r24	; 53
+
+    while (1)
+    {
+        sleep_mode();
+ 344:	85 b7       	in	r24, 0x35	; 53
+ 346:	80 68       	ori	r24, 0x80	; 128
+ 348:	85 bf       	out	0x35, r24	; 53
+ 34a:	88 95       	sleep
+ 34c:	85 b7       	in	r24, 0x35	; 53
+ 34e:	8f 77       	andi	r24, 0x7F	; 127
+ 350:	85 bf       	out	0x35, r24	; 53
+ 352:	f8 cf       	rjmp	.-16     	; 0x344 <main+0x30>
+
+00000354 <_exit>:
+ 354:	f8 94       	cli
+
+00000356 <__stop_program>:
+ 356:	ff cf       	rjmp	.-2      	; 0x356 <__stop_program>
