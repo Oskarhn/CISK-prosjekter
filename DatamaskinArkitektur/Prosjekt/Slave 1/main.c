@@ -1,19 +1,3 @@
-/*
- * main.c - Slave 1: I2C + limit switch + IR + servo + LED
- * ATmega32 @ 1MHz, I2C adresse: 0x10
- *
- * PB0        : Roed LED
- * PD2 (INT0) : Limit switch, intern pull-up
- * PA1 (ADC1) : Sharp IR (10uF mellom VCC og GND paa sensor)
- * PD5 (OC1A) : Servo
- * PC0/PC1    : I2C SCL/SDA
- *
- * All logikk kjoerer i ISR-er - while-loopen er tom (sleep_mode).
- *   TIMER0_COMP: ms-teller, ADC-start, I2C-poll, alarm-logikk, LED-blink
- *   INT0       : dor-trigger (limit switch)
- *   ADC_vect   : IR-trigger
- */
-
 #define F_CPU 1000000UL
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -50,11 +34,6 @@ ISR(ADC_vect)
     if (ADC > IR_TERSKEL) ir_trigger = 1;
 }
 
-/*
- * Timer0 COMP - kjoerer hvert 1ms.
- * Haandterer: ms-teller, ADC-trigger, I2C-poll,
- *             alarm-logikk, LED-blink, servo, auto-reset.
- */
 ISR(TIMER0_COMP_vect)
 {
     static uint8_t  ir_tick      = 0;
@@ -73,7 +52,7 @@ ISR(TIMER0_COMP_vect)
     if (ir_armed && !ir_cooldown && ++ir_tick >= 40)
         { ir_tick = 0; ADCSRA |= (1 << ADSC); }
 
-    /* I2C: ta imot kommando fra master */
+    /* ta imot kommando fra master */
     if (I2C_Slave_Poll(&rx_cmd, slave_status) == 1)
     {
         switch (rx_cmd)
@@ -154,7 +133,6 @@ int main(void)
     MCUCR |= (1 << ISC01) | (1 << ISC00);
     GICR  |= (1 << INT0);
 
-    /* ADC: PA1, AVCC, prescaler 8, interrupt */
     ADMUX  = (1 << REFS0) | 1;
     ADCSRA = (1 << ADEN) | (1 << ADIE) | (1 << ADPS1) | (1 << ADPS0);
 
@@ -165,7 +143,6 @@ int main(void)
     ICR1   = 2499;
     OCR1A  = SERVO_LUKKET;
 
-    /* Timer0 CTC 1ms: 1MHz / 8 / 125 = 1000 Hz */
     TCCR0  = (1 << WGM01) | (1 << CS01);
     OCR0   = 124;
     TIMSK |= (1 << OCIE0);
