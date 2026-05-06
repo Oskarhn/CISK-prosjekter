@@ -1,20 +1,3 @@
-/*
- * buzzer.h - Passiv buzzer, Timer1 CTC, toggle OC1A
- * ATmega32 @ 1MHz, PD5 (OC1A)
- *
- * Formel: f = f_CPU / (2 * N_ps * (ICR1 + 1)) = 62500 / (ICR1 + 1)
- *
- * Noteverdier (ICR1):
- *   D5 = 105  (~595 Hz)
- *   E5 =  93  (~665 Hz)
- *   G5 =  78  (~791 Hz)
- *   A5 =  70  (~880 Hz)
- *   0  = pause (lydlos)
- *
- * Meloditabell: { ICR1-verdi, lengde i 50 ms-tikk }
- * Stigende alarmmelodi: D5-E5-G5-A5-PAUSE, gjenta
- */
-
 #ifndef BUZZER_H
 #define BUZZER_H
 
@@ -61,10 +44,6 @@ void Buzzer_Off(void)
     mel_tick = 0;
 }
 
-/*
- * Buzzer_Melody_Update - Kalles fra Timer0 ISR hvert 50 ms.
- * Stegvis avspilling av meloditabellen.
- */
 void Buzzer_Melody_Update(void)
 {
     if (++mel_tick < melody[mel_idx].len)
@@ -86,4 +65,4 @@ void Buzzer_Melody_Update(void)
     }
 }
 
-#endif /* BUZZER_H */
+#endif

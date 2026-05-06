@@ -1,16 +1,3 @@
-/*
- * main.c - Slave 2: I2C + buzzer + LEDs
- * ATmega32 @ 1MHz, I2C adresse: 0x20
- *
- * PB0 : Roed LED
- * PB1 : Gul LED
- * PD5 : Passiv buzzer
- * PC0/PC1 : I2C SCL/SDA
- *
- * All logikk kjoerer i TIMER0_COMP ISR - while-loopen er tom (sleep_mode).
- *   TIMER0_COMP: ms-teller, melodioppdatering, I2C-poll, LED-blink
- */
-
 #define F_CPU 1000000UL
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -40,7 +27,7 @@ ISR(TIMER0_COMP_vect)
     if (buzzer_paa && ++siren_tick >= 50)
         { siren_tick = 0; Buzzer_Melody_Update(); }
 
-    /* I2C: ta imot kommando fra master */
+    /* ta imot kommando fra master */
     if (I2C_Slave_Poll(&rx_cmd, STATUS_OK) == 1)
     {
         switch (rx_cmd)

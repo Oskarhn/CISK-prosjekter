@@ -1,21 +1,3 @@
-/*
- * adc.h - ADC-bibliotek for slave 2
- * ING1507 Datamaskinarkitektur
- * ATmega32 @ 1MHz
- *
- * Sensor: LM35 DFR0023 pa PA0 (ADC0)
- * Referanse: AVCC (5V)
- * Prescaler: 8 -> ADC-klokke = 125kHz
- *
- * LM35 formel:
- *   Vout = 10mV per grad Celsius
- *   Temp(degC) = (ADC * 500) / 1024
- *
- * Eksempel: 25 grader -> Vout = 250mV
- *   ADC = (0.25 / 5.0) * 1024 = 51
- *   Temp = (51 * 500) / 1024 = 24.9 ~ 25 grader
- */
- 
 #ifndef ADC_H
 #define ADC_H
  
@@ -42,14 +24,4 @@ static uint16_t ADC_Read_Raw(void)
     return ADC;
 }
  
-/*
- * Leser LM35-temperatur.
- * Returnerer temperatur i hele grader Celsius (int16_t).
- */
-int16_t LM35_Read_Temp(void)
-{
-    uint16_t raw = ADC_Read_Raw();
-    return (int16_t)((uint32_t)raw * 500UL / 1024UL);
-}
- 
-#endif /* ADC_H */
+#endif
