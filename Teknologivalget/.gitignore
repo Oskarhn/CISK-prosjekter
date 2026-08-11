@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+*.log
+*.bak
+*.swp
+.DS_Store
+.idea/
+.vscode/
+tmp/
+backups/
+

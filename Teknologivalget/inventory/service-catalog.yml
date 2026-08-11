@@ -1,0 +1,60 @@
+schema_version: 1
+last_verified: "2026-08-10"
+status_source: "Manuell serveroversikt"
+
+services:
+  - id: minecraft-optimized
+    display_name: "Minecraft - Optimalisert"
+    category: game-server
+    endpoint: "mc.sky-net.no"
+    port: 25567
+    transport: tcp
+    version: "26.2"
+    status: online
+
+  - id: minecraft-atm10
+    display_name: "Minecraft - All The Mods 10"
+    category: game-server
+    endpoint: "mc.sky-net.no"
+    port: 25568
+    transport: tcp
+    game_version: "1.21.1"
+    modpack_version: "7.3"
+    status: online
+    client_modpack_required: true
+
+  - id: minecraft-cobbleverse
+    display_name: "Minecraft - Cobbleverse"
+    category: game-server
+    endpoint: "mc.sky-net.no"
+    port: 25572
+    transport: tcp
+    game_version: "1.21.1"
+    modpack_version: "1.7.42"
+    status: offline
+    client_modpack_required: true
+
+  - id: terraria-modded
+    display_name: "Terraria - Modded"
+    category: game-server
+    endpoint: "65.21.209.174"
+    port: 7779
+    transport: tcp
+    version: "tModLoader 2026.06.3.4"
+    status: online
+    client_modpack_required: true
+
+  - id: jellyfin
+    display_name: "Jellyfin"
+    category: media
+    endpoint: null
+    status: historical-setup-documented
+    public_endpoint_published: false
+
+  - id: coolify
+    display_name: "Coolify"
+    category: platform
+    endpoint: null
+    status: evaluated
+    production_claimed: false
+
