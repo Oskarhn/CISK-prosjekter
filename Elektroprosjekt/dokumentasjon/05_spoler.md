@@ -43,7 +43,7 @@ Tre praktiske metoder (bruk minst to; de må stemme innen ~10 %):
    τ ≈ 0,67 ms — lett å måle. (Eller motsatt: kjør spolen med en firkantbølge og mål
    strømotgangen til 63 %.)
 3. **Fra pulsen (post-build sjekk).** Mål t_pk og I_pk på den ferdige platen og løs for L
-   (scriptet `calculations.py` kan få målte I_pk/t_pk og regne L ut). Forventet målt L:
+   (scriptet `../beregninger/beregninger.py` kan få målte I_pk/t_pk og regne L ut). Forventet målt L:
    6,5–7,2 µH (±10 %).
 
 **Mål for rapporten:** målt L = 6,7 µH ± 0,7 µH. Hvis LCM-avlesning < 5 µH eller > 8 µH,

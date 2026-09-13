@@ -117,7 +117,7 @@ Farihjul-løkka inneholder bare spole + D1 + R_FW. Kondensatoren er koblet til n
 men bryteren på andre enden er åpen, så **ingen strøm går gjennom kondensator, shunt
 eller strømforsyning** i frihjul: kondensatorspenningen fryses på 10,11 V, det blir
 ingen negativ utslenging, og drain i MOSFET-en blir holdt på `v_C + V_D1 + i·R_D1 ≈
-17 V maks` — langt under 75 V. Derfor står dioden **bare over spolen** (ikke over
+17 V maks` — vel under 30 V-ratingsen. Derfor står dioden **bare over spolen** (ikke over
 spole + bryter): den skiller hovedløkka fra bryteren og gjør frihjul til en ren
 eksponentiell.
 

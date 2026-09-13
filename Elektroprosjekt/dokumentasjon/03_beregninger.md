@@ -1,10 +1,10 @@
 # 03 — Beregninger (trippelsjekket)
 
 Hver hovedstørrelse er regnet med **minst to uavhengige metoder** (tre der det står).
-Scriptet `calculations.py` regner fram alle tallene i denne filen:
+Scriptet `../beregninger/beregninger.py` regner fram alle tallene i denne filen:
 
 ```powershell
-& "C:\Users\Oskar\AppData\Local\Programs\Python\Python310\python.exe" "...\EMP_Generator\calculations.py"
+& "C:\Users\Oskar\AppData\Local\Programs\Python\Python310\python.exe" "...\Elektroprosjekt\beregninger\beregninger.py"
 ```
 
 Notasjonen følger kursets formelside: ω₀ = 1/√(LC), ζ = R/(2√(L/C)),
@@ -136,7 +136,7 @@ Posisjonsavhengighet (for avstandsforsøket, `09_eksperimenter.md`):
 
 | Del | Belastning | Merking | Vurdering |
 |---|---|---|---|
-| MOSFET (IRF3707) | I_D = 187 A puls (≈ 100 µs); V_DS,maks = 16,8 V (D1 klamplet drainen: v_C + V_D1 + iR_D1) | 720 A pulsert; 75 V | OK, 4,5× strømmargin, 4,5× spenningsmargin |
+| MOSFET (IRF3707) | I_D = 187 A puls (≈ 100 µs); V_DS,maks = 16,8 V (D1 klamplet drainen: v_C + V_D1 + iR_D1) | I_DM ≈ 250 A pulsert; 30 V | OK: 2,3× strømmargin, 1,76× spenningsmargin |
 | Kondensatorbank | 24,0 V → 10,11 V (ingen negativ utslenging — D1 blokkerer revers; frihjul går forbi kondensatoren) | 50 V | OK |
 | D1 (MUR1560) | 187 A i 54 µs; Q = 2,1 mAs; ∫i²dt = 0,208 A²s; E = 8,4 mJ | 15 A kont.; I_TSM 8/3 ms ≈ 150–200 A (tilsvarer 0,29 A²s) | OK: I²t er 72 % av 8/3 ms-ratingen for én puls |
 | R_FW (0,5 Ω/5 W) | 101,7 mJ/puls; 102 mW gjennomsnitt ved 1 Hz; tråddelt ΔT ≈ 11 K (adiabatisk) | 5 W | OK |
@@ -168,7 +168,7 @@ Med L, C, R faste skalerer I_pk, B og V_ind lineært med V₀:
 |---|---|---|---|---|---|
 | 12 V | 93 A | 52 mT | 67,7 mJ | 21,0 V | samme deler, halv effekt |
 | **24 V** | **187 A** | **104 mT** | **270,7 mJ** | **41,9 V** | **grunn-design** |
-| 48 V | 373 A | 209 mT | 1,08 J | 83,8 V | 50 V kondensatorer OK (48 < 50); drain-klamp ≈ 33 V < 75 V |
+| 48 V | 373 A | 209 mT | 1,08 J | 83,8 V | 50 V kondensatorer OK (48 < 50); drain-klamp ≈ 33 V > 30 V → krever 60 V+ MOSFET |
 | 100 V | 777 A | 435 mT | 4,70 J | 174,6 V | krever HVT kondensatorer (>100 V) + 100 V MOSFET |
 | 240 V | 1865 A | 1,04 T | 27,1 J | 419 V | krever serie-kondensatorstak + HVT deler |
 

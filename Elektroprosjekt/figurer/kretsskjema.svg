@@ -14,17 +14,17 @@
   <rect x="0" y="0" width="1000" height="640" fill="#ffffff"/>
 
   <!-- Title -->
-  <text x="500" y="26" text-anchor="middle" font-size="16" font-weight="bold">EMP GENERATOR — complete schematic (24 V / 940 µF / 6.7 µH / 15-turn coil)</text>
-  <text x="500" y="44" text-anchor="middle" font-size="11" fill="#555">Rev A — 2-layer PCB 80 × 80 mm — net list and component rationale in 02_schematic.md</text>
+  <text x="500" y="26" text-anchor="middle" font-size="16" font-weight="bold">EMP-GENERATOR — komplett kretsskjema (24 V / 940 µF / 6,69 µH / 15-vikt spole)</text>
+  <text x="500" y="44" text-anchor="middle" font-size="11" fill="#555">Rev A — 2-lags PCB 80 × 80 mm — netlist og komponentvalg i dokumentasjon/02_kretsskjema.md</text>
 
   <!-- ================= POWER RAILS ================= -->
   <rect x="48" y="68" width="24" height="24" class="box" stroke="#333" stroke-width="1.4"/>
   <text x="60" y="62" text-anchor="middle" class="lblb">+24 V</text>
   <line x1="72" y1="80" x2="560" y2="80" class="wire"/>
   <rect x="48" y="560" width="24" height="24" class="box" stroke="#333" stroke-width="1.4"/>
-  <text x="60" y="600" text-anchor="middle" class="lblb">− / GND</text>
+  <text x="60" y="600" text-anchor="middle" class="lblb">− / jord</text>
   <line x1="30" y1="560" x2="900" y2="560" class="wire"/>
-  <text x="30" y="584" class="lbl">F = GND (MOSFET source = cap− = supply− = 555 GND)</text>
+  <text x="30" y="584" class="lbl">F = jord (MOSFET-kilde = kond− = forsyning− = 555-jord)</text>
 
   <!-- D4 TVS across supply input -->
   <line x1="60" y1="92" x2="60" y2="560" class="wire"/>
@@ -32,7 +32,7 @@
   <line x1="52" y1="304" x2="68" y2="304" class="comp"/>
   <line x1="52" y1="336" x2="68" y2="336" class="comp"/>
   <text x="74" y="322" class="lbl">D4 SMBJ24A TVS</text>
-  <text x="74" y="334" class="lbl">(supply clamp, ~38 V)</text>
+  <text x="74" y="334" class="lbl">(forsyningsklamp, ~38 V)</text>
 
   <!-- R_CHG on + rail -->
   <rect x="100" y="68" width="40" height="24" class="comp box"/>
@@ -40,7 +40,7 @@
 
   <!-- Node A (cap+) -->
   <circle cx="160" cy="80" r="3.2" class="dot"/>
-  <text x="152" y="70" text-anchor="end" class="lblb">A (cap+)</text>
+  <text x="152" y="70" text-anchor="end" class="lblb">A (kond+)</text>
   <circle cx="160" cy="80" r="6" fill="none" stroke="#0a66a0" stroke-width="1"/>
   <text x="148" y="98" text-anchor="end" class="tp">TP1</text>
 
@@ -70,13 +70,13 @@
   <!-- Node B (cap-) and shunt (branch at x=350) -->
   <line x1="280" y1="160" x2="350" y2="160" class="wire"/>
   <circle cx="350" cy="160" r="3.2" class="dot"/>
-  <text x="356" y="152" class="lblb">B (cap−)</text>
+  <text x="356" y="152" class="lblb">B (kond−)</text>
   <text x="356" y="174" class="tp">TP3</text>
   <line x1="350" y1="160" x2="350" y2="215" class="wire"/>
   <rect x="338" y="215" width="24" height="40" class="comp box"/>
   <line x1="350" y1="255" x2="350" y2="560" class="wire"/>
-  <text x="370" y="232" class="lbl">R_SHUNT 0.01 Ω / 5 W</text>
-  <text x="370" y="244" class="lbl">(1.87 V at 187 A)</text>
+  <text x="370" y="232" class="lbl">R_SHUNT 0,01 Ω / 5 W</text>
+  <text x="370" y="244" class="lbl">(1,87 V ved 187 A)</text>
   <circle cx="350" cy="560" r="6" fill="none" stroke="#0a66a0" stroke-width="1"/>
   <text x="356" y="584" class="tp">TP4</text>
 
@@ -84,8 +84,8 @@
   <line x1="160" y1="80" x2="160" y2="140" class="wire"/>
   <rect x="150" y="140" width="20" height="40" class="comp box"/>
   <line x1="160" y1="180" x2="160" y2="244" class="wire"/>
-  <text x="144" y="158" text-anchor="end" class="lbl">R_FW 0.5 Ω / 5 W</text>
-  <text x="144" y="170" text-anchor="end" class="lbl">(freewheel brake)</text>
+  <text x="144" y="158" text-anchor="end" class="lbl">R_FW 0,5 Ω / 5 W</text>
+  <text x="144" y="170" text-anchor="end" class="lbl">(farihjul-bremse)</text>
   <polygon points="160,244 152,276 168,276" fill="none" stroke="#333" stroke-width="1.4"/>
   <line x1="152" y1="244" x2="168" y2="244" class="comp"/>
   <line x1="160" y1="276" x2="160" y2="420" class="wire"/>
@@ -95,18 +95,18 @@
   <line x1="160" y1="80" x2="220" y2="80" class="wire"/>
   <line x1="220" y1="80" x2="220" y2="120" class="wire"/>
   <path d="M 220 120 L 220 130
-           a 14 14 0 0 1 0 32
-           a 14 14 0 0 1 0 32
-           a 14 14 0 0 1 0 32
-           a 14 14 0 0 1 0 32
-           a 14 14 0 0 1 0 32
-           a 14 14 0 0 1 0 32
-           a 14 14 0 0 1 0 32
-           L 220 380 L 220 420"
-        stroke="#1e7e34" stroke-width="2.2" fill="none"/>
-  <text x="250" y="228" class="lblb">COIL_T — 15 T air core</text>
-  <text x="250" y="242" class="lbl">r = 15 mm, 1.0 mm wire</text>
-  <text x="250" y="256" class="lbl">L ≈ 6.7 µH, R ≈ 31 mΩ</text>
+            a 14 14 0 0 1 0 32
+            a 14 14 0 0 1 0 32
+            a 14 14 0 0 1 0 32
+            a 14 14 0 0 1 0 32
+            a 14 14 0 0 1 0 32
+            a 14 14 0 0 1 0 32
+            a 14 14 0 0 1 0 32
+            L 220 380 L 220 420"
+         stroke="#1e7e34" stroke-width="2.2" fill="none"/>
+  <text x="250" y="228" class="lblb">COIL_T — 15 vikt, luftkjerne</text>
+  <text x="250" y="242" class="lbl">r = 15 mm, 1,0 mm ledning</text>
+  <text x="250" y="256" class="lbl">L ≈ 6,69 µH, R ≈ 31 mΩ</text>
 
   <!-- Node E (coil end / MOSFET drain) -->
   <circle cx="220" cy="420" r="3.2" class="dot"/>
@@ -116,19 +116,19 @@
 
   <!-- Pickup coil (inside bore) -->
   <path d="M 245 300 L 245 306
-           a 8 8 0 0 1 0 16
-           a 8 8 0 0 1 0 16
-           a 8 8 0 0 1 0 16
-           a 8 8 0 0 1 0 16
-           L 245 370"
-        stroke="#1e7e34" stroke-width="1.8" fill="none"/>
-  <text x="262" y="318" class="lbl">PU: pickup 15 T, Ø20 mm (witness)</text>
+            a 8 8 0 0 1 0 16
+            a 8 8 0 0 1 0 16
+            a 8 8 0 0 1 0 16
+            a 8 8 0 0 1 0 16
+            L 245 370"
+         stroke="#1e7e34" stroke-width="1.8" fill="none"/>
+  <text x="262" y="318" class="lbl">PU: mottak 15 vikt, Ø20 mm</text>
   <line x1="245" y1="300" x2="410" y2="300" class="wire"/>
   <line x1="245" y1="370" x2="410" y2="370" class="wire"/>
   <rect x="404" y="292" width="12" height="86" class="comp box"/>
   <circle cx="410" cy="300" r="2" class="dot"/>
   <circle cx="410" cy="370" r="2" class="dot"/>
-  <text x="424" y="330" class="lbl">2-pin header → scope</text>
+  <text x="424" y="330" class="lbl">2-pin header → oscilloscope</text>
   <text x="424" y="344" class="tp">TP7 / TP8</text>
 
   <!-- ================= MOSFET ================= -->
@@ -140,9 +140,9 @@
   <line x1="340" y1="464" x2="340" y2="560" class="wire"/>
   <line x1="332" y1="464" x2="339" y2="459" class="comp"/>
   <polygon points="340,458.5 332.5,454.5 332.5,462.5" fill="#333"/>
-  <text x="352" y="448" class="lblb">IRF3707 (N-ch)</text>
-  <text x="352" y="461" class="lbl">75 V, 1.25 mΩ, TO-220</text>
-  <text x="352" y="474" class="lbl">pulsed 720 A</text>
+  <text x="352" y="448" class="lblb">IRF3707 (N-kanal)</text>
+  <text x="352" y="461" class="lbl">30 V, 1,25 mΩ, TO-220</text>
+  <text x="352" y="474" class="lbl">pulsbelastning &gt; 250 A</text>
 
   <!-- Gate node -->
   <circle cx="310" cy="452" r="3.2" class="dot"/>
@@ -174,18 +174,18 @@
   <text x="576" y="122" class="lbl">R9 820 Ω</text>
   <line x1="560" y1="160" x2="880" y2="160" class="wire"/>
   <circle cx="560" cy="160" r="3.2" class="dot"/>
-  <text x="700" y="152" text-anchor="middle" class="lblb">G = 12 V rail (Zener regulated)</text>
+  <text x="700" y="152" text-anchor="middle" class="lblb">G = 12 V (zener-regulert)</text>
   <line x1="560" y1="160" x2="560" y2="324" class="wire"/>
   <polygon points="560,324 552,356 568,356" fill="none" stroke="#333" stroke-width="1.4"/>
   <line x1="552" y1="324" x2="568" y2="324" class="comp"/>
   <line x1="560" y1="356" x2="560" y2="560" class="wire"/>
   <text x="576" y="340" class="lbl">D2 1N4742A 12 V</text>
-  <text x="576" y="352" class="lbl">(555 regulator)</text>
+  <text x="576" y="352" class="lbl">(555-forsyning)</text>
 
   <!-- 555 body -->
   <rect x="640" y="260" width="200" height="200" fill="#f4f4f4" stroke="#333" stroke-width="1.6"/>
   <text x="740" y="352" text-anchor="middle" font-size="14" font-weight="bold">NE555P</text>
-  <text x="740" y="370" text-anchor="middle" class="lbl">monostable, T = 1.1RC = 106.7 µs</text>
+  <text x="740" y="370" text-anchor="middle" class="lbl">monostabil, T = 1,1RC = 106,7 µs</text>
   <line x1="700" y1="260" x2="700" y2="160" class="wire"/>
   <text x="708" y="252" class="lbl">8 VCC</text>
   <line x1="780" y1="260" x2="780" y2="160" class="wire"/>
@@ -204,7 +204,7 @@
   <line x1="860" y1="490" x2="860" y2="340" class="wire"/>
   <rect x="848" y="340" width="24" height="40" class="comp box"/>
   <line x1="860" y1="380" x2="860" y2="160" class="wire"/>
-  <text x="878" y="346" class="lbl">R1 9.70 kΩ 1%</text>
+  <text x="878" y="346" class="lbl">R1 9,70 kΩ 1 %</text>
   <line x1="640" y1="300" x2="590" y2="300" class="wire"/>
   <circle cx="590" cy="300" r="3.2" class="dot"/>
   <text x="648" y="296" class="lbl">2 TRIG</text>
@@ -221,7 +221,7 @@
   <line x1="590" y1="376" x2="602" y2="398" class="comp"/>
   <circle cx="590" cy="400" r="2.5" class="dot"/>
   <line x1="590" y1="400" x2="590" y2="560" class="wire"/>
-  <text x="572" y="392" text-anchor="end" class="lbl">S1 button (one pulse / press)</text>
+  <text x="572" y="392" text-anchor="end" class="lbl">S1 knapp (én puls per trykk)</text>
   <line x1="640" y1="380" x2="620" y2="380" class="wire"/>
   <text x="648" y="376" class="lbl">5 CTRL</text>
   <line x1="620" y1="380" x2="620" y2="384" class="wire"/>
@@ -237,6 +237,6 @@
   <line x1="900" y1="500" x2="440" y2="500" class="wire"/>
 
   <!-- ================= NOTES ================= -->
-  <text x="30" y="616" font-size="10" fill="#555">Notes: shunt carries switch-on current only (freewheel loop = COIL_T + D1 + R_FW, bypasses shunt). TPs: TP1 cap+, TP2 drain/coil end, TP3/TP4 shunt pair, TP5 gate, TP6 555 out, TP7/TP8 pickup.</text>
-  <text x="30" y="630" font-size="10" fill="#555">Expected: I_pk = 186.5 A (shunt 1.87 V), B_center = 104 mT, pickup 9.5 V rise + 41.9 V spike, t_pk = 104 µs, event width ~160 µs. See 03_calculations.md.</text>
+  <text x="30" y="616" font-size="10" fill="#555">Merk: shunten bærer kun tennstrømmen (farihjulløkka = COIL_T + D1 + R_FW, går forbi shunten). TP: TP1 kond+, TP2 drain/spoleende, TP3/TP4 shunt-par, TP5 gate, TP6 555-ut, TP7/TP8 mottak.</text>
+  <text x="30" y="630" font-size="10" fill="#555">Forventet: I_pk = 186,5 A (shunt 1,87 V), B_center = 104 mT, mottak 9,5 V oppgang + 41,9 V spiss, t_pk = 104 µs, hendelsestid ~160 µs. Se dokumentasjon/03_beregninger.md.</text>
 </svg>

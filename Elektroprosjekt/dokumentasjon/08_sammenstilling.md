@@ -5,10 +5,10 @@ Arbeidsrekkefølge: **viklet spole → benkeprototype → (Proteus-sim) → PCB 
 
 ## Fase 0 — Før du bygger
 
-* [ ] Deler bestilt (`Bestillingprosjekt_utfylt.xlsx`), sjekket mot `04_komponentliste.md`.
+* [ ] Deler bestilt (`../bestilling/bestilling_utfylt.xlsx`), sjekket mot `04_komponentliste.md`.
 * [ ] Scope ≥ 100 MHz, 2+ kanaler; 24 V / 3 A labforsyning; DMM; LCM-meter (eller 10 Ω +
       0,1 Ω shunt for tidskonstant-metoden).
-* [ ] `calculations.py` kjørt → forventede tall printet (I_pk ≈ 187 A, t_pk ≈ 104 µs,
+* [ ] `../beregninger/beregninger.py` kjørt → forventede tall printet (I_pk ≈ 187 A, t_pk ≈ 104 µs,
       B ≈ 104 mT, mottaksspiss ≈ 41,9 V).
 * [ ] Valgfritt, men anbefalt: bygg kretsen i **Proteus** først (`10_proteus.md`) — fang
   koblingsfeil før loding.
