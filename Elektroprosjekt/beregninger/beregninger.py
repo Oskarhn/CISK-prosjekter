@@ -10,7 +10,7 @@ Trippelsjekk-strategi (tre uavhengige metoder per størrelse):
   B   Felt på aksen  : (1) lukket formel, endelig spole  (2) sum av eksakte løkkefelt
                        (3) uendelig-spole-gransegrense mu0*N*I/l
   I   Pulsebølge     : (1) analytisk dempet series-RLC (lukket formel)
-                       (2) RK4 stykkevis kretssimulering (bryter PÅ/AV + farihjuldiode)
+                       (2) RK4 stykkevis kretssimulering (bryter PÅ/AV + frihjuldiode)
                        (3) energibalans: startenergi i kond = dissipert + sluttopp
   M   Mottak-M       : (1) løkkepar-elliptisk sum  (2) fluksmetode (B x A fra metodes-2-felt)
 
@@ -36,9 +36,9 @@ L_S     = (N_S - 1) * PITCH + WIRE_D          # spolelengde (m)
 R_SW    = 1.25e-3     # ohm MOSFET RDS(on) @ VGS=10 V (IRF3707)
 R_SHUNT = 10e-3       # ohm strømsens-shunt
 R_TRACE = 2e-3        # ohm PCB-løkke + kontaktmotstand (estimat)
-R_FW    = 0.5         # ohm farihjul-snubber (serie med D1)
-V_D1    = 1.1         # V   farihjul-diodes fremvoutfall (MUR1560 @ ~100 A)
-R_D1    = 0.03        # ohm farihjul-diodes dynamiske motstand
+R_FW    = 0.5         # ohm frihjul-snubber (serie med D1)
+V_D1    = 1.1         # V   frihjul-diodes fremvoutfall (MUR1560 @ ~100 A)
+R_D1    = 0.03        # ohm frihjul-diodes dynamiske motstand
 # Mottakspole
 N_P     = 15          # viklinger i mottak
 R_P     = 10.0e-3     # m   mottaks gjennomsnittlig vikt radius (20 mm dia, passer i 30 mm boret)
@@ -178,7 +178,7 @@ print(f"  V_C(t_pk)                = {V_C_toff:7.3f} V   (kondensatorspenning ve
 #          F = MOSFET-kilde = jordreferanse, C- = kond− (via shunt).
 #   Tilstand: vC = kondensatorspenning (D mot C−), i = polestrøm D->E.
 #   Trinn 1 (t < t_off): bryter PÅ, D1 AV -> series RLC med R_TOT.
-#   Trinn 2 (t >= t_off): bryter AV, all polestrøm farihjul via
+#   Trinn 2 (t >= t_off): bryter AV, all polestrøm frihjul via
 #     D1 + R_FW:  di/dt = -(V_D1 + i*(R_COIL+R_FW+R_D1))/L,  vC konstant.
 # =====================================================================
 def rk4_stage1(t_off, dt=0.05e-6):
@@ -201,7 +201,7 @@ def rk4_stage1(t_off, dt=0.05e-6):
     return ts, is_, vs
 
 def stage2_decay(i0, t0, dt=0.05e-6, tmax=2.0e-3, iend=0.005):
-    """Farihjul-avtagelse via D1 + R_FW (og spoler). Returnerer arrayer + dissippasjon."""
+    """Frihjul-avtagelse via D1 + R_FW (og spoler). Returnerer arrayer + dissippasjon."""
     R2 = R_COIL + R_FW + R_D1
     vC = V_C_toff  # frossen (ingen strøm i shunt/kond-veien)
     t, i, iprev = t0, i0, i0
@@ -260,7 +260,7 @@ print(f"  kondensatorspenning ved avskjering: analytisk {V_C_toff:6.3f} V   RK4 
 print(f"  i(0+) stigning:  analytisk {V0/L/1e6:9.3f} MA/s   RK4 {didt0/1e6:9.3f} MA/s")
 print(f"  maks |di/dt| trinn 1 (oppgang) : {didt_max1/1e6:7.3f} MA/s")
 print(f"  maks |di/dt| trinn 2 (avtagelse): {didt_max2/1e6:7.3f} MA/s   "
-      f"(t = {T_PK*1e6:.0f} us, farihjul)")
+      f"(t = {T_PK*1e6:.0f} us, frihjul)")
 tau_fw = L / (R_COIL + R_FW + R_D1)
 print(f"  i ved avskjering: {i_off:8.2f} A   avtagelse til <5 mA på "
       f"{(ts2[-1]-T_PK)*1e6:7.1f} us   (tau = L/R2 = {tau_fw*1e6:.2f} us)")
@@ -343,7 +343,7 @@ print(f"  (2) fluksmetode n*A*dB/dI :  M = {M_flux*1e6:7.3f} uH   "
       f"(avvik {abs(M_flux-M_tot)/M_tot*100:.1f} %)")
 M = M_tot
 V_rise  = M * (V0 / L)           # spenning ved t=0 (maks oppgang di/dt)
-V_spike = M * didt_max2          # farihjul-spiss (maks |di/dt|)
+V_spike = M * didt_max2          # frihjul-spiss (maks |di/dt|)
 print(f"  >> DESIGN M = {M*1e6:.2f} uH")
 print(f"  indusert V ved oppgang  (di/dt={V0/L/1e6:.2f} MA/s): {V_rise:6.2f} V")
 print(f"  indusert V ved spiss (di/dt={didt_max2/1e6:.2f} MA/s): {V_spike:6.2f} V")
@@ -363,10 +363,10 @@ for zmm in [0, 10, 20, 30, 50, 100]:
 print("\n" + "-" * 76)
 print("[D] BELASTNING OG TERMISK KONTROLL (1 puls, gjentakelse 1 Hz)")
 # MOSFET: trinn-1 drain-spenning = i*R_SW (liten); ved avskjering klamer D1
-# drain ved vC + V_D1 + i*R_D1 (verste tilfelle, start av farihjul)
-Vds_max = max(V_C_toff + V_D1 + i_off * R_D1, max(is1) * R_SW)
+# drain ved vC + V_D1 + i*(R_D1+R_FW) (verste tilfelle, start av frihjul)
+Vds_max = max(V_C_toff + V_D1 + i_off * (R_D1 + R_FW), max(is1) * R_SW)
 print(f"  MOSFET (IRF3707):  I_D,max = {i_pk_rk:.0f} A (puls; datasheet I_DM ~250 A)  "
-      f"V_DS,max = {Vds_max:.1f} V (rating 30 V; D1 klamer drain ved avskjering -> ingen megaspiss)")
+      f"V_DS,max = {Vds_max:.1f} V (rating 30 V; avskjeringsspissen fra R_FW overskrir ratingen)")
 # kondensatorsving
 print(f"  Kondbank:          24.0 V -> {V_C_toff:.2f} V (ingen negativ sving; D1 blokkerer revers)")
 # diode-surge
@@ -410,7 +410,7 @@ for v0 in [12.0, 24.0, 48.0, 100.0, 240.0]:
           + ("bassedesign" if v0 == 24 else ("kond 50 V OK" if v0 <= 45 else "krever HVT-kond + 60 V+ MOSFET")))
 
 print("\n[F2] VIKLINGSTALLSVEIP (r=15 mm, tettviklet 1.0 mm ledning, 24 V, 940 uF):")
-print("  N    L(uH)   I_pk(A)  Bc(mT)  di/dt_oppgang(MA/s)  di/dt_farihjul(MA/s)  Vspk(V)  B@50mm(uT)")
+print("  N    L(uH)   I_pk(A)  Bc(mT)  di/dt_oppgang(MA/s)  di/dt_frihjul(MA/s)  Vspk(V)  B@50mm(uT)")
 best = None
 for N in range(8, 41):
     lN = (N - 1) * PITCH + WIRE_D
@@ -443,7 +443,7 @@ print("\n" + "=" * 76)
 print("OPPSUMMERING AV DESIGNPUNKT (N=15):")
 print(f"  L = {L*1e6:.2f} uH   C = 940 uF   R = {R_TOT*1e3:.1f} m ohm   zeta = {ZETA:.3f}")
 print(f"  f0 = {W0/2/math.pi:.0f} Hz   t_pk = {T_PK*1e6:.1f} us   I_pk = {I_PK:.0f} A")
-print(f"  B_center = {b1*1e3:.0f} mT   maks di/dt = {didt_max2/1e6:.1f} MA/s (farihjul)")
+print(f"  B_center = {b1*1e3:.0f} mT   maks di/dt = {didt_max2/1e6:.1f} MA/s (frihjul)")
 print(f"  Mottak (15 vikt/20 mm, sentrum): M = {M*1e6:.2f} uH  ->  "
       f"oppgang {V_rise:.1f} V, spiss {V_spike:.1f} V")
 print("  Energi: %d mJ lagret; %d mJ omgjort til felt/varme; balansfeil %.2f %% "

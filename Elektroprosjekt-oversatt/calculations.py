@@ -365,9 +365,9 @@ print("\n" + "-" * 76)
 print("[D] STRESS AND THERMAL CHECKS (1 pulse, repetition 1 Hz)")
 # MOSFET: stage-1 drain voltage = i*R_SW (small); at switch-off D1 clamps the
 # drain at vC + V_D1 + i*R_D1 (worst case, start of freewheel)
-Vds_max = max(V_C_toff + V_D1 + i_off * R_D1, max(is1) * R_SW)
+Vds_max = max(V_C_toff + V_D1 + i_off * (R_D1 + R_FW), max(is1) * R_SW)
 print(f"  MOSFET (IRF3707):  I_D,max = {i_pk_rk:.0f} A (pulse, rated pulsed >700 A)  "
-      f"V_DS,max = {Vds_max:.1f} V (rated 75 V; D1 clamps drain at switch-off -> no spike)")
+      f"V_DS,max = {Vds_max:.1f} V (rated 30 V; R_FW freewheel spike at switch-off exceeds the rating)")
 # cap swing
 print(f"  Cap bank:          24.0 V -> {V_C_toff:.2f} V (no negative swing; D1 blocks reverse)")
 # diode surge

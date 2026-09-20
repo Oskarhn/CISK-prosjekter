@@ -13,9 +13,9 @@ MOSFET, IC, bryter, kontakter** (testpunkter/terminaler/headers).
 | C1, C2 | Lav-ESR elektrokondensator | 2 × 470 µF / 50 V (parallel: 940 µF, ESR ≈ 16 mΩ) | RS 7083945 (Panasonic EEUFR1H471) | 2 | Energibanken. 24 V lagrer 270,7 mJ. 50 V-rating gir 2× margin. Lav-ESR-serie holder ESR lav nok til ζ ≈ 0,32 |
 | COIL_T | Senderpole | 15 vikt, r = 15 mm, 1,0 mm emaljert kobber, L = 6,69 µH, R = 31 mΩ | RS 7790735 (ledning, 1,0 mm OD, 0,82 mm², 56 m) | 1 | Feltet lages her: B_center = 104 mT ved 186,5 A. L satt av viklingstall (se `05_spoler.md`) |
 | PU | Mottakspole | 15 vikt, Ø20 mm, 0,5 mm emaljert kobber, L ≈ 3,6 µH | RS 0534116 (ledning, 0,5 mm OD, 0,2 mm², 25 m) | 1 | Målepole i boret: M = 2,66 µH gir 9,5 V oppgang + 41,9 V spiss til scope |
-| Q1 | N-kanal kraft-MOSFET | IRF3707: 30 V, 62 A, Rds(on) 1,25 mΩ @ 10 V, TO-220AB | RS 8274057 | 1 | Avskjører 186,5 A-pulsen. Rds(on) = 1,25 mΩ er 2,3 % av løkkmotstanden. Vds: maks ≈ 17 V i normal drift (1,76× margin mot 30 V); D1 klamer drain ved avskjering |
-| D1 | Ultrahastig farihjuldiode | MUR1560: 600 V, 15 A, TO-220AC | Farnell dp/4245037 | 1 | Tvinger polestrømmen i farihjulløkka ved avskjering; holder drain-spenning under ~17 V og begrenser di/dt til 15,8 MA/s. 600 V er overkill (villig: ingen spiss kan ødelegge den) |
-| R_FW | Farihjul-snubber | 0,47 Ω / 5 W viklet | RS 0732294 (TE FWFU5WR47J) | 1 | Setter farihjul-τ = 11,9 µs og maks di/dt. Øre for 186,5 A i 12 µs (0,16 mJ per puls) |
+| Q1 | N-kanal kraft-MOSFET | IRF3707: 30 V, 62 A, Rds(on) 1,25 mΩ @ 10 V, TO-220AB | RS 8274057 | 1 | Avskjører 186,5 A-pulsen. Rds(on) = 1,25 mΩ er 2,3 % av løkkmotstanden. Vds: ≈ 110 V spiss ved avskjering (R_FW-droppen) — overskrir 30 V-ratingen; se 03_beregninger.md |
+| D1 | Ultrahastig frihjuldiode | MUR1560: 600 V, 15 A, TO-220AC | Farnell dp/4245037 | 1 | Tvinger polestrømmen i frihjulløkka ved avskjering; begrenser di/dt til 15,8 MA/s (gir ≈ 110 V spiss på drain). 600 V er overkill (villig: ingen spiss kan ødelegge den) |
+| R_FW | Frihjul-snubber | 0,47 Ω / 5 W viklet | RS 0732294 (TE FWFU5WR47J) | 1 | Setter frihjul-τ = 11,9 µs og maks di/dt. Øre for 186,5 A i 12 µs (0,16 mJ per puls) |
 | R_SHUNT | Strømsens-shunt | 0,01 Ω / 5 W / 1 % viklet | RS 1249291 (Arcol Ohmite 15FR010E) | 1 | Scope-måling av senderstrøm: 1,87 V ved topp. 5 W tåler topp-P ≈ 3,5 kW i ~0,5 ms |
 | R_CHG | Ladingsmotstand | 100 Ω / 2 W metal film | RS 6835685 (Vishay PR02000201000JA100) | 1 | Lader banken fra forsyningen på ~0,5 s med 5,8 W (tåler 2 W gjennomsnitt; pulsbelastning er kort) |
 | R_BLEED | Utladningsmotstand | 10 kΩ / 0,4 W / 1 % | RS 1997793 (Yageo MF0204FTE52-10K) | 1 | Utlader banken til < 1 V på ~10 s etter en puls (sikkerhet + gjentagbar preslading) |
@@ -48,7 +48,7 @@ MOSFET, IC, bryter, kontakter** (testpunkter/terminaler/headers).
 | TP7/TP8 | Mottak UT | 2-polig 2,54 mm header | RS 2272142 | 1 | Mottakspulsen til scope CH2 |
 | Spoletube | Spoleform | 31 mm OD plasttube, ~20 mm | RS 177-1103 | 1 | Holder de 15 viklingene tett og samentris (L-stabil) |
 | Fot | Fotskruer | M3 × 6 mm nylon, 4 stk | RS 190-4271 | 4 | Løfter spolen opp fra platen slik at mottaket passer i boret |
-| PCB | Plat | 80 × 80 mm, 2-lags, 35 µm Cu, 1,6 mm FR-4, matt tenn | RS PCB-service | 5 | Helt designet (se `07_pcb_layout.md`). 5 stk = 1 oppbygging + reserve |
+| PCB | Plat | 80 × 80 mm, 2-lags, 35 µm Cu, 1,6 mm FR-4, matt tinn | RS PCB-service | 5 | Helt designet (se `07_pcb_layout.md`). 5 stk = 1 oppbygging + reserve |
 
 ## 4.4 Budsjett (se `../bestilling/bestilling_utfylt.xlsx`)
 
@@ -70,9 +70,8 @@ Varenumrene i denne filen er verifisert mot RS (no.rs-online.com) og Farnell
 lagerdelt som oppfyller spesifikasjonen er gyldig:
 
 * **R_SHUNT** (0,01 Ω / 5 W): hvis tomt: to × 0,02 Ω / 5 W i serie (holder 1 % tolerance).
-* **MUR1560**: MUR1520 (60 V / 15 A) er like god (drain er klamped to ~17 V).
-* **IRF3707**: ethvert 30–60 V N-kanal MOSFET with Rds(on) ≤ 2 mΩ (TO-220) fungerer; ved
-  48 V-skaleringstesten i `09_eksperimenter.md` velg en 60 V+ del (drain spiss stiger til ~33 V).
+* **MUR1560**: MUR1520 (60 V / 15 A) er like god (the diode sees ~110 V at turn-off).
+* **IRF3707**: ethvert N-kanal MOSFET with Rds(on) ≤ 2 mΩ (TO-220) and Vds ≥ 200 V functions; the 48 V scaling test pushes the spike to ~220 V, so a 300 V+ part is needed.
 * **C0G 10 nF**: ethvert NP0 10 nF / 50 V / 0805 (f.eks. KEMET C0805C103...).
 * **0,47 Ω 5 W wirewound**: 0,5 Ω / 5 W viklet motstand er innenfor design toleransen.
 * **0805 passives** (R1–R4, R9, C4, C5): vanlige varer, ethvert merke, rett verdi.

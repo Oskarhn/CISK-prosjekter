@@ -27,7 +27,7 @@ Alle tallene er trippelsjekket (tre uavhengige metoder per størrelse, se
 | Toppstrøm I_pk | **186,5 A** | analytisk vs. RK4: 0,00 % |
 | Tid til toppstrøm t_pk | **104,2 µs** | analytisk vs. RK4: 0,003 % |
 | Feltstyrke i senter B | **104,4 mT** | 3 metoder, 0,01 % |
-| Maks di/dt (farihjul) | **15,8 MA/s** | analytisk = simulering |
+| Maks di/dt (frihjul) | **15,8 MA/s** | analytisk = simulering |
 | Mottaksspenning (15 vikt / 20 mm, i senter) | 9,5 V stigning, **41,9 V spiss** | 2 metoder, 0,7 % |
 | Energibalanse | slutter til 0,02 % | bestått |
 
@@ -69,7 +69,7 @@ Elektroprosjekt/
 | Strøm, energi, pulsvarighet, kobling, belastninger | `dokumentasjon/03_beregninger.md` (belastningstabell per komponent) |
 | Rollen til L, di/dt, B-felt, gjensidig induktans | `dokumentasjon/01_kretsdrift.md` + `dokumentasjon/03_beregninger.md` |
 | Trippelsjekk av hver beregning | `dokumentasjon/03_beregninger.md` — 3 uavhengige metoder per størrelse, enighetstabell |
-| MOSFET-/brytervern | Flyback (farihjuldiode D1), snubber (R_FW), gate-klamp (15 V Zener), forsynings-TVS — `dokumentasjon/02_kretsskjema.md`, `dokumentasjon/04_komponentliste.md` |
+| MOSFET-/brytervern | Flyback (frihjuldiode D1), snubber (R_FW), gate-klamp (15 V Zener), forsynings-TVS — `dokumentasjon/02_kretsskjema.md`, `dokumentasjon/04_komponentliste.md` |
 | Sendespole-design + hvordan måle L | `dokumentasjon/05_spoler.md` |
 | Mottaksspole for scope-måling | `dokumentasjon/02_kretsskjema.md`, `dokumentasjon/06_maling.md` |
 | Måling av senderstrøm + mottatt toppspenning | `dokumentasjon/06_maling.md` |

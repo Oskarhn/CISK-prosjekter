@@ -91,7 +91,7 @@ En fritt svingende RLC er ikke en EMP — den svinger bare på 2 kHz i noen ms. 
 * Mens MOSFET-en er på (0 … t_pk) er strømstigningen *oppgangen*:
   `di/dt ≈ V₀/L = 3,59 MA/s` (størst ved t = 0, deretter ned mot som v_C faller).
 * Ved t_pk åpnes bryteren. Polestrømmen kan ikke endres umiddelbart, så den må finne en
-  ny vei: **farihjul-dioden D1 + snubberen R_FW** over spolen. Likningen blir
+  ny vei: **frihjul-dioden D1 + snubberen R_FW** over spolen. Likningen blir
 
 ```
 L·di/dt = −(V_D1 + i·(R_coil + R_FW + R_D1))      (kondensatorgreina åpen)
@@ -113,11 +113,11 @@ di/dt|_fw = −(V_D1 + I_pk·R₂)/L = −(1,1 + 186,5·0,561)/6,69µ = −15,8 
 mottaksspolen og i alle offerløkker. Strømmen er under 5 mA etter ca 54 µs, så hele
 hendelsen varer ≈ 160 µs.
 
-Farihjul-løkka inneholder bare spole + D1 + R_FW. Kondensatoren er koblet til nodel D,
+Frihjul-løkka inneholder bare spole + D1 + R_FW. Kondensatoren er koblet til nodel D,
 men bryteren på andre enden er åpen, så **ingen strøm går gjennom kondensator, shunt
 eller strømforsyning** i frihjul: kondensatorspenningen fryses på 10,11 V, det blir
-ingen negativ utslenging, og drain i MOSFET-en blir holdt på `v_C + V_D1 + i·R_D1 ≈
-17 V maks` — vel under 30 V-ratingsen. Derfor står dioden **bare over spolen** (ikke over
+ingen negativ utslenging, og drain i MOSFET-en spikker til `v_C + V_D1 + i·(R_D1+R_FW) ≈ 110 V`
+ved avskjering (R_FW-droppen dominerer, og overskrir 30 V-ratingen). Dioden står **bare over spolen** (ikke over
 spole + bryter): den skiller hovedløkka fra bryteren og gjør frihjul til en ren
 eksponentiell.
 
@@ -177,8 +177,8 @@ v_spike  = M·(V_D+I·R₂)/L   = 2,66 µH × 15,8 MA/s  = 41,9 V
 ```
 
 Et offer-PCB med en 10 cm² løkke tett oppe i spolen (M ≈ 0,9 µH) ser ~14 V på
-farihjul-spissen — nok til å presse ESD-verte I/O-pin over absolute max, røre analoge
-frontend, og reset MCU-er med under-voltage protection. Et offer med 100 cm² løkke (f.eks
+frihjul-spissen — nok til å presse ESD-vernede I/O-pinner over sine absolutte maksverdier, forstyrre analoge
+frontend-kretser, resette MCU-er med undervoltage-beskyttelse, og stresse dioder i effektkretser. Et offer med 100 cm² løkke (f.eks
 en håndholdt med batteri) ser ~10× så mye.
 
 ## 1.6 Hvorfor bryteren står på lavside
@@ -204,7 +204,7 @@ Alt henger på N gjennom L(N) og spolemotstanden:
   uavhengig av N (flere viklinger ved lavere strøm).
 * **I_pk ∝ V₀·√(C/L)**: faller med N.
 * **di/dt = V₀/L**: faller fort (L vokser som ~N²).
-* **Farihjul τ = L/R**: vokser med N → lengre, mykere nedgang.
+* **Frihjul τ = L/R**: vokser med N → lengre, mykere nedgang.
 * **Rekkevidde**: lengre spole (flere N) sender feltet lenger.
 
 Sveip (N = 8…40, fulltabell i `03_beregninger.md` 3.8; sveipet bruker Wheelers L,

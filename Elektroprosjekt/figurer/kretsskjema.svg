@@ -89,6 +89,7 @@
   <polygon points="160,244 152,276 168,276" fill="none" stroke="#333" stroke-width="1.4"/>
   <line x1="152" y1="244" x2="168" y2="244" class="comp"/>
   <line x1="160" y1="276" x2="160" y2="420" class="wire"/>
+  <line x1="160" y1="420" x2="220" y2="420" class="wire"/>
   <text x="144" y="262" text-anchor="end" class="lbl">D1 MUR1560</text>
 
   <!-- ================= TRANSMITTER COIL ================= -->

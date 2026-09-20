@@ -17,7 +17,7 @@ probe laster dem ikke.
 
 ### Strøm fra shunten
 Shunten står i kond−-tilbakekomsten, og bærer derfor **bare påskjæringsstrømmen**
-(farihjul går forbi).
+(frihjul går forbi).
 
 ```
 i(t) = V_shunt(t) / 0,01 Ω
@@ -28,7 +28,7 @@ Topp: `I_pk = 1,87 V / 0,01 Ω = 187 A`. Mål toppspenningen på CH1 og divider 
 bryterstrøm.)
 
 ### Mottatt toppspenning
-Mottaksspolen er et kalibrert vitne. Les **spissen** (farihjul di/dt) på CH2 — det er
+Mottaksspolen er et kalibrert vitne. Les **spissen** (frihjul di/dt) på CH2 — det er
 "mottatt" toppspenning. I midten er det 41,9 V. Denne størrelsen sveiper vi mot
 avstand i eksperiment 1.
 
@@ -69,7 +69,7 @@ Mottatt spenning følger aksfeltet (∝ B), så samme fall forventes.
 | Pulsbredde (til 10 % av topp) | CH1 bredde | ~150 µs |
 | B_center | (V_spike / M) × (1/(V_D+I·R₂)/L) → eller bruk mottak B = μ₀NI/...; enklest: B ∝ V_spike, kalibrer med 104 mT-modellen | 104 mT i midten |
 | V_spike vs z | CH2 topp vs z (avstandssveip) | tabellen over |
-| Farihjul τ | CH1 (eller CH2) fallets tidskonstant etter t_pk | ~11,9 µs |
+| Frihjul τ | CH1 (eller CH2) fallets tidskonstant etter t_pk | ~11,9 µs |
 
 ### Omslag av mottaksspenning til B i midten
 Mottaket er en 15-vikt, Ø20 mm spole. Dens gjensidige induktans er M = 2,66 µH, og

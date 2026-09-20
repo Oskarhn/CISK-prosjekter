@@ -116,8 +116,8 @@ hendelsen varer ≈ 160 µs.
 Frihjul-løkka inneholder bare spole + D1 + R_FW. Kondensatoren er koblet til node D,
 men bryteren på andre enden er åpen, så **ingen strøm går gjennom kondensator, shunt
 eller strømforsyning** i frihjul: kondensatorspenningen fryses på 10,11 V, det blir
-ingen negativ utslenging, og drain i MOSFET-en blir holdt på `v_C + V_D1 + i·R_D1 ≈
-17 V maks` — langt under 75 V. Derfor står dioden **bare over spolen** (ikke over
+ingen negativ utslenging, og drain i MOSFET-en spikker til `v_C + V_D1 + i·(R_D1+R_FW) ≈ 110 V`
+ved avskjering (R_FW-droppen dominerer, og overskrir 30 V-ratingen). Dioden står **bare over spolen** (ikke over
 spole + bryter): den skiller hovedløkka fra bryteren og gjør frihjul til en ren
 eksponentiell.
 

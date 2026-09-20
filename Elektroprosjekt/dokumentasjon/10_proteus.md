@@ -13,7 +13,7 @@ Opprett et nytt prosjekt, og plasser deretter (søk i Proteus-biblioteket):
 | Del | Proteus-biblioteksvalg | Notater |
 |---|---|---|
 | NE555 | `555` (Timer-kategori, DIP-8) | Standardmodell |
-| MOSFET | `IRF540N` (effekt-MOSFET) — eller IRF3707 hvis tilgjengelig | IRF540N har R_DS(on) ≈ 44 mΩ → ζ ≈ 0,41, I_pk ≈ 172 A: en god nok erstatning; noter avviket i rapporten |
+| MOSFET | `IRF540N` (effekt-MOSFET) — eller IRF3707 hvis tilgjengelig | IRF540N har R_DS(on) ≈ 44 mΩ → ζ ≈ 0,57, I_pk ≈ 145 A: en god nok erstatning; noter avviket i rapporten |
 | D1 | nærmeste ultrahurtig likeretter (søk `MUR*` / `1N49*`), 600 V-klasse | Setter frihjul-Vf ≈ 0,7–1,1 V |
 | D2 / D3 | `1N4742A` / `1N4744A` (Zener-kategori) | 12 V / 15 V |
 | D4 | TVS eller utelates i simulering | Betyr kun noe for forsyningstransienter |

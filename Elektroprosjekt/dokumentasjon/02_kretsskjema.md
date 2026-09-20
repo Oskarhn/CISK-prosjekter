@@ -3,10 +3,10 @@
 Figur: **`../figurer/kretsskjema.svg`** (i mappen figurer). Alle verdier og enheter står på tegningen.
 Nedenfor: beskrivelse av kretsen, netlist, og hvorfor hver komponent er der.
 
-## 2.1 Kretsbeskriverelse
+## 2.1 Kretsbeskrivelse
 
 Kretsen har to deler: **pulsveien** (venstre) og **styringen** (høyre), som deler
-jordsnodel F.
+jordsnoden F.
 
 ```
          +24 V (ekstern labforsyning, 0–30 V / 3 A)
@@ -21,7 +21,7 @@ jordsnodel F.
        50 V        spoleende (E)                                 │
         C2          ┌────────┴─────────┐                        │
        470 µF       │ D1: MUR1560      │  R_FW 0,5 Ω / 5 W
-      (parallell)   │ (anode E)        ├──────┐  (farihjul-
+      (parallell)   │ (anode E)        ├──────┐  (frihjul-
           │         │                  │      │  snubber)
           │        [IRF3707]           │      │
           │          │D  E (drain)     │      │
@@ -31,7 +31,7 @@ jordsnodel F.
     [R_SHUNT 0,01 Ω / 5 W]             │  │   │
           │                            │  │   │
          TB1− (−)  ────────────────────┴──┴───┴──────────────────┘
-         F = jord (MOSFET-kilde = kond− = forsyrings− = 555-jord)
+         F = jord (MOSFET-kilde = kond− = forsyning− = 555-jord)
 
    Styring (12 V-rail fra 24 V):
    +24 V ──[R9 820 Ω]── G(12 V) ──[D2 1N4742A 12 V Zener]── F
@@ -71,8 +71,8 @@ jordsnodel F.
 
 Merk: **shunten står i kond−-veien** (kondensatorbunn → R_SHUNT → F). Den måler
 derfor *påskjæringsstrømmen* (målt: 0 → 1,87 V), men er **omgått i frihjul**
-(farihjul-løkka er bare spole + D1 + R_FW). Shuntspenningen går til 0 V når spissen
-kommer — et rent, tvetydigt strømsignal.
+(frihjul-løkka er bare spole + D1 + R_FW). Shuntspenningen går til 0 V når spissen
+kommer — en ren, utvetydig strømsignatur.
 
 ## 2.3 Hvorfor hver komponent er der
 
@@ -82,9 +82,9 @@ kommer — et rent, tvetydigt strømsignal.
 | R_CHG | 100 Ω / 2 W | Begrenser ladeladningen fra forsyning til kondensator til 240 mA (topp 5,8 W i ~100 ms, deretter stabil); ~0,5 s til full lading. Uten den ville forsyning og ledninger sett en uendelig strømsteg. |
 | R_BLEED | 10 kΩ / ¼ W | Sikkerhetsutladning: kondensatoren faller 24 V → 2 V på ~4 s (τ = 9,4 s). Utladestrøm under puls er 2,4 mA — forsvinnende. Uten den ville banken stått ladd i timer. |
 | COIL_T | 15 vikt, 1,0 mm ledning, r = 15 mm | EMP-stråleren. L = 6,69 µH lagrer strømmen; luften kjernen (l ≈ r) maksimerer B på aksen per ampere, samtidig som L holdes lav for høy di/dt. R_coil = 31 mΩ. |
-| D1 | MUR1560 (600 V / 15 A ultrahastig) | **Farihjul-/freewheel-diode** over spolen: gir de 187 A en vei når bryteren åpnes, setter frihjul-di/dt sammen med R_FW, og holder drain i MOSFET-en på ≈ v_C + V_D1 (≈11–17 V) — **ingen drain-spike**. Ultrahastig + 15 A-klass: pulsen er 187 A i 54 µs, men ∫i²dt = 0,21 A²s, godt innenfor I_TSM 8/3 ms-ratingen (tilsvarer ~13 A over 2,7 ms). |
+| D1 | MUR1560 (600 V / 15 A ultrahastig) | **Frihjul-/freewheel-diode** over spolen: gir de 187 A en vei når bryteren åpnes, setter frihjul-di/dt sammen med R_FW, og holder drain i MOSFET-en på ≈ v_C + V_D1 (≈11–17 V) — **ingen drain-spike**. Ultrahastig + 15 A-klass: pulsen er 187 A i 54 µs, men ∫i²dt = 0,21 A²s, godt innenfor I_TSM 8/3 ms-ratingen (tilsvarer ~13 A over 2,7 ms). |
 | R_FW | 0,5 Ω / 5 W viklet | **Snubber/bremse i frihjulveien**: τ_fw = L/(R_FW+…) = 11,9 µs → spiss på 15,8 MA/s. Fanger 101,7 mJ per puls (≈ 102 mW gjennomsnitt ved 1 Hz). |
-| MOSFET | IRF3707 (30 V / 62 A / 1,25 mΩ, TO-220AB) | Bryteren. Krever: lav R_DS(on) (holder ζ = 0,321), pulsert strøm > 200 A (datasheet I_DM ≈ 250 A), 30 V V_DS-rating (maks ≈ 17 V i drift, 1,8× margin), rask gate (Q_g ≈ 30 nC). |
+| MOSFET | IRF3707 (30 V / 62 A / 1,25 mΩ, TO-220AB) | Bryteren. Krever: lav R_DS(on) (holder ζ = 0,321), pulsert strøm > 200 A (datasheet I_DM ≈ 250 A), 30 V V_DS-rating (avskjeringsspiss ≈ 110 V — overskrir ratingen; se 03_beregninger.md), rask gate (Q_g ≈ 30 nC). |
 | R3 | 10 Ω | Gate-styringsmotstand: setter gate-RC ≈ 25 ns (fortere enn nødvendig, men demper gate-sving med ledningens induktans). |
 | R4 | 10 kΩ | Gate-nedtrekk: garanterer av etter strømløst eller 555-feil; forhindrer at en flytende gate lår pulsen gå. |
 | D3 | 1N4744A 15 V Zener | **Gate-klamp**: eventuell gate-overshoot (parasyttkopling fra 15,8 MA/s-løkka, eller en 24 V feilkobling) klamples ved 15 V < 30 V V_GS-rating. |
@@ -127,7 +127,7 @@ omedelbart.
    seg til 104 mT.
 3. **t = 104,2 µs:** i toppen på 186,5 A; v_C = 10,11 V.
 4. **t = 106,7 µs (555-pulsen slutter):** MOSFET av; strømmen overføres til D1 + R_FW i
-   ~100 ns; drain klampes ≈ 17 V og faller til 11 V som i avtar; shunt → 0 V; mottaket
+   ~100 ns; drain spikker til ≈ 110 V (R_FW-droppen) og avtar mot ~11 V med τ_fw ≈ 12 µs; shunt → 0 V; mottaket
    spisser til 41,9 V (15,8 MA/s); B kollapser over τ_fw ≈ 11,9 µs.
 5. **t ≈ 160 µs:** i < 5 mA; feltet er borte; kondensatorene holder 10,11 V og lades
    opp igjen via R_CHG (full lading på ~0,35 s → 1 Hz drift er komfortabelt).

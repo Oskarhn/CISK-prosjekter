@@ -10,7 +10,7 @@
 | Lengde l | 15,28 mm = (N−1)×1,02 + 1,0 | Tettviklet: l ≈ r gir best aksfelt for kort spole |
 | L (design) | 6,69 µH (Wheeler: 6,93 µH) | 3.1 |
 | R_coil | 30,96 mΩ (1,41 m ledning) | 3.0 |
-| Former | 29 mm ID × ~18 mm, **ikke-ledende** tube (PVC, polyamid, eller 3D-printet PLA) | **Viktig:** metalltube = kortsluttet vikt → virvelforvik + feltkansellering |
+| Former | 29 mm ID × ~18 mm, **ikke-ledende** tube (PVC, polyamid, eller 3D-printet PLA) | **Viktig:** metalltube = kortsluttet vikt → virvelstrømtap + feltkansellering |
 | Montering | på 4 × M3 nylon-søkk (6 mm) over platen, limt med litt epoksy i bunn | Holder spoleaksen sentrert; søkkene løfter den over jordsjappen |
 
 ### Viklingsprosess

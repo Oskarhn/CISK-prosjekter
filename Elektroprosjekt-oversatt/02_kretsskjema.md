@@ -84,7 +84,7 @@ kommer — en ren, utvetydig strømsignatur.
 | COIL_T | 15 vikt, 1,0 mm ledning, r = 15 mm | EMP-stråleren. L = 6,69 µH lagrer strømmen; luften kjernen (l ≈ r) maksimerer B på aksen per ampere, samtidig som L holdes lav for høy di/dt. R_coil = 31 mΩ. |
 | D1 | MUR1560 (600 V / 15 A ultrahastig) | **Frihjul-/freewheel-diode** over spolen: gir de 187 A en vei når bryteren åpnes, setter frihjul-di/dt sammen med R_FW, og holder drain i MOSFET-en på ≈ v_C + V_D1 (≈11–17 V) — **ingen drain-spike**. Ultrahastig + 15 A-klass: pulsen er 187 A i 54 µs, men ∫i²dt = 0,21 A²s, godt innenfor I_TSM 8/3 ms-ratingen (tilsvarer ~13 A over 2,7 ms). |
 | R_FW | 0,5 Ω / 5 W viklet | **Snubber/bremse i frihjulveien**: τ_fw = L/(R_FW+…) = 11,9 µs → spiss på 15,8 MA/s. Fanger 101,7 mJ per puls (≈ 102 mW gjennomsnitt ved 1 Hz). |
-| MOSFET | IRF3707 (75 V / 45 A / 1,25 mΩ, TO-220) | Bryteren. Krever: lav R_DS(on) (holder ζ = 0,321), pulsert strøm > 200 A (rating 720 A), 75 V margin over 17 V clampet drain, rask gate (Q_g ≈ 30 nC). |
+| MOSFET | IRF3707 (30 V / 62 A / 1,25 mΩ, TO-220AB) | Bryteren. Krever: lav R_DS(on) (holder ζ = 0,321), pulsert strøm > 200 A (datasheet I_DM ≈ 250 A), 30 V V_DS-rating (avskjeringsspiss ≈ 110 V — overskrir ratingen; se 03_beregninger.md), rask gate (Q_g ≈ 30 nC). |
 | R3 | 10 Ω | Gate-styringsmotstand: setter gate-RC ≈ 25 ns (fortere enn nødvendig, men demper gate-sving med ledningens induktans). |
 | R4 | 10 kΩ | Gate-nedtrekk: garanterer av etter strømløst eller 555-feil; forhindrer at en flytende gate lår pulsen gå. |
 | D3 | 1N4744A 15 V Zener | **Gate-klamp**: eventuell gate-overshoot (parasyttkopling fra 15,8 MA/s-løkka, eller en 24 V feilkobling) klamples ved 15 V < 30 V V_GS-rating. |

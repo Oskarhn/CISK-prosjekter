@@ -20,7 +20,9 @@ konstant). Bruk tabellen i `06_maling.md` §6.2.
 | V_spiss (V) | 41,9 | 28,1 | 10,9 | 4,4 | 1,9* | 1,14 | 0,30 | 0,038 | 0,007 | 0,002 |
 | B (mT) | 104 | 70 | 28 | 11,3 | 5,5* | 2,89 | 0,85 | 0,387 | 0,11 | 0,049 |
 
-(\*interpolert.) **Plott:** V_spiss vs. z, log-log — forvent stigningstall ≈ −3 utover
+(\*interpolert.) Tabellen bruker Wheelers L (+3,5 % ved N = 15); eksakte modellverdier: I_pk = 186,5 A, B_c = 104,4 mT, mottaksspiss = 41,9 V (se `03_beregninger.md` §3.8).
+
+**Plott:** V_spiss vs. z, log-log — forvent stigningstall ≈ −3 utover
 ~30 mm (dipol-nærfeltsfall).
 
 **Konklusjon å konstatere:** EMP-skaderekkevidden på dette kortet er ~5–30 cm; enheten er
@@ -41,7 +43,7 @@ t_pk, B_senter (via mottaksskalering eller et gaussmeter), mottaksspiss, og B ve
 | N | L (µH) | I_pk (A) | B_c (mT) | mottaksspiss (V) | B @ 50 mm (µT) |
 |---|---|---|---|---|---|
 | 8 | 2,6 | 281 | 91 | 90 | 2258 |
-| 15 | 6,7 | 187 | 104 | 42 | 2859 |
+| 15 | 6,9 | 184,5 | 103 | 40 | 2859 |
 | 20 | 10,5 | 152 | 105 | 27 | 3233 |
 | 30 | 18,1 | 115 | 101 | 16 | 4026 |
 
@@ -56,7 +58,7 @@ sterk kun i planet; egnet for kobling til et flatt offer-PCB plassert mot flaten
 **Hypotese:** I_pk, B og mottatt spenning skalerer lineært med V₀ (L, C, R faste).
 
 **Prosedyre:** avfyr ved V₀ = 12, 24, 48 V (benkforsyning; 48 V er trygt for 50 V-
-kondensatorene, men drainklampen stiger til ~33 V, som overskrir IRF3707s 30 V-rating — bytt til en 60 V+ MOSFET ved denne avfiringen (bekreft med scope).
+kondensatorene, men drainspissen stiger til ~220 V, som overskrir IRF3707s 30 V-rating med store marginer — ved denne avfiringen kreves en 300 V+ MOSFET (bekreft med scope).
 Noter I_pk, spiss, B.
 
 **Forventet:**

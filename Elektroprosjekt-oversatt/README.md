@@ -81,10 +81,9 @@ Skriptet beregner hvert tall i `03_beregninger.md` med 3 uavhengige metoder per 
 uendelig solenoide for B; analytisk / RK4 / energibalanse for pulsen; løkkepar /
 fluksmetode for mottakets gjensidige induktans).
 
-## Merknad om delvaretilgjengelighet
+## Delvaretilgjengelighet
 
-Nettbasert delverifisering var ikke tilgjengelig i denne økten, så komponentlisten
-bruker etablerte, vanlige delnumre (IRF3707, MUR1560, NE555P, 1N4742A/1N4744A, SMBJ24A,
+Komponentlisten bruker etablerte, vanlige delnumre (IRF3707, MUR1560, NE555P, 1N4742A/1N4744A, SMBJ24A,
 standard passive komponenter). Hver oppføring i `04_komponentliste.md` lister
-spesifikasjonen som betyr noe; verifiser lagerstatus og eksakt delnummer hos Elfa/Farnell
-før bestilling — alle er standard katalogvarer.
+spesifikasjonen som betyr noe; bekreft lagerstatus og pris hos Elfa/Farnell før
+bestilling — alle er standard katalogvarer.

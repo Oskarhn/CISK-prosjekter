@@ -1,6 +1,6 @@
 # 07 — PCB-layout
 
-Plate: **80 × 80 mm, 2-lags, 35 µm kobber (1 oz), 1,6 mm FR-4**, matt tenn. Hele
+Plate: **80 × 80 mm, 2-lags, 35 µm kobber (1 oz), 1,6 mm FR-4**, matt tinn. Hele
 designet passer med margin: største fotavtrykk er 31 mm spolesirkelen.
 
 ## 7.1 Plassering (toppvindu)
@@ -31,7 +31,7 @@ designet passer med margin: største fotavtrykk er 31 mm spolesirkelen.
    ~40 mm av hverandre, og kjør løkka i **breddest mulig kobber**. Minimerer løkkearealet
    minimerer du streifinduktans (som ville stjele fra spolen L og senke di/dt) og maksimer
    strømtetthet der det teller.
-2. **Spole sentrert, løftet.** Ø31 mm spolen står på 4 søkk i nærheten av platedsentrum
+2. **Spole sentrert, løftet.** Ø31 mm spolen står på 4 søkk i nærheten av platesentrum
    slik at mottaket (Ø20 mm) passer i boret. Spolen er strålelementet — hold den unna 555
    og styringsdelene (de ville legge på parasyttkapasitans og fange 15,8 MA/s-støtet).
 3. **MOSFET like ved spoleende (E) og jord.** Kort drain-tupp = mindre draininduktans =
@@ -58,10 +58,10 @@ pulsvarme** styrer, ikke DC. Med 35 µm kobber:
 | 555 / styringssignal | < 15 mA | 0,3 mm (standard) | — |
 
 * **Minimum for 187 A puls:** ~2–3 mm av 35 µm kobber per lag bærer den komfortabelt i
-  en ~100 µs puls; bruk **8 mm på de fire hovedsegmentene** for sikkerhets og for å holde
+  en ~100 µs puls; bruk **8 mm på de fire hovedsegmentene** for sikkerhetsmargin og for å holde
   R_trace nær 2 mΩ designverdi. (Tykkere 70 µm kobber ville la deg halvere breddene.)
 * **Vias:** bruk klaser av 3–5 × 0,3 mm vias i hvert lag-overgang på strømbanen (en
-  enkelt via-sjakt er en flaskehalv for 187 A).
+  enkelt via-sjakt er en flaskehals for 187 A).
 * **Avstand:** ved 24 V med < 10 V mellom nabonett er 6 mil (0,15 mm) min avstand greit
   (kurs lab regel). Den eneste > 30 V avstanden er over D4 (forsyningsinngang) — gi den
   0,5 mm.
@@ -87,7 +87,7 @@ pulsvarme** styrer, ikke DC. Med 35 µm kobber:
 * **Avloddingsrisiko på shunten:** den er en 5 W viklet i en 2,54 fotavtrykk; ikke
   overopphet.
 * Verifiser polaritet på hver SMD (kondensator-elektrolytt, dioder, MOSFET, 555 pin 1)
-  før opptur.
+  før oppstart.
 
 ## 7.5 DRC- Sjekkliste (stemmer med kurs design-rule manager)
 

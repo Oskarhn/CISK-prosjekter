@@ -18,7 +18,7 @@ Arbeidsrekkefølge: **viklet spole → benkeprototype → (Proteus-sim) → PCB 
 1. Vikle COIL_T: 15 vikt, 1,0 mm ledning, Ø30 mm, på 29 mm ID-tube (la 70 mm tupper).
 2. Vikle PU: 15 vikt, 0,5 mm ledning, Ø20 mm, på 18–20 mm former.
 3. Mål COIL_T på LCM-meter på 1 kHz → **forvent 6,5–7,2 µH, ESR ≈ 31 mΩ**
-   (`05_spoler.md` 5.2). Utfor rammene: omvikle før noe annet.
+   (`05_spoler.md` 5.2). Utenfor området: omvikle før noe annet.
 4. Mål PU-motstand (bør være ~80 mΩ) og COIL_T-motstand (~31 mΩ, DMM 2-tråd OK for denne
    verdien).
 
@@ -35,9 +35,9 @@ C4/C5, R3/R4/D3 til en MOSFET-gate koblet til en 100 Ω dummy til jord):
 3. Nå, tenn pulseveien fra 24 V-forsyningen **med den ekte spolen** (fremdeles på benket):
    trykk S1 → scope:
    * CH1 på shunten (kople inn en 0,01 Ω eller 0,1 Ω shunt i kond−-tuppen): **1,87 V ramp
-     til topp ved ~104 µs, deretter raskt fall når farihjul overtar.**
-   * CH på spoleende (drain): holder seg nær 0 V under utladningen, hopper til ~11–17 V
-     ved avskjering, **ingen megavolt-nivå pegg** (D1 klamer den).
+     til topp ved ~104 µs, deretter raskt fall når frihjul overtar.**
+   * CH på spoleende (drain): holder seg nær 0 V under utladningen, hopper til ~110 V
+     ved avskjering (spiss av R_FW-droppen), **ingen megavolt-nivå pegg** (D1 + R_FW holder den ned).
    * CH på kond+: 24 → 10 V.
    * CH på mottaket: 9,5 V oppgang + 41,9 V pegg.
 4. **Godkjenningskriterium:** alle fire bølgeformer stemmer med `02_kretsskjema.md` 2.5 og
@@ -52,7 +52,7 @@ Godkjenningskriterium: simulert I_pk og t_pk innen 20 % av håndberegnet 187 A /
 ## Fase 4 — PCB-fabrikkasjon
 
 1. Layout etter `07_pcb_layout.md` (eller kurs' Proteus AURORA PCB-verktøy).
-2. Bestilling: 80 × 80 mm, 2-lags, 35 µm, 1,6 mm, matt tenn. (5 stk ≈ 250 NOK; 1 stk hvis
+2. Bestilling: 80 × 80 mm, 2-lags, 35 µm, 1,6 mm, matt tinn. (5 stk ≈ 250 NOK; 1 stk hvis
    budsjettbegrenset — bestill minst 2: en til oppbygging, en reserverte).
 3. Mens du venter: kjøp og skjær spoletube, skjær søkk, forbered mottaksformer.
 
@@ -80,12 +80,12 @@ Komponentrekkefølge (enklest → vanskeligst):
 
 | Symptom | Sannsynlig årsak | Rettelse |
 |---|---|---|
-| Ingen puls i det hele tatt | 555 uforstyr / pin 4 ikke bundet til VCC / kortsluttet trigger | Sjekk G = 12 V; R2 til stede |
+| Ingen puls i det hele tatt | 555 uforsynt / pin 4 ikke bundet til VCC / kortsluttet trigger | Sjekk G = 12 V; R2 til stede |
 | 555-ut kontinuerlig høy | Trigger pin festet < ⅓VCC (C3 feil verdi/plassering, R2 mangler) | C3 = 10 nF *serie* med knappen; R2 = 10 kΩ til 12 V |
 | 555 pulser men MOSFET aldri på | R4 mangler (gate flyter) eller 555-ut for lav | R4 = 10 kΩ; sjekk pin 3 spenning ≈ 10,5 V |
 | MOSFET på for alltid | R4 for stor / 555 festet | R4 = 10 kΩ; sjekk pin 3 faller til < 1 V etter pulsen |
-| Enorm pegg på drain (> 50 V) | D1 feil vei / R_FW åpen / farihjul-løkka brutt | Tjenk D1 orientering; R_FW kontinuitet |
-| Kondensatorspenning svinger negativ | D1 åpen (farihjul mangler) | Bytt D1 |
+| Drainpeggen mye over ~110 V (kV-ringing) | D1 feil vei / R_FW åpen / frihjul-løkka brutt | Sjekk D1-orientering på nytt; R_FW kontinuitet |
+| Kondensatorspenning svinger negativ | D1 åpen (frihjul mangler) | Bytt D1 |
 | I_pk langt lavere enn 187 A | L for høy (ekstra vikt) / R for høy (kalde loddeledd, tynne spor) | LCM spolen; DMM løkkemotstand; reflow ledd |
 | I_pk høyere / t_pk kortere | L lav (færre vikt, løse viklinger) | Omvikle til 15 vikt tettviklet |
 | Mottaksspiss liten | Mottak utenfor sentrum / færre vikt / tupper tvinn (løkke kansellerer) | Sentrer mottak; tell vikt; parallell tupper langs aksen |
@@ -100,7 +100,7 @@ Komponentrekkefølge (enklest → vanskeligst):
    50 µs/div; trigger CH4 stigende; **enkel** innsamling.
 3. Fyr 5 pulser; behold beste skudd. Lagre som `pulse_center.png`.
 4. Noter: I_pk (CH1/0,01 Ω), t_pk (CH4→CH1 topp), kond V ved t_pk, mottaks oppgang + pegg,
-   farihjul τ. Sammenlign med mål: **187 A / 104 µs / 10,1 V / 9,5 V + 41,9 V / 11,9 µs**.
+   frihjul τ. Sammenlign med mål: **187 A / 104 µs / 10,1 V / 9,5 V + 41,9 V / 11,9 µs**.
 5. Kjør avstandssveipen (`06_maling.md` 6.2) → tabell + plot for eksperiment 1.
 6. Valgfritt: offer-tester (`09_eksperimenter.md` eksperiment 4).
 7. Skriv opp: målt vs beregnet tabell (inkluder %-avvik — det *er* trippelsjekken på

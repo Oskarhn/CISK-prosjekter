@@ -68,8 +68,8 @@ Stadie 2 (bryter av, frihjul):  dv_C/dt = 0 (kondensatorgreina åpen),  di/dt = 
 | v_C ved avskjering | 10,111 V | 10,117 V | 0,06 % |
 | di/dt ved t = 0 | 3,586 MA/s | 3,585 MA/s | 0,02 % |
 | maks di/dt stadie 1 (oppgang) | 3,59 MA/s | 3,59 MA/s | — |
-| maks di/dt stadie 2 (farihjul) | (V_D1+I_pkR₂)/L = 15,76 MA/s | 15,76 MA/s | — |
-| farihjul utlading til < 5 mA | τ_fw = L/R₂ = 11,93 µs; i(t) = (I_pk+V_D1/R₂)e^(−t/τ_fw) − V_D1/R₂ | 54,5 µs | — |
+| maks di/dt stadie 2 (frihjul) | (V_D1+I_pkR₂)/L = 15,76 MA/s | 15,76 MA/s | — |
+| frihjul utlading til < 5 mA | τ_fw = L/R₂ = 11,93 µs; i(t) = (I_pk+V_D1/R₂)e^(−t/τ_fw) − V_D1/R₂ | 54,5 µs | — |
 
 ### 3.2.3 Energibalans (lukkingsjekk)
 
@@ -120,7 +120,7 @@ Indusert spenning `v = M·di/dt` (mottaket i midten av spolen):
 | Hendelse | di/dt | v_mottak |
 |---|---|---|
 | Oppgang (t = 0, brattest oppgang) | 3,586 MA/s | **9,53 V** |
-| Farihjul-spiss (t = t_pk) | 15,76 MA/s | **41,90 V** |
+| Frihjul-spiss (t = t_pk) | 15,76 MA/s | **41,90 V** |
 
 Posisjonsavhengighet (for avstandsforsøket, `09_eksperimenter.md`):
 
@@ -136,7 +136,7 @@ Posisjonsavhengighet (for avstandsforsøket, `09_eksperimenter.md`):
 
 | Del | Belastning | Merking | Vurdering |
 |---|---|---|---|
-| MOSFET (IRF3707) | I_D = 187 A puls (≈ 100 µs); V_DS,maks = 16,8 V (D1 klamplet drainen: v_C + V_D1 + iR_D1) | I_DM ≈ 250 A pulsert; 30 V | OK: 2,3× strømmargin, 1,76× spenningsmargin |
+| MOSFET (IRF3707) | I_D = 187 A puls (≈ 100 µs); V_DS,max ≈ 110 V (avskjeringsspiss: v_C + V_D1 + i·(R_D1+R_FW)) | I_DM ≈ 250 A pulsert; 30 V | V_DS,max ≈ 110 V (avskjering) — overskrir 30 V-ratingen |
 | Kondensatorbank | 24,0 V → 10,11 V (ingen negativ utslenging — D1 blokkerer revers; frihjul går forbi kondensatoren) | 50 V | OK |
 | D1 (MUR1560) | 187 A i 54 µs; Q = 2,1 mAs; ∫i²dt = 0,208 A²s; E = 8,4 mJ | 15 A kont.; I_TSM 8/3 ms ≈ 150–200 A (tilsvarer 0,29 A²s) | OK: I²t er 72 % av 8/3 ms-ratingen for én puls |
 | R_FW (0,5 Ω/5 W) | 101,7 mJ/puls; 102 mW gjennomsnitt ved 1 Hz; tråddelt ΔT ≈ 11 K (adiabatisk) | 5 W | OK |
@@ -168,7 +168,7 @@ Med L, C, R faste skalerer I_pk, B og V_ind lineært med V₀:
 |---|---|---|---|---|---|
 | 12 V | 93 A | 52 mT | 67,7 mJ | 21,0 V | samme deler, halv effekt |
 | **24 V** | **187 A** | **104 mT** | **270,7 mJ** | **41,9 V** | **grunn-design** |
-| 48 V | 373 A | 209 mT | 1,08 J | 83,8 V | 50 V kondensatorer OK (48 < 50); drain-klamp ≈ 33 V > 30 V → krever 60 V+ MOSFET |
+| 48 V | 373 A | 209 mT | 1,08 J | 83,8 V | 50 V kondensatorer OK (48 < 50); drainspiss ≈ 220 V → krever 300 V+ MOSFET |
 | 100 V | 777 A | 435 mT | 4,70 J | 174,6 V | krever HVT kondensatorer (>100 V) + 100 V MOSFET |
 | 240 V | 1865 A | 1,04 T | 27,1 J | 419 V | krever serie-kondensatorstak + HVT deler |
 
@@ -176,7 +176,7 @@ Med L, C, R faste skalerer I_pk, B og V_ind lineært med V₀:
 
 Wheeler L + analytisk pulsmodell, r = 15 mm, tettviklet 1,0 mm ledning, 24 V, 940 µF:
 
-| N | L (µH) | I_pk (A) | B_c (mT) | di/dt oppgang (MA/s) | di/dt farihjul (MA/s) | mottaksspiss (V) | B @ 50 mm (µT) |
+| N | L (µH) | I_pk (A) | B_c (mT) | di/dt oppgang (MA/s) | di/dt frihjul (MA/s) | mottaksspiss (V) | B @ 50 mm (µT) |
 |---|---|---|---|---|---|---|---|
 | 8 | 2,62 | 280,9 | 90,8 | 9,16 | 59,0 | 89,9 | 2257 |
 | 10 | 3,74 | 242,3 | 96,1 | 6,42 | 36,0 | 67,2 | 2450 |

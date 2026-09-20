@@ -36,8 +36,8 @@ C4/C5, R3/R4/D3 til en MOSFET-gate koblet til en 100 Ω dummy til jord):
    trykk S1 → scope:
    * CH1 på shunten (kople inn en 0,01 Ω eller 0,1 Ω shunt i kond−-tuppen): **1,87 V ramp
      til topp ved ~104 µs, deretter raskt fall når frihjul overtar.**
-   * CH på spoleende (drain): holder seg nær 0 V under utladningen, hopper til ~11–17 V
-     ved avskjering, **ingen megavolt-nivå pegg** (D1 klamer den).
+   * CH på spoleende (drain): holder seg nær 0 V under utladningen, hopper til ~110 V
+     ved avskjering (spiss av R_FW-droppen), **ingen megavolt-nivå pegg** (D1 + R_FW holder den ned).
    * CH på kond+: 24 → 10 V.
    * CH på mottaket: 9,5 V oppgang + 41,9 V pegg.
 4. **Godkjenningskriterium:** alle fire bølgeformer stemmer med `02_kretsskjema.md` 2.5 og
@@ -84,7 +84,7 @@ Komponentrekkefølge (enklest → vanskeligst):
 | 555-ut kontinuerlig høy | Trigger pin festet < ⅓VCC (C3 feil verdi/plassering, R2 mangler) | C3 = 10 nF *serie* med knappen; R2 = 10 kΩ til 12 V |
 | 555 pulser men MOSFET aldri på | R4 mangler (gate flyter) eller 555-ut for lav | R4 = 10 kΩ; sjekk pin 3 spenning ≈ 10,5 V |
 | MOSFET på for alltid | R4 for stor / 555 festet | R4 = 10 kΩ; sjekk pin 3 faller til < 1 V etter pulsen |
-| Enorm pegg på drain (> 50 V) | D1 feil vei / R_FW åpen / frihjul-løkka brutt | Sjekk D1-orientering på nytt; R_FW kontinuitet |
+| Drainpeggen mye over ~110 V (kV-ringing) | D1 feil vei / R_FW åpen / frihjul-løkka brutt | Sjekk D1-orientering på nytt; R_FW kontinuitet |
 | Kondensatorspenning svinger negativ | D1 åpen (frihjul mangler) | Bytt D1 |
 | I_pk langt lavere enn 187 A | L for høy (ekstra vikt) / R for høy (kalde loddeledd, tynne spor) | LCM spolen; DMM løkkemotstand; reflow ledd |
 | I_pk høyere / t_pk kortere | L lav (færre vikt, løse viklinger) | Omvikle til 15 vikt tettviklet |
