@@ -1,100 +1,81 @@
-# EMP-generator — Prosjektdokumentasjon (kursprosjekt)
+# Elektroprosjekt-v2 — EMB-generator
 
-Kursprosjekt for **ING2508 Kretsteknikk — Måleteknikk og kretssimulering** (FHS /
-Cyberingeniørskolen).
+Et rettferdighetsskjema for en EMB-generator som kan skade en telefon i rommet.
+Laget for **ING2508 Kretsteknikk**.
 
-**Mål:** Designe og bygge en kompakt EMP-generator på en PCB på ≤ 80 × 80 mm med
-5–10 komponenttyper. Enheten gir en sterk, målbare elektromagnetisk transiennt, og
-prosjektet dekker hele kjeden: teori, beregning (trippelsjekket), Proteus-simulering,
-PCB-layout, komponentliste og måling.
+## Hva dette er
 
-**Design i én linje:** 940 µF / 24 V kondensatorbank → 15-vikt luftkjernespole (6,69 µH,
-31 mm OD) → lavside-effekt-MOSFET-bryter, med en 555-timet avslåing nøyaktig ved
-strømtoppen, en frihjulsdiode + 0,5 Ω snubber over spolen, og en 15-vikt mottaksspole for
-oscilloskopmåling.
+Dette er **versjon 2** av prosjektet. Versjon 1 (i `Elektroprosjekt/` og
+`Elektroprosjekt-oversatt/`) var et lite, single-pulse 24 V / 0,27 J prosjekt
+som bare virket i nærmelan. Den har en dokumentert svakhet (drain-spiss ≈ 110 V
+som overskrir IRF3707s 30 V rating). Den er **frossen** — den er referansen
+for sammenligning.
 
-## Verifiserte hovedresultater
+Dette prosjektet lager et system som egentlig er farlig:
+- **Meget mer energi** (Marx, ikke en enkelt kondensator)
+- **Måte høyere spenning** (kV-nivå, ikke 24 V)
+- **Større felt som rammer et større område** (definert TEM-celle + stor radieringspule)
+- **Raskere di/dt** (nanosekund-impuls, ikke µs-impuls)
+- **Høy repetisjonsrate** (impulser i sekund, ikke én single puls)
+- Virker på **avstand** (fjærfelt via radieringspule)
 
-Alle tallene er trippelsjekket (tre uavhengige metoder per størrelse, se
-`dokumentasjon/03_beregninger.md`):
+## Arkitektur (off-board + kontrollkrets)
 
-| Størrelse | Verdi | Avstemming mellom metodene |
-|---|---|---|
-| Lagret energi | 270,7 mJ | ½CV² |
-| Spoleinduktans L | 6,69 µH | 3 metoder, 3,5 % spredning |
-| Demping ζ | 0,321 | analytisk = simulering |
-| Naturlig frekvens f₀ | 2,01 kHz | analytisk = simulering |
-| Toppstrøm I_pk | **186,5 A** | analytisk vs. RK4: 0,00 % |
-| Tid til toppstrøm t_pk | **104,2 µs** | analytisk vs. RK4: 0,003 % |
-| Feltstyrke i senter B | **104,4 mT** | 3 metoder, 0,01 % |
-| Maks di/dt (frihjul) | **15,8 MA/s** | analytisk = simulering |
-| Mottaksspenning (15 vikt / 20 mm, i senter) | 9,5 V stigning, **41,9 V spiss** | 2 metoder, 0,7 % |
-| Energibalanse | slutter til 0,02 % | bestått |
+Alt som er store/kraftige ligger **off-board**. Kontrollkretsen er en liten PCB.
 
-## Innhold i repoet
+| Del | Off-board/PCB | Virkemåte |
+|-----|-------------|-----------|
+| **Marx-generatør** | off-board (5 steg) | Lagre 588 J til 5 kV |
+| **Iskjere / trigger** | off-board (0,15 mm gap + trigger) | Lukker alle gap samtidig |
+| **TEM-celle** | off-board (30 cm lang) | 100 kV/m felt — telefonen dør |
+| **Radieringspule** | off-board (Ø 2 m) | Fjærfelt / "på avstand" |
+| **Kontrollkrets (PCB)** | PCB 110×100 mm | Timing, trigger, HV-måling, interlock |
+
+## Nøkkeltall (se 02_beregninger.md)
+
+| Størrelse | v1 | v2 |
+|-----------|-----|-----|
+| Energi | 0,27 J | **588 J** (2170×) |
+| Spennings | 24 V | **5 kV** (208×) |
+| Felt over telefon | 9,5 V + 41,9 V | **≈ 8 kV** (dør) |
+| di/dt | 15,8 MA/s | **≈ 830 MA/s** (50×) |
+| Impulsbredd (FWHM) | 104 µs | **≈ 2 µs** |
+| Repetisjonsrate | 1 (single) | **≈ 1 Hz** |
+| Struktur som rammer | 31 mm spole (nærmelan) | **30 cm TEM-celle + Ø 2 m pule** |
+
+## Filer
 
 ```
-Elektroprosjekt/
-├── README.md                  ← denne oversikten
+Elektroprosjekt-v2/
+├── README.md
 ├── dokumentasjon/
-│   ├── 01_kretsdrift.md       ← fysikk: seriell RLC-puls, B-felt, gjensidig induktans
-│   ├── 02_kretsskjema.md      ← kretsskjema, nettliste, pinnekart, hvorfor hver del er der
-│   ├── 03_beregninger.md      ← alle beregninger, trippelsjekket
-│   ├── 04_komponentliste.md   ← BOM med varenummer, verdier, valgbegrunnelse
-│   ├── 05_spoler.md           ← sender- og mottakspole, vikling, hvordan måle L
-│   ├── 06_maling.md           ← oscilloskopoppsett, testpunkter, målemetoder
-│   ├── 07_pcb_layout.md       ← plassering, sporbredder, jording, testpunkter
-│   ├── 08_sammenstilling.md   ← steg for steg: prototype → PCB → lodding → feilsøking
-│   ├── 09_eksperimenter.md    ← foreslåtte eksperimenter med forventede resultater
-│   └── 10_proteus.md          ← bygge- og simuleringsguide for kretsen i Proteus
+│   ├── 01_arkektur.md        — systemarkektur
+│   ├── 02_beregninger.md      — alle beregningene (kalkulasjon)
+│   ├── 03_kretsskjema.md     — kontrollkrets (schematiske)
+│   ├── 04_komponentliste.md   — BOM + leverandører
+│   ├── 05_marx.md             — Marx-generatør
+│   ├── 06_temcell.md          — TEM-celle
+│   ├── 07_radieringspule.md   — radieringspule
+│   ├── 08_puls.md             — pulsanalyse
+│   ├── 09_sikkerhet.md         — sikkerhet
+│   └── 10_oppsetning.md        — oppsetning/guide
 ├── figurer/
-│   └── kretsskjema.svg        ← kretsdiagram med alle verdier og enheter
+│   └── kretsskjema.svg          — kontrollkrets
 ├── beregninger/
-│   └── beregninger.py         ← ren Python-modell for trippelsjekk (kun math)
+│   └── beregninger.py            — kjøre alle tallene
 └── bestilling/
-    └── bestilling_utfylt.xlsx ← utfylt bestillingsark (RS + Farnell)
+    └── bestilling_utfylt.xlsx    — BOM (utfylt)
 ```
 
-## Kravdekning
+## Kalkulator
 
-| Krav | Hvor det dekkes |
-|---|---|
-| PCB ≤ 80 × 80 mm | `dokumentasjon/07_pcb_layout.md` (platen er nøyaktig 80 × 80 mm) |
-| 5–10 forskjellige komponenttyper | `dokumentasjon/04_komponentliste.md` — **8 typer**: motstand, kondensator, spole, diode, MOSFET, IC, bryter, kontakt |
-| Diskrete komponenter fremfor moduler | `dokumentasjon/04_komponentliste.md` — ingen moduler bortsett fra selve 555-IC-en |
-| Produserbar + håndloddbar | `dokumentasjon/08_sammenstilling.md` — 2-lags plate, blanding av 0805/gjennomhullsdeler, ingen finpitch-deler |
-| Virkemåte i detalj | `dokumentasjon/01_kretsdrift.md` |
-| Fullstendig kretsskjema | `figurer/kretsskjema.svg` + `dokumentasjon/02_kretsskjema.md` |
-| Eksakte verdier + delnummer + hvorfor hver enkelt | `dokumentasjon/04_komponentliste.md` |
-| Strøm, energi, pulsvarighet, kobling, belastninger | `dokumentasjon/03_beregninger.md` (belastningstabell per komponent) |
-| Rollen til L, di/dt, B-felt, gjensidig induktans | `dokumentasjon/01_kretsdrift.md` + `dokumentasjon/03_beregninger.md` |
-| Trippelsjekk av hver beregning | `dokumentasjon/03_beregninger.md` — 3 uavhengige metoder per størrelse, enighetstabell |
-| MOSFET-/brytervern | Flyback (frihjuldiode D1), snubber (R_FW), gate-klamp (15 V Zener), forsynings-TVS — `dokumentasjon/02_kretsskjema.md`, `dokumentasjon/04_komponentliste.md` |
-| Sendespole-design + hvordan måle L | `dokumentasjon/05_spoler.md` |
-| Mottaksspole for scope-måling | `dokumentasjon/02_kretsskjema.md`, `dokumentasjon/06_maling.md` |
-| Måling av senderstrøm + mottatt toppspenning | `dokumentasjon/06_maling.md` |
-| PCB-layoutveiledning (spor, jord, plassering, løkkeminimering, TP-er) | `dokumentasjon/07_pcb_layout.md` |
-| Komplett komponentliste | `dokumentasjon/04_komponentliste.md` |
-| Steg for steg bygg → test → feilsøk → mål | `dokumentasjon/08_sammenstilling.md` |
-| Eksperimenter: V_topp vs. avstand, spolegeometrier | `dokumentasjon/09_eksperimenter.md` |
-| Kretssimulering i Proteus | `dokumentasjon/10_proteus.md` |
-| Kursformat (tittel, krets med verdier, teori, referanser) | Alle dokumenter bruker SI-enheter + formelark-notasjon (ζ, ω₀, τ); teoridelene er rapportklare |
-
-## Slik reproduserer du beregningene
-
-```powershell
-& "C:\Users\Oskar\AppData\Local\Programs\Python\Python310\python.exe" "...\Elektroprosjekt\beregninger\beregninger.py"
+```bash
+python beregninger/beregninger.py
 ```
 
-Skriptet beregner hvert tall i `dokumentasjon/03_beregninger.md` med 3 uavhengige metoder
-per størrelse (Wheeler / elliptisk integral / direkte Neumann for L; lukket form /
-løkkesum / uendelig solenoide for B; analytisk / RK4 / energibalanse for pulsen;
-løkkepar / fluksmetode for mottakets gjensidige induktans).
+## Sikkerhet (kort)
 
-## Merknad om delvaretilgjengelighet
-
-Varenumrene i `dokumentasjon/04_komponentliste.md` er verifisert mot RS
-(no.rs-online.com) og Farnell (no.farnell.com) 09.09.2026. Prisene er NOK-estimater
-uten MVA — sjekk varenummer, lagerstatus og pris i varekurven før bestilling. Hver
-oppføring lister spesifikasjonen som betyr noe, så ethvert lagerdelt som oppfyller den er
-tillatt (like deler med same spesifikasjon).
+5 kV / 588 J kan **skade deg** og skade ting. Bruk
+`09_sikkerhet.md` før du tester. Start med TEM-cellen kort og hold avstand.
+Ikke putte hender inni cellen. Hold telefonen i cellen når du tester (det er
+punktet).

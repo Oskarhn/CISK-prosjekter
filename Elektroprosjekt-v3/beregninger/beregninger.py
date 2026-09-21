@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-# v2: EMB-generator — beregninger (single source of truth for alle tall)
+# v3: EMB-generator — beregninger (single source of truth for alle tall)
 import math
 import sys, io
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
 print("=" * 64)
-print("v2 EMB-GENERATOE — BEREKNINGER")
+print("v3 EMB-GENERATOE — BEREKNINGER")
 print("=" * 64)
 
 # ----------------------------------------------------------------------
@@ -117,7 +117,7 @@ print(f"Puls: V = {V_UT:.0f} V, C = {C_UT*1e6:.1f} uF, E = {E_UT:.1f} J")
 print(f"Felt = {E_FELT_KV:.0f} kV/m i TEM-celle, FWHM = {t_FWHM*1000:.1f} ms")
 print(f"I_peak (TEM-celle) = {I_TM:.1f} A, di/dt = {DDT_TM/1e6:.0f} MA/s")
 print(f"Repetisjonsrate = {f_rep:.2f} Hz (per {int(t_lad)} s)")
-print("\nV1 vs V2:")
+print("\nV1 vs V3:")
 print(f"  Energi: 0.27 J -> {E_UT:.1f} J ({E_UT/0.27:.0f}x)")
 print(f"  Spennings: 24 V -> {V_UT:.0f} V ({V_UT/24:.0f}x)")
 print(f"  Felt: 9,5 V+41,9 V -> {int(V_PHONE)} V (\u2248 {V_PHONE/51:.0f}x mer)")
@@ -127,9 +127,9 @@ print(f"  Struktur: 31 mm spole -> {int(L_CELL_MM)} cm TEM-celle + {int(R_LOOP*1
 print(f"  Impulsbredd: 104 us -> {t_FWHM*1000:.1f} ms")
 print()
 print("=" * 64)
-print("V2 ER 'EXTREMELY DANGEROUS'")
+print("V3 ER 'EXTREMELY DANGEROUS'")
 print("=" * 64)
-print(f"V2 produserer {E_UT:.0f} J til {V_UT:.0f} V, {E_FELT_KV:.0f} kV/m, di/dt {DDT_TM/1e6:.0f} MA/s")
+print(f"V3 produserer {E_UT:.0f} J til {V_UT:.0f} V, {E_FELT_KV:.0f} kV/m, di/dt {DDT_TM/1e6:.0f} MA/s")
 print(f"Tem-cellen ({E_FELT_KV:.0f} kV/m) kan skade en telefon i det samme rommet")
 print(f"Repetisjonsrate {f_rep:.2f} Hz, FWHM {t_FWHM*1000:.1f} ms, anslog {t_GAP_NS:.0f} ns")
 print()

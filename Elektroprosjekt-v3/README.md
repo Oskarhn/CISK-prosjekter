@@ -1,11 +1,11 @@
-# Elektroprosjekt-v2 — EMB-generator
+# Elektroprosjekt-v3 — EMB-generator
 
 Et rettferdighetsskjema for en EMB-generator som kan skade en telefon i rommet.
 Laget for **ING2508 Kretsteknikk**.
 
 ## Hva dette er
 
-Dette er **versjon 2** av prosjektet. Versjon 1 (i `Elektroprosjekt/` og
+Dette er **versjon 3** av prosjektet. Versjon 1 (i `Elektroprosjekt/` og
 `Elektroprosjekt-oversatt/`) var et lite, single-pulse 24 V / 0,27 J prosjekt
 som bare virket i nærmelan. Den har en dokumentert svakhet (drain-spiss ≈ 110 V
 som overskrir IRF3707s 30 V rating). Den er **frossen** — den er referansen
@@ -33,7 +33,7 @@ Alt som er store/kraftige ligger **off-board**. Kontrollkretsen er en liten PCB.
 
 ## Nøkkeltall (se 02_beregninger.md)
 
-| Størrelse | v1 | v2 |
+| Størrelse | v1 | v3 |
 |-----------|-----|-----|
 | Energi | 0,27 J | **588 J** (2170×) |
 | Spennings | 24 V | **5 kV** (208×) |
@@ -46,7 +46,7 @@ Alt som er store/kraftige ligger **off-board**. Kontrollkretsen er en liten PCB.
 ## Filer
 
 ```
-Elektroprosjekt-v2/
+Elektroprosjekt-v3/
 ├── README.md
 ├── dokumentasjon/
 │   ├── 01_arkektur.md        — systemarkektur
