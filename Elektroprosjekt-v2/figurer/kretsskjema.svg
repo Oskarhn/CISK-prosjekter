@@ -1,0 +1,165 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" width="100%" height="100%">
+  <defs>
+    <style>
+      .wire { stroke: #1a1a1a; stroke-width: 2.5; fill: none; }
+      .res-body { fill: #fff; stroke: #1a1a1a; stroke-width: 1.5; }
+      .res-tick { stroke: #1a1a1a; stroke-width: 1.5; }
+      .cap-plate { fill: none; stroke: #1a1a1a; stroke-width: 2; }
+      .lbl { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: #1a1a1a; }
+      .val { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #555; }
+      .title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 20px; font-weight: bold; fill: #1a1a1a; }
+      .box { fill: #f7f7f7; stroke: #1a1a1a; stroke-width: 1.5; rx: 4;}
+      .net { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #888; font-style: italic; }
+      .netlab { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #333; font-weight: bold; }
+    </style>
+  </defs>
+
+  <rect x="10" y="10" width="980" height="680" fill="#fff" stroke="#bbb" stroke-width="1"/>
+  <text class="title" x="500" y="42" text-anchor="middle">KONTROLLKRETSEN (PCB 110x100 mm, 2-LAG)</text>
+  <text class="val" x="500" y="64" text-anchor="middle">555 timing + BJT driver + relay + HV-deler + interlock — kun lav-nivå + 1 kV tap på PCB-en</text>
+
+  <!-- ============= 555 ASTABLE (top-left) ============= -->
+  <text class="netlab" x="40" y="120">555 ASTABLE (1 Hz FIRE)</text>
+
+  <!-- 555 IC box -->
+  <rect class="box" x="60" y="140" width="120" height="160"/>
+  <text class="lbl" x="70" y="162">U1</text>
+  <text class="val" x="70" y="178">NE555</text>
+  <!-- IC pins: 8 pins. Pin3=OUT(top), pin6/2=COMMON, pin7=DIS, pin4=IN, pin8=VCC(bottom) -->
+  <text class="netlab" x="185" y="192">IN</text>
+  <text class="netlab" x="185" y="230">DIS</text>
+  <text class="netlab" x="185" y="268">GND</text>
+  <text class="netlab" x="185" y="155">VCC</text>
+  <!-- OUT pin -->
+  <text class="netlab" x="185" y="172">OUT</text>
+  <line class="wire" x1="180" y1="172" x2="220" y2="172"/>
+  <line class="wire" x1="180" y1="155" x2="220" y2="155"/>
+  <line class="wire" x1="180" y1="192" x2="220" y2="192"/>
+  <line class="wire" x1="180" y1="230" x2="220" y2="230"/>
+  <line class="wire" x1="180" y1="268" x2="220" y2="268"/>
+
+  <!-- R1 (from VCC to pin7 DIS via pin... ) - use pin 7 to pin 8 -->
+  <!-- C1 pin 6/2 to GND -->
+  <!-- R2 pin 7 to pin 6/2 -->
+  <text class="val" x="220" y="150">R1</text>
+  <text class="val" x="220" y="162">100 kΩ</text>
+  <line class="wire" x1="220" y1="155" x2="300" y2="155"/>
+  <line class="wire" x1="220" y1="155" x2="220" y2="215"/>
+  <line class="wire" x1="220" y1="215" x2="300" y2="215"/>
+  <line class="wire" x1="220" y1="215" x2="220" y2="268"/>
+  <line class="wire" x1="220" y1="268" x2="220" y2="268"/>
+  <line class="wire" x1="300" y1="155" x2="300" y2="300"/>
+  <line class="wire" x1="300" y1="300" x2="220" y2="300"/>
+  <text class="net" x="260" y="315">5 V</text>
+  <text class="net" x="260" y="280">GND</text>
+
+  <!-- C1 -->
+  <text class="val" x="310" y="300">C1</text>
+  <text class="val" x="310" y="315">1 nF</text>
+  <line class="wire" x1="310" y1="335" x2="310" y2="400"/>
+  <line class="wire" x1="310" y1="400" x2="220" y2="400"/>
+  <line class="wire" x1="220" y1="400" x2="220" y2="268"/>
+  <text class="net" x="260" y="415">GND</text>
+
+  <!-- R1 -->
+  <text class="val" x="320" y="340">R2</text>
+  <text class="val" x="320" y="355">1 MΩ</text>
+  <line class="wire" x1="320" y1="375" x2="320" y2="400"/>
+
+  <!-- 555 OUT -->
+  <line class="wire" x1="220" y1="172" x2="420" y2="172"/>
+  <line class="wire" x1="420" y1="172" x2="420" y2="215"/>
+  <line class="wire" x1="420" y1="215" x2="480" y2="215"/>
+  <line class="wire" x1="420" y1="172" x2="700" y2="172"/>
+  <line class="wire" x1="420" y1="172" x2="420" y2="330"/>
+  <text class="net" x="300" y="162">555 OUT</text>
+
+  <!-- R3 -->
+  <text class="val" x="500" y="205">R3</text>
+  <text class="val" x="500" y="220">1 kΩ</text>
+  <line class="wire" x1="480" y1="215" x2="570" y2="215"/>
+
+  <!-- Q1 (2N2222) -->
+  <text class="lbl" x="585" y="235">Q1</text>
+  <text class="val" x="585" y="250">2N2222</text>
+  <line class="wire" x1="570" y1="215" x2="630" y2="215"/>
+  <line class="wire" x1="630" y1="215" x2="630" y2="300"/>
+  <line class="wire" x1="605" y1="215" x2="630" y2="215"/>
+  <line class="wire" x1="605" y1="300" x2="630" y2="300"/>
+  <line class="wire" x1="605" y1="215" x2="605" y2="300"/>
+  <line class="wire" x1="630" y1="300" x2="780" y2="300"/>
+  <text class="net" x="790" y="295">GND</text>
+  <line class="wire" x1="605" y1="300" x2="605" y2="430"/>
+  <text class="net" x="615" y="445">5 V</text>
+  <line class="wire" x1="630" y1="300" x2="650" y2="300"/>
+  <line class="wire" x1="650" y1="300" x2="780" y2="300"/>
+  <line class="wire" x1="605" y1="257" x2="630" y2="257"/>
+  <text class="net" x="555" y="230">R3</text>
+
+  <!-- R4 (relay coil) -->
+  <text class="val" x="660" y="315">R4</text>
+  <text class="val" x="660" y="330">150 Ω</text>
+  <line class="wire" x1="650" y1="300" x2="660" y2="300"/>
+  <line class="wire" x1="660" y1="300" x2="660" y2="340"/>
+  <line class="wire" x1="660" y1="340" x2="660" y2="380"/>
+  <line class="wire" x1="660" y1="380" x2="780" y2="380"/>
+
+  <!-- D1 (freewheel) -->
+  <text class="val" x="660" y="400">D1</text>
+  <text class="val" x="660" y="415">1N4148</text>
+  <line class="wire" x1="680" y1="380" x2="680" y2="300"/>
+  <line class="wire" x1="680" y1="300" x2="680" y2="260"/>
+  <line class="wire" x1="680" y1="260" x2="680" y2="300"/>
+  <line class="wire" x1="780" y1="380" x2="780" y2="380"/>
+  <line class="wire" x1="780" y1="380" x2="780" y2="300"/>
+
+  <!-- S1 (interlock) -->
+  <text class="val" x="800" y="320">S1</text>
+  <text class="val" x="800" y="335">SPST</text>
+  <line class="wire" x1="780" y1="300" x2="820" y2="300"/>
+  <line class="wire" x1="820" y1="300" x2="820" y2="340"/>
+  <line class="wire" x1="820" y1="340" x2="820" y2="440"/>
+
+  <!-- Trigger relay (U2) -->
+  <text class="lbl" x="830" y="470">U2 (RELAY)</text>
+  <text class="val" x="830" y="485">5 V coil</text>
+  <rect class="box" x="810" y="500" width="180" height="130"/>
+  <text class="lbl" x="820" y="520">Trigger</text>
+  <text class="lbl" x="820" y="535">relay</text>
+  <line class="wire" x1="820" y1="440" x2="820" y2="500"/>
+  <line class="wire" x1="950" y1="500" x2="950" y2="600"/>
+  <text class="netlab" x="960" y="560">HV</text>
+  <text class="netlab" x="960" y="575">TAP</text>
+  <text class="val" x="960" y="590">(1 kV)</text>
+
+  <!-- 5 V net -->
+  <text class="netlab" x="420" y="650">5 V (NET)</text>
+  <line class="wire" x1="420" y1="640" x2="950" y2="640"/>
+
+  <!-- GND net -->
+  <text class="netlab" x="700" y="650">GND (NET)</text>
+  <line class="wire" x1="700" y1="640" x2="700" y2="380"/>
+  <line class="wire" x1="700" y1="380" x2="780" y2="380"/>
+
+  <!-- HV divider (5:1) -->
+  <text class="netlab" x="700" y="90">HV-Deler (5:1)</text>
+  <line class="wire" x1="950" y1="600" x2="950" y2="120"/>
+  <line class="wire" x1="950" y1="120" x2="1000" y2="120"/>
+  <text class="val" x="760" y="90">R6 = 1 MΩ</text>
+  <text class="val" x="760" y="105">R7 = 200 kΩ</text>
+  <text class="netlab" x="960" y="135">J2 (HV tap)</text>
+
+  <!-- LED -->
+  <text class="val" x="100" y="190">R5</text>
+  <text class="val" x="100" y="205">1 kΩ</text>
+  <line class="wire" x1="420" y1="172" x2="100" y2="172"/>
+  <line class="wire" x1="100" y1="172" x2="100" y2="215"/>
+  <line class="wire" x1="100" y1="215" x2="100" y2="215"/>
+
+  <!-- Interlock S1 -->
+  <text class="netlab" x="780" y="300">INTERLOCK (S1)</text>
+  <line class="wire" x1="780" y1="300" x2="780" y2="380"/>
+  <text class="net" x="780" y="460">5 V</text>
+  <line class="wire" x1="780" y1="460" x2="780" y2="440"/>
+
+</svg>
