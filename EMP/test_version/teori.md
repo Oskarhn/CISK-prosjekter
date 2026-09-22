@@ -1,4 +1,4 @@
-# Teori for testversjonen – fullstendig RLC-analyse
+k# Teori for testversjonen – fullstendig RLC-analyse
 
 ## 1. Kretsbeskrivelse
 
@@ -69,8 +69,6 @@ Med våre tall:
 
 $$i(t) = \frac{9}{2 \cdot 10^{-5} \cdot 22\,912.88} \left( e^{-2\,087.12 t} - e^{-47\,912.88 t} \right) \approx 19.64 \left( e^{-2\,087.12 t} - e^{-47\,912.88 t} \right)\ \text{A}$$
 
-(For å unngå forvirring: faktoren 19.64 er kun en mellomregning; den faktiske toppstrømmen finnes nedenfor.)
-
 ## 5. Toppstrøm og tid for toppstrøm
 
 Toppstrømmen inntreffer når den deriverte er null:
@@ -81,11 +79,11 @@ $$s_1 e^{s_1 t_{\text{peak}}} = s_2 e^{s_2 t_{\text{peak}}}$$
 
 $$e^{(s_1 - s_2) t_{\text{peak}}} = \frac{s_2}{s_1}$$
 
-$$t_{\text{peak}} = \frac{\ln(s_2/s_1)}{s_1 - s_2} = \frac{\ln(47\,912.88 / 2\,087.12)}{-45\,825.76} \approx \frac{\ln(22.95)}{-45\,825.76} \approx \frac{3.133}{-45\,825.76} \approx -6.84 \times 10^{-5}\ \text{s}$$
+$$t_{\text{peak}} = \frac{\ln(s_2/s_1)}{s_1 - s_2}$$
 
-Fjerner fortegnsfeil (vi har byttet fortegn i nevneren): $t_{\text{peak}} = \frac{\ln(s_2/s_1)}{s_2 - s_1}$ gir positiv tid. Korrekt:
+Siden $s_1 > s_2$ (mindre negativ), er $s_1 - s_2 > 0$ og $s_2/s_1 > 1$, så $t_{\text{peak}}$ er positiv:
 
-$$t_{\text{peak}} = \frac{\ln(s_2/s_1)}{s_2 - s_1} = \frac{3.133}{45\,825.76} \approx 6.84 \times 10^{-5}\ \text{s} = 68.4\ \mu\text{s}$$
+$$t_{\text{peak}} = \frac{\ln(47\,912.88 / 2\,087.12)}{45\,825.76} \approx \frac{3.133}{45\,825.76} \approx 6.84 \times 10^{-5}\ \text{s} = 68.4\ \mu\text{s}$$
 
 Sett inn i strømutrykket:
 
@@ -106,9 +104,9 @@ $$I_{\text{peak}} \approx 19.64 \cdot (0.867 - 0.0377) \approx 19.64 \cdot 0.829
 
 ## 7. Sensitivitet for komponentparametere
 
-- Hvis R er lavere (f.eks. 0.3 Ω), kan kretsen bli underdempet. Da vil strømmen svinge.
-- Hvis L er høyere (f.eks. 20 µH), øker dempingen og toppstrømmen reduseres.
-- Kondensatorens kapasitans har mindre innvirkning på dempingen, men påvirker energien.
+- **Motstand R:** Kritisk motstand er $R_{\text{krit}} = 2\sqrt{L/C} = 0.2\ \Omega$. For at kretsen skal bli underdempet, må R < 0.2 Ω. Med R = 0.3 Ω (fortsatt > 0.2 Ω) forblir kretsen overdempet.
+- **Induktans L:** Dempingskoeffisienten $\alpha = R/(2L)$ og dempingsforholdet $\zeta = (R/2)\sqrt{C/L}$ avtar når L øker. Det vil si at høyere L gir **mindre demping**, ikke mer. En større L kan derfor gjøre kretsen mer underdempet (nærme seg kritisk demping) dersom R er konstant.
+- **Kapasitans C:** Økt C reduserer $\omega_0$ og øker $\zeta$ (mer dempet), men påvirker også energien.
 
 Uten nøyaktige målinger av R og L kan den faktiske responsen variere mye.
 
@@ -122,3 +120,4 @@ Uten nøyaktige målinger av R og L kan den faktiske responsen variere mye.
 ## 9. Konklusjon
 
 Den matematiske modellen for testversjonen er konsistent og gir en overdempet respons med en teoretisk toppstrøm på ca. 16 A. For å verifisere modellen må R og L måles, og strømpulsen observeres med oscilloskop.
+

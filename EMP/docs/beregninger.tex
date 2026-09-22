@@ -90,32 +90,44 @@ Med $N_p=5$, $A_p=3.14\times10^{-4}\,\text{m}^2$, $\Delta t \approx T/4 = 68.5\,
 \end{equation}
 Dette er et teoretisk estimat. Faktisk $dB/dt$ kan være høyere.
 
-\section{Energibalanse og termiske betraktninger}
+\section{Energibalanse}
 
-\subsection{Energibevaring}
-Den totale energien $E_0 = 80\,\text{J}$ fordeles under utladningen mellom:
+\subsection{Energibevaring under utladning}
+Den totale energien $E_0 = 80\,\text{J}$ er opprinnelig lagret i kondensatorens elektriske felt. Under utladningen omdannes denne energien kontinuerlig. Til enhver tid gjelder:
+
+\begin{equation}
+E_0 = E_C(t) + E_L(t) + E_{\text{diss}}(t) + E_{\text{utstrålt}}(t),
+\end{equation}
+
+der:
 \begin{itemize}
-\item Magnetisk feltenergi i spolen (midlertidig lagret, returneres til kretsen)
-\item Varmeutvikling i ohmsk motstand (ledninger, spole, ESR)
-\item Varme i lysbuen (gnistgap)
-\item Utstrålt elektromagnetisk energi (liten andel)
+\item $E_C(t) = \frac{1}{2} C v_C(t)^2$ er gjenværende elektrisk feltenergi i kondensatoren,
+\item $E_L(t) = \frac{1}{2} L i(t)^2$ er magnetisk feltenergi midlertidig lagret i spolen,
+\item $E_{\text{diss}}(t) = \int_0^t i^2(\tau) R\,d\tau$ er energi omsatt til varme i ohmsk motstand (ledninger, spole, ESR),
+\item $E_{\text{utstrålt}}(t)$ er energi forlatt systemet som elektromagnetisk stråling (liten ved disse frekvensene).
 \end{itemize}
-En fullstendig energibalanse krever en detaljert modell av lysbuen og nøyaktige målinger av strøm og spenning. Forenklede beregninger som tildeler hele energien til én komponent er ikke fysisk korrekte.
 
-\subsection{Termiske estimater (hypotetiske)}
-Følgende beregninger er kun illustrative og forutsetter at en viss andel av energien går til den aktuelle komponenten. De kan ikke brukes til å erklære komponentene som trygge.
+I tillegg kommer energitap i lysbuen, som ikke er en enkel ohmsk prosess. Denne modellen neglisjerer lysbuens ikke-linearitet og strålingstap.
 
-\subsubsection{Spole}
-Dersom 20 % av energien (16 J) går til oppvarming av spolen (masse ~89 g), blir temperaturøkningen:
+Når utladningen er fullført ($t \to \infty$), er $E_C = 0$, $E_L = 0$, og all energi er omdannet til varme og stråling. Det er **ikke korrekt** å tilordne hele $E_0$ til oppvarming av én enkelt komponent; energien fordeles mellom flere tapsmekanismer.
+
+\subsection{Termiske betraktninger (hypotetiske)}
+Følgende beregninger er **kun illustrative eksempler** og forutsetter vilkårlige fordelingsandeler. De kan ikke brukes til å fastslå faktisk temperaturøkning eller komponentsikkerhet.
+
+\subsubsection{Eksempel: Spole}
+Dersom 20\,\% av $E_0$ ($16\,\text{J}$) går til oppvarming av spolen (masse $\approx 89\,\text{g}$, varmekapasitet $385\,\text{J/(kg·K)}$):
 \begin{equation}
 \Delta T \approx \frac{16}{0.089 \cdot 385} \approx 0.47\,\text{K}.
 \end{equation}
 
-\subsubsection{Kondensator}
-Dersom 30 % av energien (24 J) tapes i kondensatorens ESR, og kondensatoren veier ~50 g med varmekapasitet ~50 J/K, blir $\Delta T \approx 0.48\,\text{K}$.
+\subsubsection{Eksempel: Kondensator}
+Dersom 30\,\% av $E_0$ ($24\,\text{J}$) tapes i kondensatorens ESR, og kondensatoren har masse $\approx 50\,\text{g}$ og varmekapasitet $\approx 50\,\text{J/K}$:
+\begin{equation}
+\Delta T \approx \frac{24}{50} = 0.48\,\text{K}.
+\end{equation}
 
 \subsection{Konklusjon termisk}
-De termiske estimatene er svært usikre og avhenger av energifordelingen som ikke er kjent. Lokale varmepunkter, gjentatte pulser og komponentenes transienttoleranse er ikke vurdert. **Sikker drift kan ikke garanteres uten eksperimentell verifikasjon.**
+De faktiske temperaturøkningene avhenger av den ukjente energifordelingen. Lokale varmepunkter, gjentatte pulser og komponentenes transienttoleranse er ikke vurdert. **Sikker drift kan ikke garanteres uten eksperimentell verifikasjon.**
 
 \section{Komponentpåkjenninger}
 

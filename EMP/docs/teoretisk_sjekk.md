@@ -54,18 +54,22 @@ Samme prinsipper, men kretsen er overdempet. Fullstendig analyse er gitt i `test
 
 ### 2.1 Generell analyse
 
-Den opprinnelig lagrede elektriske energien E₀ = ½ C V₀² = 80 J (hovedversjon) omdannes under utladningen til:
-- Magnetisk feltenergi i spolen: E_mag(t) = ½ L i(t)²
-- Varme i ohmsk motstand (ledninger, spole, ESR): ∫ i² R dt
-- Varme i lysbuen: ∫ V_arc i dt (V_arc er ikke konstant)
-- Utstrålt elektromagnetisk energi (liten ved disse frekvensene)
-- Eventuell gjenværende energi i kondensator etter at svingningene dør ut (tilnærmet null)
+Den opprinnelig lagrede elektriske energien $E_0 = \frac{1}{2} C V_0^2$ omdannes under utladningen. Til enhver tid gjelder:
 
-Energibalansen må oppfylles: E₀ = total energi omdannet. I forenklede modeller er det vanlig å anta at all energi går til varme i motstanden, men dette ignorerer lysbuens andel og stråling.
+$$E_0 = E_C(t) + E_L(t) + E_{\text{diss}}(t) + E_{\text{utstrålt}}(t) + E_{\text{lysbue}}(t),$$
 
-### 2.2 Dobbelttelling i eksisterende dokumentasjon
+der:
+- $E_C(t)$ er gjenværende energi i kondensatorens elektriske felt,
+- $E_L(t)$ er midlertidig lagret magnetisk feltenergi i spolen,
+- $E_{\text{diss}}(t)$ er energi omsatt til varme i ohmsk motstand,
+- $E_{\text{utstrålt}}(t)$ er energi forlatt systemet som stråling,
+- $E_{\text{lysbue}}(t)$ er energi tapt i gnistgapets lysbue (ikke-lineær).
 
-I `docs/beregninger.tex` ble den samme energien (80 J) tidligere brukt til å beregne temperaturøkning i både spole og kondensator separat, uten å fordele energien mellom dem. Dette er korrigert: nå presiseres det at energitapets fordeling er ukjent og må måles. Temperaturøkningene er kun hypotetiske eksempler, ikke validerte.
+Ved slutten av utladningen ($t \to \infty$) er $E_C = 0$ og $E_L = 0$, og all energi er omdannet til varme og stråling. Det er fysisk umulig å tilordne hele $E_0$ til oppvarming av én enkelt komponent uten å dobbelttelle.
+
+### 2.2 Dobbelttelling i tidligere dokumentasjon
+
+I tidligere versjoner av `docs/beregninger.tex` ble den samme energien (80 J) brukt til å beregne temperaturøkning i både spole og kondensator separat, uten å fordele energien mellom dem. Dette er nå korrigert: energifordelingen er ukjent, og de termiske eksemplene er kun hypotetiske.
 
 ## 3. Fullstendig lavspent RLC-analyse
 
@@ -80,11 +84,11 @@ Se `test_version/teori.md` for en fullstendig utledning fra første prinsipper, 
 
 ## 4. Verifikasjon av elektromagnetisk teori
 
-**Magnetisk fluks:** For en flat spiralspole er feltet inhomogent. Formelen B = μ₀ N I / (2r) gjelder kun i sentrum og forutsetter en ideell sirkulær sløyfe. I virkeligheten avtar feltet raskt med avstand og vinkel.
+**Magnetisk fluks:** For en flat spiralspole er feltet inhomogent. Formelen $B = \mu_0 N I / (2r)$ gjelder kun i sentrum og forutsetter en ideell sirkulær sløyfe. I virkeligheten avtar feltet raskt med avstand og vinkel, men lokalt kan feltet være både høyere og lavere enn den ideelle sentrumsverdien, avhengig av geometri og observasjonspunkt.
 
-**Faradays lov:** ε = -dΦ/dt. Indusert spenning avhenger av den tidsderiverte av fluksen gjennom mottakerkretsen. Forenklede beregninger med ΔB/Δt gir kun et grovt estimat; faktisk kobling avhenger av geometri, orientering og frekvens.
+**Faradays lov:** $\mathcal{E} = -d\Phi/dt$. Indusert spenning avhenger av den tidsderiverte av fluksen gjennom mottakerkretsen. Forenklede beregninger med $\Delta B/\Delta t$ gir kun et grovt estimat; faktisk kobling avhenger av geometri, orientering og frekvens.
 
-**Idealisert modell vs. fysisk system:** De oppgitte feltstyrkene er teoretiske maksima under ideelle forhold. Reelle verdier vil være lavere på grunn av ikke-ideell spole, refleksjoner og tap.
+**Idealisert modell vs. fysisk system:** De oppgitte feltstyrkene er teoretiske verdier under ideelle forhold. Reelle verdier kan avvike både opp og ned avhengig av konstruksjon og målepunkt.
 
 ## 5. Komponentverifikasjon
 
@@ -109,7 +113,7 @@ Se `test_version/teori.md` for en fullstendig utledning fra første prinsipper, 
 
 ## 7. Elektriske sikkerhetsverifikasjonskrav
 
-Følgende punkter er lagt til i `safetyanalysis.md`:
+Se `safetyanalysis.md` for fullstendig sikkerhetsanalyse. Følgende punkter er spesielt relevante:
 - Restenergi etter frakobling: Kondensator kan holde 80 J i timevis. Manuell utladning er eneste barriere.
 - Feilmodi: MOSFET-svikt kan føre til kontinuerlig lading og overspenning. Kondensator kan eksplodere ved intern kortslutning.
 - Svikt i utladningsbryter: Hvis S2 svikter, finnes ingen alternativ utladningsvei.
@@ -142,4 +146,4 @@ Følgende punkter er lagt til i `safetyanalysis.md`:
 
 ## 10. Konklusjon
 
-Prosjektet har en matematisk konsistent teoretisk kjerne, men mangler eksperimentell validering av nesten alle praktiske aspekter. Før bygging må komponentenes transientytelse verifiseres, og en fullstendig sikkerhetsanalyse med feilmodi må gjennomføres. De termiske beregningene er utilstrekkelige for å garantere sikker drift.
+Prosjektet har en matematisk konsistent teoretisk kjerne **under de oppgitte antagelsene**. Dette betyr at de matematiske utledningene er korrekte, men at de fysiske forutsetningene (ideelle komponenter, konstante parametere, neglisjerte tap) ikke nødvendigvis holder i praksis. Før bygging må komponentenes transientytelse verifiseres, og en fullstendig sikkerhetsanalyse med feilmodi må gjennomføres. De termiske beregningene er utilstrekkelige for å garantere sikker drift.
