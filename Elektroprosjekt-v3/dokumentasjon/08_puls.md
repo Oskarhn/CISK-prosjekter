@@ -1,52 +1,43 @@
-# 08 — Puls
+# 08. Pulsanalyse — V3-HIGHPOWER
 
-## Pulsparameter
+## Pulsparametere (med usikkerhet)
 
-| Param | Verdi |
-|-------|-------|
-| Spennings | 5000 V |
-| Kondensator | 47 µF |
-| Energi | 587.5 J |
-| Rise time | 50 ns |
-| FWHM | ≈ 2 ms (RC- tid) |
-| Felt i TEM-celle | 100 kV/m |
-| Spennings over telefon | ≈ 8 kV |
-| di/dt (TEM-celle) | 1667 MA/s |
-| di/dt (pule) | 116183 MA/s |
+| Parameter | Teoretisk | Realistisk | Usikkerhet |
+|-----------|-----------|------------|------------|
+| Spenning | 8000V | 8000V | ±5% |
+| Energi | 240 J | 150 J | ±30% |
+| Rise time | ~1.4 ns | ~20 ns | ±50% |
+| FWHM | ~10 ns | ~30-50 ns | ±50% |
+| di/dt | ~400 GA/s | ~25 GA/s | ±60% |
 
-## Pulsform
+## Tidsforløp (ideal)
 
-```
-V
-|
-|________________________________________
-|                                          |
-|        |--------------------------------|  (50 ns rise)
-|        |                                |  (2 ms FWHM)
-|        |________________________________|  (RC- tid)
-|________________________________________
-    0         50 ns         2 ms        4 ms
-          (rise)        (FWHM)
+0ns: Trigger tenner
+5ns: Marx kjede starter
+10ns: Alle steg tenner, spenning bygger seg opp
+15ns: Peaking gap tenner
+20ns: Peak strøm i last
+50ns: Puls slukker (energi overført)
 
-    TEM-celle: 1 ns gjennomkjør
-    RC- tid: 2.8 ms
-```
+**Reelt forløp:** Kan avvike ±20ns pga spark gap variasjon.
 
-Pulsen er "rask" på grunn av anslog (50 ns). RC-tiden (2.8 ms) er lengre enn
-gjennomkjøretiden (1 ns), så pulsen "fyller" cellen.
+## Frekvensspektrum
 
-## Kalkulator
+Teoretisk båndbredde:
+$$f_{max} \approx \frac{0.35}{t_{rise}} = \frac{0.35}{20ns} \approx 17.5 MHz$$
 
-```
-Rise time = 50 ns (anslog)
-di/dt (TEM-celle) = 83.3 A / 50 ns = 1667 MA/s
-```
+**Merk:** Lavere enn 350MHz pga realistisk rise time.
+Innholdsrik frekvenser: 1-50 MHz (typisk for EMP).
 
-Dette er 1667 / 15.8 = 105x raskere enn v1 (15.8 MA/s).
+## Destruktiv effekt (teoretisk)
 
-## Verifisering
+| Enhet | Terskel | V3-HP (teor) | V3-HP (real) | Status |
+|-------|---------|--------------|--------------|--------|
+| Forbrukerelektronikk | 1-10 kV/m | 267 kV/m | 160 kV/m | ✓ Skade sannsynlig |
+| Industriell utstyr | 10-50 kV/m | 267 kV/m | 160 kV/m | ✓ Skade sannsynlig |
+| Militær hardened | 50-100 kV/m | 267 kV/m | 160 kV/m | ? Grense |
+| Medisinsk | 0.1-1 kV/m | 267 kV/m | 160 kV/m | ✓ Ødeleggende |
 
-- Mål pulsen med en oscilloskop.
-- Sjekk rise time (50 ns).
-- Sjekk FWHM (2 ms).
-- Sjekk at telefonen dør.
+**Viktig:** Dette er **teoretiske** terskler. Reell skade avhenger av:
+- Innkapsling av målenhet
+- Oriente

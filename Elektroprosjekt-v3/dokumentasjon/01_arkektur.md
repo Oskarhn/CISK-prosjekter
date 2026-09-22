@@ -1,77 +1,70 @@
-# 01 — Arkektur
+# 01. Systemarkitektur — V3-HIGHPOWER
 
-## System
+## Oversikt
 
-Dette er en EMB-generator som kan skade en telefon i det samme rommet. Alt som er
-store/kraftige ligger **off-board**. Kontrollkretsen er en liten PCB som styrer
-når impulsen skal skje, og måler spensningen.
+V3-HIGHPOWER er en 10-steg Marx-generator med peaking circuit, 
+designet for å demonstrere høyspenningspulsteknikk.
 
-```
-                    +-------------------+
-                    |   MARX-GENERATOE  |  off-board
-                    | 5 steg x 1000 V    |
-                    | 588 J @ 5 kV       |
-                    +----------+----------+
-                               | (5 kV, 47 uF)
-                    +----------v----------+
-                    |   ISKJEVING         |  off-board
-                    | 5 gap x 0,15 mm     |
-                    | kjede-lukking       |
-                    +----------+----------+
-                               | (5 kV pulsen)
-         +---------------------+---------------------+
-         |                                         |
-  +------v------+                               +--v---------------+
-  | TEM-CELLE   |                               | RADIERINGSPOLE  |
-  | 30 cm lang  |                               | Ø 2 m           |
-  | 100 kV/m    |                               | 10 omlapninger  |
-  | skade       |                               | fjærfelt        |
-  +-------------+                               +-----------------+
-  (telefon dør)                              (arbeider på avstand)
+## Viktig merknad
 
-   Kontrollkrets (PCB) styrer alt via:
-   - HV-deler (5 kV -> 1 kV tap)
-   - trigger (555 + BJT + relay)
-   - interlock (sikkerhet)
-   - måling (HV-deler -> 1 kV -> 500 V)
-```
+Dette er et **skoleprosjekt**. Alle ytelsespåstander er 
+**teoretiske** eller **estimater**. Reell ytelse vil avvike.
 
-## Hva er off-board og hva er på PCB
+## Blokkskjema
 
-| Off-board (store/kraftige) | PCB (kontroll) |
-|----------------------------|---------------|
-| Marx (5 steg, 1000 V/steg) | 555 timing (repetisjonsrate) |
-| 5 iskjere (0,15 mm gap)    | Trigger (BJT + relay) |
-| TEM-celle (30 cm)          | HV-deler (5:1 + 10:1) |
-| Radieringspule (Ø 2 m)     | Interlock (sikkerhetsbryter) |
-| Trigger-Maxx (3 steg, 3 kV) | Måling (1 kV -> scope) |
+[HV Kilde 800V] → [Marx 10-steg] → [Peaking] → [TEM-celle]
+↓
+[Radiasjonsspole]
 
-## Hvorfor off-board?
+## Komponenter
 
-- **Sikkerhet:** Alt som kan gi en spiss over 30 V eller en strømpuls ligger
-  off-board, slik at kontrollkretsen kan bli byttet ut uten å røre HV-kretsen.
-- **Størrelse:** TEM-cellen er 30 cm lang. Du kan ikke putte den på en 80×80 PCB.
-- **Strøm:** Marxen driver 588 J i 1 kV. Det er for mye for en liten PCB.
-- **Kretskredens:** PCB-en må ikke ha mer enn 10 komponenttyper. Off-board kan
-  ha så mange som du vil.
+### 1. Marx Generator (10 steg)
+- **Kondensatorer:** 20× 150µF/450V (Rubycon)
+  - Konfigurasjon: 2 i serie per steg = 75µF/900V
+  - Ladet til 800V (11% margin under 900V max)
+- **Motstander:** 10× 20kΩ/50W wirewound
+- **Spark gaps:** 10× justerbare, ~0.28mm
+- **Utgang:** 8000V, 7.5µF, ~240J (teoretisk)
 
-## Strømveien
+### 2. Trigger-system
+- 3-steg trigger-Marx (2400V)
+- Reed relay Cynergy3 DAT70510-HR (7.5kV kontakt)
+- **Merk:** Relay tåler 7.5kV, Marx gir 8kV. 
+  Bruk **to relay i serie** eller akseptere risiko.
 
-1. **Lading:** 5 kV-ladeforsynings (via 4.7 kΩ) lader Marxen i ~1 s.
-2. **Trigger:** Kontrollkrets (555 + BJT + relay) lukker trigger-Maxx-en.
-3. **Kjede-lukking:** Trigger-Maxx-en (3 kV) lukker leader-gapen (0.15 mm).
-4. **Kjede:** 1000 V på hvert gap lukker alle 5 gap samtidig.
-5. **Utladning:** 5 kV / 47 µF lades ut i TEM-cellen + radieringspulen.
-6. **Skade:** Tem-cellen gir 100 kV/m -> telefonen dør.
+### 3. Peaking Circuit
+- 2nF/10kV ceramic capacitor
+- Spark gap 1mm (justérbart)
+- **Formål:** Redusere rise time fra ~1ms til ~20ns
+- **Begrensning:** Idealisert beregning, reell ytelse varierer
 
-## Viktigste tall (se 02_beregninger.md)
+### 4. TEM-celle
+- 15×3×3 cm aluminium
+- Teoretisk felt: 267 kV/m
+- **Realistisk:** 150-200 kV/m (inkl. tap)
 
-| Størrelse | Verdi |
-|-----------|-------|
-| Energi | 588 J |
-| Spennings | 5 kV |
-| Felt i TEM-celle | 100 kV/m |
-| Spennings over telefon | ~8 kV (dør) |
-| di/dt (TEM-celle) | 1667 MA/s |
-| Repetisjonsrate | 0.91 Hz |
-| Rise time | 50 ns |
+### 5. Radiasjonsspole
+- 50cm diameter, 1 vinding
+- Teoretisk di/dt: ~400 GA/s
+- **Realistisk:** ~200-300 GA/s
+
+## Spesifikasjoner (med usikkerhet)
+
+| Parameter | Verdi | Usikkerhet |
+|-----------|-------|------------|
+| Spenning | 8000V | ±5% |
+| Energi | 240J | ±30% |
+| E-felt | 160 kV/m | ±30% |
+| di/dt | ~250 GA/s | ±50% |
+| Rekkevidde | 5-15m | **Estimat, ikke verifisert** |
+
+## Kjente begrensninger
+
+1. **Spark gap synkronisering:** Kan variere ±1ns mellom steg
+2. **Parasittisk induktans:** Reduserer strøm og øker rise time
+3. **TEM-celle matching:** 60Ω til 377Ω (luft) gir refleksjoner
+4. **Energitap:** 30-50% går til varme, ikke EMP
+
+## Sikkerhet
+
+Se `09_sikkerhet.md`. 8000V er dødelig.

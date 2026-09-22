@@ -1,100 +1,83 @@
-# 05 — Marx-generator (off-board)
+# 05. Marx Generator — V3-HIGHPOWER
 
-## Hva er Marx-generatøren
+## Prinsipp
 
-En Marx-generatør er en serie av kondensatorer som lades opp parallelt til den samme
-spennings og så utladet i serie. Resultatet er en høy spenning med stor energi.
+Lader 10 kondensatorer i parallell (via motstander), 
+utlader i serie via spark gaps.
 
-```
-Lading (parallelt):        Utlading (serie):
-  +---[C1]---+               5 kV
-  |          |              +---[C1]---+
-  +---[C2]---+   ---       |          |
-  |          |              +---[C2]---+
-  +---[C3]---+   ---        +---[C3]---+
-  ...        |               |          |
-  +---[C5]---+   ---        +---[C5]---+
-```
+## Kretsdiagram
 
-Ved lading er alle kondensatorer på samme spenning. Ved utlading (gap lukker) er
-spennings addert (serie). Resultat: N-steg x V_steg.
+800V+ ──R──┬──C──┬──C──┬── ... ──┬──C──┬── V_UT (8000V)
+           │     │     │         │     │
+          SG1   SG2   SG3       SG9   SG10
+           │     │     │         │     │
+0V ────────┴─────┴─────┴─ ... ───┴─────┘
 
-## Konfigurering (se beregning)
+## Komponenter (korrigert)
 
-| Param | Verdi |
-|-------|-------|
-| N (steg) | 5 |
-| C_steg | 2x 470 µF/250 V i serie = 235 µF/1000 V |
-| V_steg (lading) | 1000 V |
-| V_out | 5 x 1000 = 5000 V |
-| C_out | 235 µF / 5 = 47 µF |
-| E_out | 0.5 x 47 µF x (5000 V)^2 = 587.5 J |
+### Kondensatorer (C1-C20)
+- **Type:** United Chemi-Con ESMQ 120µF/450V 
+  ELLER Rubycon 450KXW 150µF/450V
+- **Farnell:** [1686715](https://no.farnell.com/united-chemi-con/esmq451vsn121mp30s/aluminum-electrolytic-capacitor/dp/1686715)
+- **Konfigurasjon:** 2 i **SERIE** per steg
+- **Resultat:** 75µF/900V per steg (lades til 800V)
 
-## Kretskredens
+**VIKTIG:** Seriekobling gir C/2 og 2×V — IKKE C×2!
 
-### Lading
+### Ladingsmotstander (R1-R10)
+- **Verdi:** 20kΩ (høyere enn original for sikkerhet)
+- **Effekt:** 50W wirewound
+- **RS:** [0158474](https://no.rs-online.com/web/p/panel-mount-fixed-resistors/0158474/)
 
-```
-+5 kV (lagring) ---[R_charge]---+
-                                 |
-                              [C1]   (steg 1)
-                              [C2]   (steg 2)
-                              [C3]   (steg 3)
-                              [C4]   (steg 4)
-                              [C5]   (steg 5)
-                                 |
-                                GND
-```
+### Spark Gaps (SG1-SG10)
+- **Avstand:** 0.28mm (justerbart)
+- **Material:** Messing-kuler 10mm
+- **Breakdown:** ~840V (3kV/mm × 0.28mm)
+- **Margin til 800V:** 5% (lavt — vurder 0.30mm)
 
-R_charge = 4.7 kΩ. Ladingstid: ~1 s (full). Repetisjonsrate: ~1 Hz.
+## Konstruksjon
 
-### Utlading (iskjering)
+### Oppbygning
+1. Vertikal stabel av kondensatorer
+2. 15mm luftgap mellom steg (økt for 8000V)
+3. Plexiglas-holder for SG med presisjonsjustering
+4. Kobber-bussbar til peaking circuit
 
-```
-    +---[C1]---+---[C2]---+---[C3]---+---[C4]---+---[C5]---+
-    |          |           |          |          |          |
-   GAP1       GAP2        GAP3       GAP4       GAP5
-   (0.15mm)   (0.15mm)    (0.15mm)   (0.15mm)   (0.15mm)
-    |          |           |          |          |
-    +----------+-----------+----------+----------+-----------+
-             (5 kV pulsen)
-                    |
-              (TEM-celle + radieringspule)
-```
+### Isolasjon
+- Minimum 15mm luftavstand (for 8000V)
+- Plexiglas-barriere rundt hele kjeden
+- Advarselsskilt: "8000V DØDELIG"
 
-## Iskjering (5 gap, 0.15 mm)
+## Sikker utlading (NY prosedyre!)
 
-### Leder-gap (trigger)
+**ALDRI kortslutt direkte!**
 
-```
-    [C1]  [C2]  [C3]  [C4]  [C5]
-   GAP1    GAP2   GAP3   GAP4   GAP5
-   (0.15)  (0.15) (0.15) (0.15) (0.15)
-    |
-   +---[C2]... (kjede-lukking)
-```
+1. Koble **10kΩ/50W motstand** mellom + og - utgang
+2. Vent 30 sekunder
+3. Mål spenning — skal vise <100V
+4. Fjern motstand
+5. Kortslutt med **isolert stang** (Class 4 hansker)
+6. Mål igjen — skal vise 0V
 
-Leder-gap (0.15 mm) er 0.15 mm. Breakdown ≈ 3 kV/mm x 0.15 mm = 0.45 kV.
-Trigger (1 kV) > 0.45 kV -> lukker (margin = 1 kV / 0.45 kV = 2.2x).
+## Beregninger
 
-### Kjede-lukking
+### Ladingstid
+$$t_{charge} = 5 \cdot 20k\Omega \cdot 7.5\mu F = 0.75s$$
 
-Når trigger-Maxx-en (3 kV) lukker leder-gapet, lades resten av gapene opp til
-kjede-spenn. Ved 1000 V per gap, margin = 1000 / 0.45 = 2222x. Alle gap
-lukker samtidig (kjede-lukking).
+### Energi
+$$E = 10 \cdot \frac{1}{2} \cdot 75\mu F \cdot (800V)^2 = 240 J$$
 
-### Trigger (trigger-Maxx)
+## Testing
 
-```
-    [T1] [T2] [T3]
-    GAPt
-    (0.1 mm)
-```
+### Før bruk
+1. Sjekk alle loddinger
+2. Verifiser SG-avstand med følere (0.28mm)
+3. Test hvert steg individuelt med 800V
+4. Sjekk synkronisering (alle SG skal tenne samtidig)
 
-Trigger-Maxx: 3 steg x 1000 V = 3 kV. Trigger-Maxx lukker (trigger) 50 ns.
-
-## Kalkulator
-
-```bash
-python beregning/beregning.py
-```
+### Feilsøking
+| Symptom | Årsak | Løsning |
+|---------|-------|---------|
+| Ingen utgang | SG tenner ikke | Juster gap ned til 0.25mm |
+| For tidlig utlading | SG tenner for tidlig | Juster gap opp til 0.32mm |
+| Ujevn puls | Dårlig synkronisering | Justér alle SG likt ±0.01mm |

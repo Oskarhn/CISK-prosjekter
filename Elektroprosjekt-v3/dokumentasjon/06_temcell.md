@@ -1,65 +1,77 @@
-# 06 — TEM-celle (off-board)
+# 06. TEM-celle — V3-HIGHPOWER
 
-## Hva er TEM-cellen
+## Formål
 
-En TEM-celle er en struktur med to ledende plater som skaper et jevnt E-felt mellom
-plater. Dens formål er å lage et stort felt som kan skade ting inni cellen.
+Skaper elektromagnetisk felt for testing. 
+**Viktig:** Feltet er **ikke** homogent i praksis.
 
-## Konfigurering
+## Dimensjoner
 
-| Param | Verdi |
-|-------|-------|
-| Lengde | 30 cm |
-| Gap | 5 cm |
-| Bredde | 5 cm (kvadrat) |
-| Z0 | ≈ 60 Ω |
-| E-felt | 100 kV/m |
-| Gjennomkjør | 1 ns |
+| Parameter | Verdi | Kommentar |
+|-----------|-------|-----------|
+| Lengde | 15 cm | Kort for rask puls |
+| Gap (h) | 3 cm | Gir høyt felt |
+| Bredde (w) | 3 cm | Z₀ ≈ 60Ω |
 
-## Kretskredens
+## Karakteristisk impedans
 
-```
-    +------------------------------------------------+
-    |                                                |
-  +--+                                               +--+
-  |  |                                               |  |
-  |  |  TEM-CELLE (30 cm lang, 5 cm gap, 5 cm bred) |  |
-  |  |                                                |  |
-  +--+                                               +--+
-    |                                                |
-    +------------------------------------------------+
+For kvadratisk tverrsnitt:
+$$Z_0 \approx 60\Omega$$
 
-   [C5]  [C4]  [C3]  [C2]  [C1]
-   GAP   GAP   GAP   GAP   GAP
-   (0.15)(0.15)(0.15)(0.15)(0.15)
-   +---[TEM-celle]---+
-```
+**Merk:** Dette er teoretisk. Reell impedans avviker pga kanteffekter.
 
-## Felt og skade
+## E-felt
 
-```
-E-felt = V_out / gap = 5000 V / 0.05 m = 100000 V/m = 100 kV/m
-```
+### Teoretisk maksimum
+$$E_{ideal} = \frac{V}{h} = \frac{8000V}{0.03m} = 267 kV/m$$
 
-100 kV/m >> 10-30 kV/m tærskhold. Telefonen dør.
+### Realistisk (med tap)
+$$E_{real} \approx 0.6 \cdot E_{ideal} \approx 160 kV/m$$
 
-```
-Spennings over telefon (8 cm i feltretningen) = 100000 V/m x 0.08 m = 8000 V
-```
+**Tap:** 
+- Refleksjoner i overganger: ~20%
+- Kanteffekter: ~15%
+- Imperfekt matching: ~5%
 
-8 kV over en telefon -> dør.
+### Usikkerhet
+±30% avhengig av konstruksjonskvalitet.
 
-## Gjennomkjør
+## Indusert spenning
 
-```
-Gjennomkjør tid = lengde / v_p = 3.00 m / 3e8 m/s = 1 ns
-```
+I ledning 10cm lang i feltretningen:
+$$V_{ind} = E \cdot l = 160kV/m \cdot 0.1m = 16 kV$$
 
-Pulsen tar 1 ns å gå gjennom cellen. Men RC-tiden (2.8 ms) er lengre enn gjennomkjøretiden,
-så pulsen "fyller" cellen. Telefonen ser den fulle 2.8 ms pulsen.
+**Dette er teoretisk maksimum.** 
+Reell indusert spenning avhenger av:
+- Orientering (maksimum når parallell med E)
+- Lengde på ledning
+- Terminering (åpen krets vs last)
 
-## Verifisering
+## Konstruksjon
 
-- Putt en telefon (eller en resistor) i cellen.
-- Mål feltet med en antennesonde.
-- Sjekk at telefonen dør etter 1 impuls.
+### Material
+- To aluminiumsplater 2mm, 15×3cm
+- Plexiglas-distanser 30mm (presisjonsbearbeidet)
+- Kobber-folie tilkobling til Marx
+
+### Tilkobling
+- **Inngang:** Fra peaking circuit
+- **Utgang:** Til radiasjonsspole ELLER terminering
+
+## Bruk
+
+### Test av enheter
+1. Plasser enhet i senter
+2. Orientering: Maksimal kobling når ledninger || E-felt
+3. Avstand fra vegger: >2cm (kantfelt er ujevne)
+
+### Måling
+- Bruk 100:1 probe plassert **utenfor** cellen
+- **ALDRI** inn i cellen under drift
+- E-felt probe (hvis tilgjengelig) for kalibrering
+
+## Farer
+
+- **160kV/m** kan indusere dødelige spenninger i nærliggende gjenstander
+- Hørbar "klikk" fra utlading (normalt)
+- Corona/ozon ved spisser (luft ionisering)

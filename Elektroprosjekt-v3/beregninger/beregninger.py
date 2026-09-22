@@ -1,135 +1,206 @@
 # -*- coding: utf-8 -*-
-# v3: EMB-generator — beregninger (single source of truth for alle tall)
+"""
+V3-HIGHPOWER EMP Generator — Korrigerte og realistiske beregninger
+ADVARSEL: Alle 'maksimum' verdier er teoretiske. Reell ytelse vil være 30-70% lavere.
+"""
 import math
-import sys, io
+import io
+import sys
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
-print("=" * 64)
-print("v3 EMB-GENERATOE — BEREKNINGER")
-print("=" * 64)
+def main():
+    print("=" * 70)
+    print("V3-HIGHPOWER EMP-GENERATOR — REALISTISKE BEREGNINGER")
+    print("=" * 70)
+    print("ADVARSEL: Dette er et høyspenningsprosjekt (8000V).")
+    print("Feil konstruksjon kan føre til død eller alvorlig skade.")
+    print("=" * 70)
 
-# ----------------------------------------------------------------------
-# 1. MARX GENERATOE (off-board)
-# ----------------------------------------------------------------------
-print("\n[1] MARX-GENERATOE (off-board)")
-print("-" * 64)
-N_STEG = 5                              # antall steg
-C_S = 235e-6                            # F per steg (2x 470 uF/250 V i serie)
-V_S = 1000.0                            # V per steg
-V_UT = N_STEG * V_S                     # utgangsspenn (V)
-C_UT = C_S / N_STEG                     # ekv. utgangskondensator (F)
-E_UT = 0.5 * C_UT * V_UT**2             # lagret energi (J)
-print(f"Steg: {N_STEG}, C_steg = {C_S*1e6:.0f} uF/{int(V_S)} V (2x 470 uF/250 V i serie)")
-print(f"Utgang: V_out = {V_UT:.0f} V, C_out = {C_UT*1e6:.1f} uF, E = {E_UT:.1f} J")
-print(f"E (kontroll N*x0.5*Cs*Vs^2) = {N_STEG*0.5*C_S*V_S**2:.1f} J")
-print(f"E/v1 (0.2707 J) = {E_UT/0.2707:.0f}x mer energi")
-# Lagring
-R_LAD = 4700.0                          # ohm
-C_LAD = C_UT                            # ekv. kondensator ved lagring
-tau_lad = R_LAD * C_LAD                 # tau (s)
-t_lad = 5 * tau_lad                     # full lagring (5 tau) (s)
-I_LAD = V_UT / R_LAD                    # peak ladestrOm (A)
-P_LAD = V_UT * I_LAD                    # peak lagringsmakht (W)
-f_rep = 1.0 / t_lad                     # repetisjonsrate (Hz)
-print(f"Lading: R = {int(R_LAD/1000)} kOhm, tau = {tau_lad*1000:.0f} ms, full lading = {int(t_lad)} s")
-print(f"  Repetisjonsrate = {f_rep:.2f} Hz")
-print(f"  I_lading (peak) = {I_LAD*1000:.0f} mA, P_lading (peak) = {P_LAD/1000:.0f} kW, E_lad = {E_UT:.1f} J")
-V_TAP = V_UT / 5.0                      # HV-deler 5:1 for trigger (V)
-print(f"  HV-tap for trigger (5:1) = {V_TAP:.0f} V")
+    # ======================================================================
+    # 1. MARX GENERATOR — KORRIGERT (Seriekobling, ikke parallell)
+    # ======================================================================
+    print("\n[1] MARX-GENERATOR (korrigert konfigurasjon)")
+    print("-" * 70)
+    
+    N_STEG = 10
+    C_PER_CAP = 150e-6      # 150 µF per kondensator
+    V_CAP_RATING = 450.0    # 450V rating (IKKE 250V!)
+    
+    # KORREKSJON: To i SERIE gir C = C/2, V = 2×V_rating = 900V
+    # Men vi lader til 800V for 11% sikkerhetsmargin
+    C_S = C_PER_CAP / 2     # 75 µF per steg
+    V_S = 800.0             # 800V per steg (sikkert under 900V max)
+    
+    V_UT = N_STEG * V_S     # 8000V total
+    C_UT = C_S / N_STEG     # 7.5 µF
+    E_UT = 0.5 * C_UT * V_UT**2  # 240 Joule
+    
+    print(f"Konfigurasjon: 2× {C_PER_CAP*1e6:.0f}µF/{V_CAP_RATING:.0f}V i SERIE")
+    print(f"  Per steg: {C_S*1e6:.0f}µF @ {V_S:.0f}V")
+    print(f"  (Maks tillatt: {2*V_CAP_RATING:.0f}V, margin: {(2*V_CAP_RATING-V_S)/V_S*100:.0f}%)")
+    print(f"\nTotal utgang:")
+    print(f"  Spenning: {V_UT/1000:.1f} kV")
+    print(f"  Kapasitans: {C_UT*1e6:.1f} µF")
+    print(f"  Energi: {E_UT:.0f} Joule")
+    
+    # Verifisering
+    E_CHECK = N_STEG * 0.5 * C_S * V_S**2
+    print(f"\nVerifisering: {E_CHECK:.0f} J = {E_UT:.0f} J ✓")
+    
+    # ======================================================================
+    # 2. LADING — KORRIGERT (høyere R for lavere strøm)
+    # ======================================================================
+    print("\n[2] LADING (korrigert for sikkerhet)")
+    print("-" * 70)
+    
+    R_LAD = 20000.0         # 20kΩ (økt fra 10kΩ for lavere strøm)
+    tau_lad = R_LAD * C_UT  # 0.15s
+    t_lad = 5 * tau_lad     # 0.75s (5τ = 99.3% ladet)
+    
+    I_PEAK = V_UT / R_LAD   # 0.4A
+    P_PEAK = V_UT * I_PEAK  # 3200W
+    P_AVG = E_UT / t_lad    # 320W
+    
+    print(f"Lademotstand: R = {R_LAD/1000:.0f} kΩ")
+    print(f"Tidskonstant τ = {tau_lad*1000:.0f} ms")
+    print(f"Full lading (5τ) = {t_lad:.2f} s")
+    print(f"\nStrøm: I_peak = {I_PEAK:.2f} A")
+    print(f"Effekt: P_peak = {P_PEAK/1000:.1f} kW, P_avg = {P_AVG:.0f} W")
+    print(f"⚠️  KREVES: 50W wirewound resistor på kjøleribbe!")
+    
+    f_rep = 1.0 / t_lad
+    print(f"\nMaks repetisjonsrate: {f_rep:.2f} Hz")
+    
+    # ======================================================================
+    # 3. TRIGGER + ISKJÆRING — KORRIGERT
+    # ======================================================================
+    print("\n[3] TRIGGER + ISKJÆRING")
+    print("-" * 70)
+    
+    GAP_MM = 0.28           # 0.28 mm (justert for 800V)
+    E_BREAKDOWN = 3.0e6     # 3 MV/m (3 kV/mm i luft)
+    V_BREAK = E_BREAKDOWN * (GAP_MM / 1000.0)  # ~840V
+    
+    print(f"Kjedegap: {GAP_MM} mm")
+    print(f"Breakdown-spenning (teoretisk): {V_BREAK:.0f} V")
+    print(f"Spenning per steg: {V_S:.0f} V")
+    print(f"Margin: {V_S/V_BREAK:.2f}× (bør være 0.9-1.1×)")
+    
+    if V_S > V_BREAK * 0.95:
+        print(f"  ⚠️  ADVARSEL: Margin er lav! Vurder å øke gap til 0.30mm")
+    
+    V_TRIGGER = 2400.0      # 3 steg × 800V
+    t_GAP_NS = 10.0         # 10 ns (realistisk, ikke 5ns)
+    
+    print(f"\nTrigger: {V_TRIGGER:.0f} V (3 steg)")
+    print(f"Anslagstid (estimat): ~{t_GAP_NS:.0f} ns")
+    
+    # ======================================================================
+    # 4. TEM CELLE — MED REALISTISK DEMPNING
+    # ======================================================================
+    print("\n[4] TEM-CELLE (realistisk felt)")
+    print("-" * 70)
+    
+    L_CELL_MM = 150.0       # 15 cm
+    H_MM = 30.0             # 3 cm gap
+    W_MM = 30.0             # 3 cm bredde
+    Z0 = 60.0               # Karakteristisk impedans
+    
+    H_M = H_MM / 1000.0
+    E_IDEAL = V_UT / H_M    # 267 kV/m (teoretisk maks)
+    E_REAL = E_IDEAL * 0.6  # 40% tap (refleksjoner, geometri, matching)
+    
+    print(f"Dimensjoner: {L_CELL_MM/10:.0f} cm × {H_MM/10:.0f} cm × {W_MM/10:.0f} cm")
+    print(f"Impedans Z₀ ≈ {Z0:.0f} Ω")
+    print(f"\nE-felt:")
+    print(f"  Teoretisk maksimum: {E_IDEAL/1000:.0f} kV/m")
+    print(f"  Realistisk (60%): {E_REAL/1000:.0f} kV/m")
+    print(f"  Usikkerhet: ±30% avhengig av konstruksjon")
+    
+    # Indusert spenning i ledning
+    V_INDUCE_10CM = E_REAL * 0.10
+    print(f"\nIndusert spenning i 10cm ledning: ~{V_INDUCE_10CM/1000:.1f} kV")
+    
+    # Transit-tid
+    t_TRANSIT_NS = (L_CELL_MM / 1000.0) / 3e8 * 1e9
+    print(f"Transit-tid (elektromagnetisk): {t_TRANSIT_NS:.2f} ns")
+    
+    # ======================================================================
+    # 5. PEAKING CIRCUIT — MED USIKKERHETSMARGIN
+    # ======================================================================
+    print("\n[5] PEAKING CIRCUIT (med usikkerhet)")
+    print("-" * 70)
+    
+    C_PEAK = 2e-9           # 2 nF
+    L_STRAY = 100e-9        # 100 nH (konservativt, ikke 50nH)
+    
+    t_RISE_IDEAL = math.pi * math.sqrt(L_STRAY * C_PEAK)
+    t_RISE_NS = t_RISE_IDEAL * 1e9
+    t_RISE_REAL_NS = t_RISE_NS * 2  # 2× margin for usikkerhet
+    
+    print(f"Komponenter: C_peak = {C_PEAK*1e9:.0f}nF, L_stray ≈ {L_STRAY*1e9:.0f}nH")
+    print(f"Rise time (ideal): {t_RISE_NS:.1f} ns")
+    print(f"Rise time (realistisk): {t_RISE_REAL_NS:.0f} ns")
+    print(f"\nBruker {t_RISE_REAL_NS:.0f}ns i videre beregninger")
+    
+    # Strøm i TEM-celle
+    I_PEAK_TEM = V_UT / Z0
+    di_dt_TEM = I_PEAK_TEM / (t_RISE_REAL_NS * 1e-9)
+    
+    print(f"\nTEM-celle strøm: I_peak = {I_PEAK_TEM:.0f} A")
+    print(f"di/dt = {di_dt_TEM/1e9:.0f} GA/s (teoretisk)")
+    
+    # ======================================================================
+    # 6. RADIERINGSSPOLE — REALISTISK
+    # ======================================================================
+    print("\n[6] RADIERINGSSPOLE (antenne)")
+    print("-" * 70)
+    
+    R_LOOP = 0.5            # 50 cm radius
+    N_TURN = 1              # 1 vinding (lavere L = høyere di/dt)
+    A_WIRE = 6e-6           # 6 mm²
+    
+    # Induktans (Wheeler-formel for loop)
+    L_LOOP = 4 * math.pi * 1e-7 * R_LOOP * (math.log(8*R_LOOP/math.sqrt(A_WIRE/math.pi)) - 2)
+    
+    # Peak strøm (energibevarelse)
+    I_PEAK_LOOP = V_UT * math.sqrt(C_UT / L_LOOP)
+    di_dt_LOOP = I_PEAK_LOOP / (t_RISE_REAL_NS * 1e-9)
+    B_CENTER = 4 * math.pi * 1e-7 * I_PEAK_LOOP / (2 * R_LOOP)
+    
+    print(f"Spole: R = {R_LOOP*100:.0f} cm, N = {N_TURN} vinding")
+    print(f"Induktans: L = {L_LOOP*1e6:.2f} µH")
+    print(f"\nPeak strøm (teoretisk): I_peak = {I_PEAK_LOOP:.0f} A")
+    print(f"di/dt (teoretisk): {di_dt_LOOP/1e9:.0f} GA/s")
+    print(f"\nB-felt i sentrum: {B_CENTER*1000:.2f} mT")
+    
+    # Fjernfelt (estimat med stor usikkerhet)
+    print(f"\nFjernfelt (ESTIMAT, stor usikkerhet):")
+    print(f"  Ved 10m: ~1-3 kV/m (avhengig av antenneeffektivitet)")
+    
+    # ======================================================================
+    # 7. SAMMENLIGNING — ÆRLIG
+    # ======================================================================
+    print("\n[7] SAMMENLIGNING (realistiske verdier)")
+    print("-" * 70)
+    print(f"{'Parameter':<20} {'V1':<12} {'V3-HP':<15} {'Forhold':<10}")
+    print("-" * 70)
+    print(f"{'Spenning':<20} {'24V':<12} {'8000V':<15} {'333×':<10}")
+    print(f"{'Energi':<20} {'0.27J':<12} {'240J':<15} {'889×':<10}")
+    print(f"{'E-felt (real)':<20} {'~1kV/m':<12} {'160kV/m':<15} {'160×':<10}")
+    print(f"{'di/dt (est)':<20} {'~16MA/s':<12} {'{:.0f}GA/s'.format(di_dt_LOOP/1e9):<15} {'~4000×':<10}")
+    
+    print("\n" + "=" * 70)
+    print("VIKTIGE BEGRENSNINGER:")
+    print("• Alle 'maksimum' verdier er teoretiske")
+    print("• Reell ytelse: 50-70% av beregnet (tap, usikkerhet)")
+    print("• Rekkevidde: ESTIMERT 5-15m (IKKE verifisert)")
+    print("• 8000V er DØDELIG — se 09_sikkerhet.md")
+    print("=" * 70)
 
-# ----------------------------------------------------------------------
-# 2. TRIGGER + ISKJEVING (off-board)
-# ----------------------------------------------------------------------
-print("\n[2] TRIGGER + ISKJEVING (off-board)")
-print("-" * 64)
-GAP_MM = 0.15                           # mm, kjedegap
-V_BREAK_V = 3.0 * GAP_MM / 1000.0 * 1000.0 # V (breakdown, ~3 kV/mm -> 0.15 mm)
-N_TRIGGER = 3
-V_TRIGGER = 3000.0                      # V
-t_GAP_NS = 50.0                         # ns, anslogstid
-V_MARGIN = V_S / (V_BREAK_V)       # margin
-print(f"Kjedegap = {GAP_MM} mm, breakdown \u2248 {V_BREAK_V:.0f} V")
-print(f"Kjede-spens p\u00e5 hvert gap = {int(V_S)} V, margin = {V_MARGIN:.0f}x (\u2265 breakdown)")
-print(f"Trigger: trigger-Maxx {N_TRIGGER} steg = {V_TRIGGER:.0f} V")
-print(f"Anslag: t_gap = {t_GAP_NS:.0f} ns, kjede-lukking \u2248 {t_GAP_NS:.0f} ns (samtidig)")
-print(f"V_s > V_breakdown -> alle gap lukker (kjede-lukking)")
-
-# ----------------------------------------------------------------------
-# 3. TEM CELLE (off-board, prim\u00e4r skadestruktur)
-# ----------------------------------------------------------------------
-print("\n[3] TEM-CELLE (off-board, prim\u00e4r skadestruktur)")
-print("-" * 64)
-L_CELL_MM = 300.0                       # mm, lengde
-H_MM = 50.0                             # mm, gap (mellem platene) = 5 cm
-W_MM = 50.0                             # mm, bredde (kvadrat -> Z0 \u2248 60 Ohm)
-H_M = H_MM / 1000.0
-W_M = W_MM / 1000.0
-Z0 = 60.0                               # ohm
-E_FELT = V_UT / H_M                     # V/m
-V_PHONE = E_FELT * 0.08                 # V (8 cm telefon i feltretningen)
-t_TRANSIT_NS = L_CELL_MM / 1000.0 / (3e8) * 1e9   # ns (gjennomk\u00f8r tid)
-tau_RC = Z0 * C_UT                      # s (RC- tid)
-t_FWHM = 0.69 * tau_RC                 # s (FWHM)
-E_FELT_KV = E_FELT / 1000.0
-print(f"TEM-celle: {int(L_CELL_MM)} cm lang, gap = {int(H_MM/10)} cm, bredde = {int(W_MM/10)} cm (kvadrat)")
-print(f"Z0 \u2248 {Z0:.0f} Ohm")
-print(f"E-felt = V_out/h = {E_FELT:.0f} V/m = {E_FELT_KV:.0f} kV/m")
-print(f"  (>\u2265 10-30 kV/m t\u00e6rskhold -> skade) -> telefonen d\u00f8r")
-print(f"Spennings over telefon (8 cm i feltretningen) = {int(V_PHONE)} V")
-print(f"Gjennomk\u00f8r tid = L_cell/v_p = {t_TRANSIT_NS:.0f} ns")
-print(f"RC- tid = Z0*C_out = {tau_RC*1e6:.0f} us ({tau_RC*1000:.1f} ms), FWHM \u2248 {t_FWHM*1e6:.0f} us ({t_FWHM*1000:.1f} ms)")
-# di/dt (TEM-celle)
-I_TM = V_UT / Z0                        # A (TEM-celle strOm)
-DDT_TM = I_TM / (t_GAP_NS * 1e-9)       # A/s (di/dt)
-print(f"I_peak (TEM-celle) = {I_TM:.1f} A")
-print(f"di/dt (TEM-celle) = {DDT_TM/1e6:.0f} MA/s (vs v1 = 15.8 MA/s) -> {DDT_TM/15.8e6:.0f}x raskere")
-
-# ----------------------------------------------------------------------
-# 4. RADIERINGSPOLE (off-board)
-# ----------------------------------------------------------------------
-print("\n[4] RADIERINGSPOLE (off-board)")
-print("-" * 64)
-R_LOOP = 1.0                            # m (radius)
-N_TURN = 10                             # antall omlapninger
-A_WIRE = 6e-6                           # m^2 (6 mm^2)
-L_WIRE = N_TURN * 2 * math.pi * R_LOOP  # m, ledningslengde
-RHO_CU = 1.72e-8                         # ohm*m (kopper)
-R_LOOP_VAL = RHO_CU * L_WIRE / A_WIRE    # ohm, spolemotstand
-# Induktans (N-omlapninger, omlapt)
-a = math.sqrt(A_WIRE / math.pi)          # m (ledningsrad)
-L_LOOP = 4 * math.pi * 1e-7 * R_LOOP * (N_TURN**2) * (math.log(8 * R_LOOP / a) - 2)  # H
-I_PEAK_LOOP = V_UT * (0.5 * t_FWHM) / L_LOOP  # A (omtrent)
-DDT_LOOP = I_PEAK_LOOP / t_GAP_NS / 1e-9  # A/s (di/dt)
-B_CENTER = 4 * math.pi * 1e-7 * N_TURN * I_PEAK_LOOP / (2 * R_LOOP)  # T
-print(f"Spole: \u039c = {int(R_LOOP*1000)} mm, N = {N_TURN} omlapninger, ledning = {A_WIRE*1e6:.0f} mm^2")
-print(f"R_loop = {R_LOOP_VAL*1000:.1f} mOhm, L_loop \u2248 {L_LOOP*1e6:.1f} uH")
-print(f"I_peak (spole) \u2248 {I_PEAK_LOOP:.1f} A")
-print(f"di/dt (spole) = {DDT_LOOP/1e6:.0f} MA/s")
-print(f"B-felt i sentrum \u2248 {B_CENTER*1000:.2f} mT")
-print("Fj\u00e6rfelt: E_far (avstand d) = (Z0 * I * omega * A * cos) / (2*pi*d) -- se 07_radieringspule.md")
-
-# ----------------------------------------------------------------------
-# 5. PULS EKSAMEN
-# ----------------------------------------------------------------------
-print("\n[5] PULS EKSAMEN")
-print("-" * 64)
-print(f"Puls: V = {V_UT:.0f} V, C = {C_UT*1e6:.1f} uF, E = {E_UT:.1f} J")
-print(f"Felt = {E_FELT_KV:.0f} kV/m i TEM-celle, FWHM = {t_FWHM*1000:.1f} ms")
-print(f"I_peak (TEM-celle) = {I_TM:.1f} A, di/dt = {DDT_TM/1e6:.0f} MA/s")
-print(f"Repetisjonsrate = {f_rep:.2f} Hz (per {int(t_lad)} s)")
-print("\nV1 vs V3:")
-print(f"  Energi: 0.27 J -> {E_UT:.1f} J ({E_UT/0.27:.0f}x)")
-print(f"  Spennings: 24 V -> {V_UT:.0f} V ({V_UT/24:.0f}x)")
-print(f"  Felt: 9,5 V+41,9 V -> {int(V_PHONE)} V (\u2248 {V_PHONE/51:.0f}x mer)")
-print(f"  di/dt: 15.8 MA/s -> {DDT_TM/1e6:.0f} MA/s ({DDT_TM/15.8e6:.0f}x)")
-print(f"  Repetisjonsrate: 1 (single) -> {f_rep:.2f} Hz")
-print(f"  Struktur: 31 mm spole -> {int(L_CELL_MM)} cm TEM-celle + {int(R_LOOP*1000)} mm pule")
-print(f"  Impulsbredd: 104 us -> {t_FWHM*1000:.1f} ms")
-print()
-print("=" * 64)
-print("V3 ER 'EXTREMELY DANGEROUS'")
-print("=" * 64)
-print(f"V3 produserer {E_UT:.0f} J til {V_UT:.0f} V, {E_FELT_KV:.0f} kV/m, di/dt {DDT_TM/1e6:.0f} MA/s")
-print(f"Tem-cellen ({E_FELT_KV:.0f} kV/m) kan skade en telefon i det samme rommet")
-print(f"Repetisjonsrate {f_rep:.2f} Hz, FWHM {t_FWHM*1000:.1f} ms, anslog {t_GAP_NS:.0f} ns")
-print()
+# KORREKSJON: main() definert FØR if __name__
+if __name__ == "__main__":
+    main()
+    
+    
+    

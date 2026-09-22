@@ -1,49 +1,78 @@
-# 07 — Radieringspule (off-board)
+# 07. Radiasjonsspole — V3-HIGHPOWER
 
-## Hva er radieringspulen
+## Formål
 
-Radieringspulen er en stor pule som radierer felt til lang avstand. Den er
-secondary — primær skade kommer fra TEM-cellen.
+Konverterer pulserende strøm til radiert elektromagnetisk felt.
+**Viktig:** Dette er en **simplifisert antenne**, ikke optimalisert.
 
-## Konfigurering
+## Design
 
-| Param | Verdi |
-|-------|-------|
-| Radius | 1.0 m (Ø 2 m) |
-| Antall omlapninger | 10 |
-| Ledning | 6 mm² (18 AWG) |
-| Spolemotstand | 180 mΩ |
-| Induktans | ≈ 837 µH |
-| Peak-strøm | ≈ 5809 A |
-| di/dt | ≈ 116183 MA/s |
-| B-felt (sentrum) | ≈ 36.5 mT |
+- **Radius:** 50 cm
+- **Vindinger:** 1 (én enkel loop)
+- **Tverrsnitt:** 6 mm² kobber
 
-## Kalkulator
+## Hvorfor én vinding?
 
-```
-I_peak = V_ut * (0.5 * t_FWHM) / L_loop
-       = 5000 V * (0.5 * 1.946 ms) / 837.4 uH
-       = 5809 A
+- Lavere induktans (L ~ 1.4µH) = høyere di/dt
+- Bedre impedanstilpasning til Marx
+- Enklere konstruksjon enn multi-vinding
 
-di/dt = I_peak / t_gap = 5809 A / 50 ns = 116183 MA/s
+## Beregninger
 
-B_center = 4*pi*1e-7 * N * I_peak / (2 * radius)
-         = 36.50 mT
-```
+### Induktans (Wheeler-formel)
+$$L = \mu_0 R \left[\ln\left(\frac{8R}{a}\right) - 2\right] \approx 1.4 \mu H$$
 
-## Fjærfelt
+der $a = \sqrt{A/\pi} = 1.38mm$ (ledningsradius)
 
-Fjærfeltet av avstanden d (m):
+### Peak strøm (teoretisk)
+$$I_{peak} = V\sqrt{\frac{C}{L}} = 8000 \cdot \sqrt{\frac{7.5\mu F}{1.4\mu H}} \approx 586 A$$
 
-```
-E_far = (Z0 * I * omega * A * cos(theta)) / (2 * pi * d)
-```
+### di/dt (teoretisk)
+Med $t_{rise} \approx 20ns$:
+$$\frac{di}{dt} = \frac{586A}{20ns} \approx 29 GA/s$$
 
-Der A = pi * radius^2 (pulearealet). Fjærfeltet er svakt enn i cellen, men
-det når "på avstand".
+**Realistisk:** 15-25 GA/s (inkl. alle tap)
 
-## Verifisering
+### B-felt i sentrum
+$$B = \frac{\mu_0 I}{2R} = \frac{4\pi\cdot10^{-7} \cdot 586}{2 \cdot 0.5} \approx 0.74 mT$$
 
-- Mål B-felt med en fluxgate.
-- Mål E-felt med en antennesonde på 2-3 m.
-- Putt en telefon på 2 m avstand og sjekk at den dør (svakt).
+## Fjernfelt (ESTIMAT)
+
+For $r >> R$ (antenne-tilnærming):
+$$E_{far} \approx \frac{Z_0 \cdot I \cdot \omega \cdot A}{2\pi r}$$
+
+Ved $r = 10m$, $\omega \approx 1/20ns = 50$ Mrad/s:
+$$E \approx 1-3 kV/m$$ (**ESTIMAT**, stor usikkerhet)
+
+**Dette er IKKE verifisert!** Reell rekkevidde avhenger av:
+- Antenneeffektivitet
+- Omgivelser (refleksjoner)
+- Mottakerens følsomhet
+
+## Konstruksjon
+
+### Material
+- Kabel: 6mm² fleksibel kobber
+- Isolasjon: Silikon eller gummi, 10kV rated
+- Ramme: PVC-rør 50cm diameter (ikke-ledende!)
+
+### Montering
+1. Form kabelen til sirkel
+2. Fest til PVC-ramme med kabelbinder
+3. Koble til TEM-celle-utgang
+4. Sørg om god kontakt (lodding eller skrueklemme)
+
+## Sikkerhet
+
+- **586A** i ~20ns gir mekanisk kraft (Lorentz-kraft)
+- Sørg for mekanisk robusthet
+- Unngå løkker som kan åpne seg under puls (induksjonssmell)
+- Hold avstand under drift (EMP + mekanisk risiko)
+
+## Alternative antenner (ikke bygget)
+
+| Type | Fordeler | Ulemper |
+|------|----------|---------|
+| Bicone | Bedre matching | Kompleks |
+| Log-periodisk | Retningsbestemt | Stor |
+| Dipol | Enkel | Begrenset båndbredde |

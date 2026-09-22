@@ -1,65 +1,130 @@
-# 03 — Kretsskjema (kontrollkrets)
+# 03. Kontrollkrets — V3-HIGHPOWER
 
-## Overview
+## Oversikt
 
-Kontrollkretsen er en liten PCB (110×100 mm, 2-lag) som:
-1. **Styrer repetisjonsratet** (555 timer).
-2. **Lukker triggeren** (BJT + relay) når interlocken er lukket.
-3. **Måler spennings** (HV-deler).
-4. **Gi status** (LED).
+Styrer lading og trigger av Marx-generator.
 
-Alle HV-linjer (5 kV) ligger off-board. PCB-en har bare lav-nivå (5 V)
-og HV-deler (1 kV tap).
+## Viktig begrensning
 
-## Krets (se figurer/kretsskjema.svg)
+Reed relay DAT70510-HR er rated til 7.5kV.
+Marx utgang er 8kV. 
 
-```
-                 +---------------------+
-   HV tap (1 kV) |  555               |   HV tap (1 kV)
-        +-------+|  (8233)            |  |
-        |       |  (timing 1 Hz)       |  |
-   5:1   +------+----+----+----------+  |
-   tap      |     |   R3   |           |
-            |     |   1k    |           |
-   +--------+     |        |           |
-   | trigger   +---+   +---+     +-----+
-   |           |   Q1    |   D1    |
-   +-----------+   (2N2222) |   (1N4148) |
-                            |   (freewheel) |
-                            +--+--------+
-                               |
-                               +--- R4 (relay coil) ---+
-                                                        |
-                                                 5 V ---+
-                                                        |
-   Interlock S1 (SPST) in series with 5 V -> relay coil
-   (only fires when interlock closed)
-```
+**Løsning:** Bruk **to relay i serie** (15kV total) 
+ELLER aksepter 0.5kV overskridelse (risiko).
 
-## Komponenter (se 04_komponentliste.md)
+## Blokkskjema
 
-| Del | Verdi | Formål |
-|-----|-------|--------|
-| U1 | NE555 | Timing (1 Hz fire) |
-| R1, R2 | 100 kΩ, 1 MΩ | 555 timing |
-| C1 | 1 nF | 555 timing |
-| R3 | 1 kΩ | BJT base |
-| Q1 | 2N2222 | Relay driver |
-| R4 | 150 Ω | Relay coil |
-| D1 | 1N4148 | Freewheel |
-| S1 | SPST | Interlock |
-| U2 (relay) | 5 V coil | HV switch |
-| R6 | 1 MΩ | HV divider (5:1) |
-| R7 | 200 kΩ | HV divider (5:1) |
-| D2 | 1N4148 | Freewheel (tap) |
-| J1 | 2x2 pin | Fire |
-| J2 | 2x2 pin | HV tap |
-| J3 | 2x2 pin | Interlock |
+[Arduino] → [Driver] → [Reed Relay A] → [Reed Relay B] → [Trigger]
+↓
+[Marx 10-steg]
+↓
+[Peaking] → [TEM]
 
-## Verifisering
+## Komponenter
 
-- 555 output: 5 V pulse, 1 Hz.
-- Relay: lukket 5 ms av 1000 ms.
-- Interlock: open = no fire.
-- HV tap: 1 kV (when 5 kV present).
-- Scope: 1 kV pulse on trigger line.
+### 1. Arduino Nano
+- Styrer ladingstid (0.75s), trigger, sikkerhet
+
+### 2. Driver
+- Transistor: 2N2222 eller MOSFET
+- Last: To reed relay spoler (56Ω total)
+
+### 3. Reed Reléer (TO I SERIE!)
+- **Type:** Cynergy3 DAT70510-HR (2 stk)
+- **Farnell:** [2663956](https://no.farnell.com/cynergy3/dat70510-hr/reed-relay-spst-no-7kv-2a-th/dp/2663956)
+- **Total rating:** 15kV (sikkert for 8kV)
+
+### 4. Sikkerhetsinterlock
+- NC nødstopp-knapp (tangen)
+- Dør-switch (kabinett)
+- "Ladet" LED (rød, via spenningsdeler)
+- "Klar" LED (grønn)
+
+## Kretsdiagram
+
++5V
+      │
+     1kΩ
+      │
+
+D2 ───────┤──┬──→ Relay A spole (28Ω)
+│ │
+│ ├──→ Relay B spole (28Ω)
+│ │
+GND │
+│
+[DAT70510-HR] × 2 (i serie)
+│
+HV+ (2.4kV) → Trigger Marx
+
+## Program (Arduino)
+
+```cpp
+const int TRIGGER = 2;
+const int CHARGE = 3;
+const int LED_READY = 4;
+const int LED_CHARGED = 5;
+const int INTERLOCK = 6;  // Dør + nødstopp
+
+void setup() {
+  pinMode(TRIGGER, OUTPUT);
+  pinMode(CHARGE, OUTPUT);
+  pinMode(LED_READY, OUTPUT);
+  pinMode(LED_CHARGED, OUTPUT);
+  pinMode(INTERLOCK, INPUT_PULLUP);
+  
+  digitalWrite(TRIGGER, LOW);
+  digitalWrite(CHARGE, LOW);
+  Serial.begin(9600);
+  Serial.println("V3-HIGHPOWER Kontrollsystem");
+  Serial.println("ADVARSEL: 8000V system");
+}
+
+void loop() {
+  // Sjekk interlock (må være HIGH = lukket)
+  if (digitalRead(INTERLOCK) == LOW) {
+    Serial.println("FEIL: Interlock åpen!");
+    delay(1000);
+    return;
+  }
+  
+  digitalWrite(LED_READY, HIGH);
+  Serial.println("Lader...");
+  
+  // Lading
+  digitalWrite(CHARGE, HIGH);
+  delay(750);  // 0.75s (5τ)
+  digitalWrite(CHARGE, LOW);
+  
+  digitalWrite(LED_READY, LOW);
+  digitalWrite(LED_CHARGED, HIGH);
+  Serial.println("LADET! Klar til ildgivning.");
+  
+  delay(500);  // Stabilisering
+  
+  // FIRE!
+  Serial.println("FIRING!");
+  digitalWrite(TRIGGER, HIGH);
+  delay(20);   // 20ms trigger
+  digitalWrite(TRIGGER, LOW);
+  
+  digitalWrite(LED_CHARGED, LOW);
+  Serial.println("Puls fullført. Cooldown...");
+  delay(2000);  // 2s cooldown
+}
+
+// Nødstopp: Trykk reset-knapp på Arduino
+
+Sikkerhetskrav
+
+    To relay i serie ELLER akseptert risiko
+    Interlock på kabinettdør (NC)
+    Nødstopp-knapp (tangen)
+    "Ladet" indikator (rød LED)
+    Fjernstyrt triggering (>5m)
+    15kV isolasjon mellom lavspenning og Marx
+
+Måling av "Ladet" status
+
+Bruk spenningsdeler 1000:1 (10MΩ + 10kΩ) til Arduino A0.
+ADVARSEL: Spenningsdeler må tåle 8kV!
