@@ -1,0 +1,69 @@
+\documentclass{article}
+\usepackage{circuitikz}
+\usepackage[utf8]{inputenc}
+\title{Kretsskjema for EMP-generator (revidert)}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{circuitikz}[american, scale=1.0, transform shape]
+% Batteri 54V med sikring
+\draw (0,0) to[battery, l=$54\,\text{V}$] (0,1);
+\draw (0,1) to[fuse, l=F1 (2A)] (0,2);
+% Hovedbryter S3
+\draw (0,2) to[switch, l=S3] (2,2);
+% Ladeknapp S1
+\draw (2,2) to[switch, l=S1] (4,2);
+% Primærvikling (10 t)
+\draw (4,2) to[inductor, l=10 t] (4,0.5);
+% MOSFET Q1 (IRF840)
+\draw (4,0.5) node[nmos, anchor=drain] (Q1) {};
+\draw (Q1.source) to (0,0);
+% Tilbakekoblingsvikling (5 t)
+\draw (4,2) -- (6,2) to[inductor, l=5 t] (6,0.5);
+\draw (6,0.5) to[resistor, l=$1\,\text{k}\Omega$] (Q1.gate);
+% Zener D2 (15V) og diode D4 (1N4148) i serie fra gate til source
+\draw (Q1.gate) to[diode, l=D4] ++(0,-1) to[zener, l=$15\,\text{V}$] (Q1.source);
+% Sekundærvikling (200 t)
+\draw (4,2) -- (4,3) to[inductor, l=200 t] (8,3);
+% Diode D1 (UF4007)
+\draw (8,3) to[diode, l=D1] (8,1);
+% Hovedkondensator C1 (1000 µF)
+\draw (8,1) to[capacitor, l=$1000\,\mu\text{F}$] (8,0) -- (0,0);
+% Utladningskrets: S2 og R11
+\draw (8,1) -- (10,1) to[switch, l=S2] (10,0) to[resistor, l=$1\,\text{k}\Omega$] (10,-1) -- (0,-1) -- (0,0);
+% LED-indikator: D3 og R12
+\draw (8,1) -- (9,1) to[resistor, l=$220\,\text{k}\Omega$] (9,0) to[led, l=D3] (9,-1) -- (0,-1);
+% Gnistgap G1
+\draw (8,1) -- (8,2) to[spark gap, l=G1] (8,3);
+% Spole L1
+\draw (8,3) -- (10,3) to[inductor, l=L1] (10,1) -- (8,1);
+% Piezo-trigger
+\draw (8,2.5) -- (7,2.5) node[left] {Piezo};
+% Jord
+\draw (0,0) node[ground] {};
+\end{circuitikz}
+
+\vspace{1cm}
+\textbf{Komponentliste:}
+\begin{itemize}
+\item S3: Hovedbryter (vippebryter)
+\item S1: Ladeknapp (momentan)
+\item S2: Utladningsknapp (momentan)
+\item Q1: IRF840 N-kanal MOSFET
+\item D1: UF4007 rask diode
+\item D2: 15 V zenerdiode
+\item D3: Grønn LED
+\item D4: 1N4148 signaldiode (gatebeskyttelse)
+\item R1: 1 kΩ (gate-motstand)
+\item R11: 1 kΩ / 50 W (utladningsmotstand)
+\item R12: 220 kΩ / 1 W (LED-strømbegrenser)
+\item C1: 1000 µF / 450 V elektrolytisk
+\item T1: Ferritttransformator (10:200:5 viklinger)
+\item G1: Trigget gnistgap (wolframelektroder)
+\item L1: Flat spiralspole (6 vindinger, 10 AWG)
+\item F1: 2 A sikring
+\end{itemize}
+\end{document}

@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\title{Byggeveiledning for EMP-generator}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Sikkerhetsregler}
+\begin{itemize}
+\item Arbeid alltid på et ryddig, isolerende underlag.
+\item Bruk vernebriller og isolerende hansker ved testing.
+\item Ha en brannslukker tilgjengelig.
+\item Utlad alltid kondensatoren før du berører kretsen.
+\item Ikke rett spolen mot personer, dyr eller elektronikk du ikke har tenkt å ødelegge.
+\end{itemize}
+
+\section{Forberedelser}
+Skaff alle komponenter iht. BOM. Verktøy: loddebolt, multimeter, oscilloskop (minst 100 MHz), høyspenningsprobe (100:1), vernebriller, isolerende hansker, varmepistol, superlim, 3D-printer (for kabinett og spoleform).
+
+\section{PCB-montering}
+\begin{enumerate}
+\item Lodde komponentene på PCB i rekkefølge: motstander, dioder, MOSFET, LED, brytere, transformator.
+\item Vær nøye med polaritet på dioder, LED og elektrolyttkondensator (C5, hvis brukt).
+\item Transformator T1: lim ferrittkjernen til PCB, lodde viklingene direkte til pads.
+\item Koble batteriklemmer og eksterne komponenter via skrueterminaler.
+\end{enumerate}
+
+\section{Transformatorvikling}
+Se \texttt{transformer.tex} for detaljer.
+
+\section{Gnistgap}
+\begin{enumerate}
+\item Kapp to 15 mm lange biter av 1.6 mm wolframelektrode. Slip endene flate med et slipestein eller sandpapir.
+\item Monter dem i en holder av plexiglass med messingskruer slik at avstanden kan justeres. Bor hull for elektrodene og gjeng for skruene.
+\item For trigger: bor et 1 mm hull midt mellom elektrodene. Lim inn en tynn, isolert ledning (0.2 mm emaljert) med 0.5 mm klaring til begge hovedelektroder. Denne ledningen er triggerelektroden.
+\item Still inn gapet til ca. 0.5 mm ved hjelp av et blad (følerlære). Dette kan justeres senere under testing.
+\end{enumerate}
+
+\section{Spole}
+\begin{enumerate}
+\item 3D-print en sirkulær form med spiralrille (20 mm indre, 100 mm ytre, 2.5 mm dybde). Filen finnes i \texttt{enclosure/head.stl}.
+\item Vikle 6 tørn 10 AWG tråd i rillen, lim med superlim underveis for å holde vindingene på plass.
+\item La to ender stikke ut (minst 15 cm) for tilkobling. Fjern emaljen fra endene med sandpapir.
+\end{enumerate}
+
+\section{Sluttmontering}
+\begin{enumerate}
+\item Plasser PCB, batterier og gnistgap i håndtaket (3D-printet). Håndtaket bør ha utsparinger for brytere og LED.
+\item Koble piezo-tenneren til trigger-elektroden. Den ene ledningen fra piezo går til triggerelektroden, den andre til jord (eller en av hovedelektrodene).
+\item Koble hovedkondensator C1 mellom utgang (D1 katode) og jord. Bruk korte, tykke ledninger (minst 2.5 mm²) for å minimere induktans.
+\item Koble gnistgapet mellom C1 pluss og spole. Spolens andre ende til jord.
+\item Isoler alle høyspentforbindelser med krympestrømpe eller silikon.
+\item Monter spolen foran på hodet, og fest hodet til håndtaket.
+\end{enumerate}
+
+\section{Første gangs oppstart}
+\begin{enumerate}
+\item Sjekk alle loddinger og tilkoblinger visuelt.
+\item Uten batterier, mål motstand mellom høyspentutgang og jord – skal være uendelig (åpen krets).
+\item Sett i batterier, slå på S3. Hold S1 inne og mål spenningen over C1 med et voltmeter (1000 V DC). Spenningen skal stige til 400–450 V i løpet av 5–10 sekunder. LED skal lyse.
+\item Slipp S1. Spenningen skal holde seg. Trykk S2 for å lade ut. **Hold knappen inne i minst 5 sekunder.** Spenningen skal falle til under 10 V. Verifiser med voltmeter før du berører kretsen.
+\item Test trigger: Lad opp til 400 V, trykk på piezo-knappen. Du skal høre et skarpt smell og se en gnist i gapet. Hvis ikke, juster gapet eller sjekk piezo-tilkobling.
+\end{enumerate}
+\end{document}

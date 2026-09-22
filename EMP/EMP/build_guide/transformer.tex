@@ -1,0 +1,48 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+\title{Transformatorvikling}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Materialer}
+\begin{itemize}
+\item Ferrittkjerne: E20/10/6, N27 materiale (f.eks. Farnell 221-1660)
+\item Spoleholder: E20 (Farnell 221-1670)
+\item Tråd: 0.5 mm, 0.2 mm, 0.1 mm emaljert kobber
+\item Isolasjonstape (plasttape eller Kapton)
+\item Superlim
+\end{itemize}
+
+\section{Vikling}
+\begin{enumerate}
+\item Plasser spoleholderen på den ene kjernehalvdelen.
+\item Vikle primær (10 t) med 0.5 mm tråd jevnt fordelt over spoleholderen. La 5 cm ender for tilkobling.
+\item Legg et lag isolasjonstape over primærviklingen.
+\item Vikle sekundær (200 t) med 0.1 mm tråd. Dette er tidkrevende; vær tålmodig og vikle tett og jevnt. Legg gjerne inn et lag isolasjon hver 50. vinding for å unngå overslag.
+\item Legg et lag isolasjon over sekundærviklingen.
+\item Vikle tilbakekobling (5 t) med 0.2 mm tråd over sekundæren, med isolasjon mellom.
+\item Monter den andre kjernehalvdelen og lim sammen med superlim. Pass på at kjernen sitter tett.
+\item Mål induktans: primær ~50 µH, sekundær ~20 mH (omtrentlig). Bruk et LCR-meter hvis tilgjengelig.
+\end{enumerate}
+
+\section{Tilkobling}
+\begin{itemize}
+\item Primær: ene ende til batteri (+), andre ende til drain på MOSFET.
+\item Sekundær: ene ende til jord, andre ende til anode på D1.
+\item Tilbakekobling: ene ende til jord, andre ende via R1 til gate på MOSFET.
+\end{itemize}
+
+\section{Feilsøking}
+\begin{itemize}
+\item Hvis laderen ikke starter: sjekk polaritet på tilbakekoblingsviklingen. Bytt om på endene om nødvendig.
+\item Hvis MOSFET blir varm: reduser ladetid eller legg til kjøleribbe.
+\item Hvis utgangsspenningen er for lav: øk batterispenning eller reduser antall sekundærvindinger.
+\end{itemize}
+
+\section{Viktig sikkerhetsmerknad}
+Transformatoren må designes for å unngå metning. Med E20/10/6 kjerne og 0.1 mm luftgap er metningsstrømmen typisk >2 A. Verifiser at primærstrømmen ikke overstiger dette under drift. En mettet kjerne vil føre til at MOSFET-en ødelegges.
+\end{document}
