@@ -6,7 +6,8 @@ Dette er en liten, trygg versjon av EMP-generatoren som demonstrerer det grunnle
 - **Spenning:** 9 V (ett 9 V-batteri)
 - **Energi:** ~0.04 J (40 mJ)
 - **Kretstype:** Overdempet RLC-krets (ingen svingninger)
-- **Pulsvarighet:** Avhenger av definisjon; karakteristisk tidskonstant ~40 µs
+- **Teoretisk toppstrøm:** ~16.3 A (ikke målt)
+- **Pulsvarighet:** Dominerende tidskonstant ~479 µs
 - **Sikkerhet:** Lav spenning, men fortsatt elektrisk krets – normal forsiktighet gjelder.
 
 ## Hva du lærer
@@ -31,7 +32,7 @@ Se `schematic.tex` for kretsskjema. Kretsen består av en ladekrets (batteri, tr
 ## Slik virker det
 1. Hold trykknappen (SW1) inne i 2–3 sekunder for å lade kondensatoren til 9 V.
 2. Slipp knappen – kondensatoren er nå ladet.
-3. Koble spolen raskt til kondensatoren (ved å slå på vippebryteren SW2 eller berøre ledningene). Kondensatoren utlades gjennom spolen i en **overdempet puls** – strømmen stiger raskt og avtar deretter eksponentielt uten å svinge.
+3. Koble spolen raskt til kondensatoren (ved å slå på vippebryteren SW2 eller berøre ledningene). Kondensatoren utlades gjennom spolen i en **overdempet puls** – strømmen stiger raskt til en teoretisk topp på ~16 A og avtar deretter eksponentielt uten å svinge.
 4. Det raske magnetfeltet induserer en spenning i pickup-spolen. Dette kan observeres som et lite blink i LED-en (**hypotese – ikke garantert**, da indusert spenning kan være lavere enn LED-ens fremspenning) eller som en tydelig puls på oscilloskopet.
 
 ## Byggeveiledning

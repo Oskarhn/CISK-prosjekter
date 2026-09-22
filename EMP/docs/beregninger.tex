@@ -1,4 +1,4 @@
-k\documentclass{article}
+\documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath, amssymb}
 \usepackage{siunitx}
@@ -43,67 +43,4 @@ E = \frac{1}{2} C V_0^2 = 0.5 \cdot 1000 \times 10^{-6} \cdot (400)^2 = 80\,\tex
 
 \subsection{Karakteristisk impedans}
 \begin{equation}
-Z_0 = \sqrt{\frac{L}{C}} = \sqrt{\frac{1.9 \times 10^{-6}}{1000 \times 10^{-6}}} = \sqrt{1.9 \times 10^{-3}} \approx 0.0436\,\Omega.
-\end{equation}
-
-\subsection{Toppstrøm (ideell, tapsfri)}
-\begin{equation}
-I_{\text{peak, ideal}} = \frac{V_0}{Z_0} = \frac{400}{0.0436} \approx 9\,174\,\text{A}.
-\end{equation}
-
-\subsection{Demping og reell toppstrøm}
-Total motstand $R$ i kretsen er dominert av ESR i kondensator, ledningsmotstand og lysbuemotstand. Vi antar $R \approx 80\,\text{m}\Omega$ basert på typiske verdier, men dette er ikke målt. Dempingsfaktoren:
-\begin{equation}
-\alpha = \frac{R}{2L} = \frac{0.08}{2 \cdot 1.9 \times 10^{-6}} \approx 21\,050\,\text{s}^{-1}.
-\end{equation}
-Resonansvinkelfrekvens:
-\begin{equation}
-\omega_0 = \frac{1}{\sqrt{LC}} = \frac{1}{\sqrt{1.9 \times 10^{-6} \cdot 1000 \times 10^{-6}}} = \frac{1}{\sqrt{1.9 \times 10^{-9}}} \approx 22\,940\,\text{rad/s}.
-\end{equation}
-Frekvens: $f = \omega_0/(2\pi) \approx 3.65\,\text{kHz}$.
-Siden $\alpha < \omega_0$, er kretsen underdempet. Toppstrømmen reduseres noe av dempingen; et realistisk estimat er $8\,000$--$9\,000$ A, men dette er ikke verifisert.
-
-\subsection{Pulsvarighet}
-Periode: $T = 1/f \approx 274\,\mu\text{s}$. Tidskonstant for innhyllingskurven: $\tau = 1/\alpha \approx 47.5\,\mu\text{s}$. Etter $5\tau \approx 240\,\mu\text{s}$ er svingningene nesten borte.
-
-\section{Magnetfelt}
-
-\subsection{Felt i sentrum av spolen}
-\begin{equation}
-B = \frac{\mu_0 N I}{2 r}.
-\end{equation}
-Med $N=6$, $r=0.05\,\text{m}$, $I=9\,000\,\text{A}$:
-\begin{equation}
-B = \frac{4\pi \times 10^{-7} \cdot 6 \cdot 9000}{2 \cdot 0.05} \approx 0.679\,\text{T}.
-\end{equation}
-
-\subsection{Feltets avtagning med avstand}
-For $d = 10\,\text{cm}$:
-\begin{equation}
-B(0.1) \approx 0.679 \left( \frac{0.05}{\sqrt{0.05^2 + 0.1^2}} \right)^3 \approx 0.679 \cdot 0.089 \approx 0.060\,\text{T}.
-\end{equation}
-
-\section{Indusert spenning i test-sløyfe}
-Med $N_p=5$, $A_p=3.14\times10^{-4}\,\text{m}^2$, $\Delta t \approx T/4 = 68.5\,\mu\text{s}$:
-\begin{equation}
-\mathcal{E} \approx -5 \cdot 3.14\times10^{-4} \cdot \frac{0.060}{68.5\times10^{-6}} \approx -1.38\,\text{V}.
-\end{equation}
-Dette er et teoretisk estimat. Faktisk $dB/dt$ kan være høyere.
-
-\section{Termiske betraktninger}
-Advarsel: Følgende beregninger er forenklede og antar jevn energifordeling. Lokale varmepunkter, intern komponentsvikt og gjentatt belastning er ikke vurdert. Temperaturøkning alene er ikke tilstrekkelig for å erklære komponenter som trygge.
-
-\subsection{Oppvarming av spole}
-Energi per puls: $80\,\text{J}$. Massen av spolen er estimert til ca. $89\,\text{g}$ (se tidligere detaljert utledning). Temperaturøkning per skudd:
-\begin{equation}
-\Delta T \approx \frac{80}{0.089 \cdot 385} \approx 2.3\,\text{K}.
-\end{equation}
-Dette er en gjennomsnittsverdi. Lokal oppvarming i kontaktpunkter kan være høyere.
-
-\subsection{Oppvarming av kondensator}
-Energitap i kondensator er vanskelig å forutsi uten detaljert modell av strømdeling og ESR. En enkel antagelse om 50\% tap gir $\Delta T \approx 0.8\,\text{K}$ per skudd, men dette er ikke validert.
-
-\section{Konklusjon}
-Alle beregninger er teoretiske. Fysisk prototype må bygges og måles for å bekrefte ytelse og sikkerhet.
-\end{document}
-
+Z_0 = \sqrt{\frac{L}{C}} = \sqrt{\frac{1.9 \times 10^{-6}}{1000 \times 10^{-6}}} = \sqrt{1.9 \times 

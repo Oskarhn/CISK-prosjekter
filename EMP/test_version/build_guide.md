@@ -1,4 +1,4 @@
-# Byggeveiledning for testversjon
+l# Byggeveiledning for testversjon
 
 ## Trinn 1: Lag spolene
 - **Spole L1:** Vikle 10 vindinger 0.5 mm emaljert tråd rundt en sylinder med diameter 5 cm (f.eks. et plastrør). Fest med tape. La to ender stikke ut (ca. 10 cm) og fjern emaljen.
@@ -23,3 +23,4 @@
 ## Feilsøking
 - Hvis LED ikke blinker: Ikke bekymret – spenningen kan være for lav. Bruk oscilloskop for å verifisere pulsen.
 - Hvis ingen puls på oscilloskop: Sjekk at spolen er riktig tilkoblet og at kondensatoren faktisk lades (mål spenning med multimeter).
+
