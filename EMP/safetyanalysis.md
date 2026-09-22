@@ -1,4 +1,4 @@
-k# Sikkerhetsanalyse for EMP-generator
+# Sikkerhetsanalyse for EMP-generator
 
 ## 1. Innledning
 Dette dokumentet identifiserer farer, risikoreduserende tiltak og gjenværende risiko ved bygging og bruk av den håndholdte EMP-generatoren. Analysen er basert på det teoretiske designet; fysisk verifikasjon er ikke utført. **Dette er ikke en fullstendig sikkerhetssertifisering.**
@@ -46,6 +46,26 @@ Dette dokumentet identifiserer farer, risikoreduserende tiltak og gjenværende r
 - **Risikoreduserende tiltak:** Anbefalt bruk av 100:1 probe og spenningsdeler.
 - **Gjenværende risiko:** Måleoppsettet er ikke validert for de aktuelle transientene.
 
+### 2.7 Restenergi etter frakobling
+- **Fare:** Kondensatoren kan holde 80 J i timevis. Eneste utladningsvei er den manuelle kretsen.
+- **Risikoreduserende tiltak:** Prosedyre for utladning og spenningsmåling.
+- **Gjenværende risiko:** Hvis utladningsbryter eller motstand svikter, finnes ingen alternativ utladningsvei.
+
+### 2.8 Svikt i utladningsbryter
+- **Fare:** Bruker kan tro at kondensatoren er utladet og berøre spenningsførende deler.
+- **Risikoreduserende tiltak:** Visuell inspeksjon og dobbeltsjekk med multimeter.
+- **Gjenværende risiko:** Multimeter kan være feilinnstilt eller defekt.
+
+### 2.9 Termisk svikt ved gjentatte pulser
+- **Fare:** Utladningsmotstand og spole kan overopphetes ved rask repetisjon.
+- **Risikoreduserende tiltak:** Anbefalt pause mellom skudd.
+- **Gjenværende risiko:** Ingen automatisk termisk beskyttelse.
+
+### 2.10 Elektromagnetisk interferens
+- **Fare:** Forstyrrelse eller skade på medisinsk utstyr (pacemakere, insulinpumper) i nærheten.
+- **Risikoreduserende tiltak:** Operer i avskjermet rom eller på betryggende avstand.
+- **Gjenværende risiko:** Utilstrekkelig skjerming; rekkevidde for interferens er ukjent.
+
 ## 3. Sikkerhetsprosedyrer
 Se `build_guide/assembly.tex` og `testing/test_prosedyre.tex` for detaljerte instruksjoner. Følgende overordnede regler gjelder:
 - Alltid utlad kondensatoren manuelt før berøring (hold utladningsknappen i minst 5 sekunder, verifiser med multimeter).
@@ -60,6 +80,6 @@ Se `build_guide/assembly.tex` og `testing/test_prosedyre.tex` for detaljerte ins
 - Kapsling må designes og verifiseres for å hindre berøring av spenningsførende deler.
 - Måleoppsett for høyspenning må kvalifiseres (prober, isolasjon).
 - Full feilanalyse (FMEA) bør utføres.
+- Termisk validering ved gjentatte pulser må gjennomføres.
 
 **Konklusjon:** Designet har iboende farer som krever streng disiplin og kompetanse. Det anbefales ikke for uerfarne personer.
-
