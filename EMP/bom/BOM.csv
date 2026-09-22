@@ -6,7 +6,8 @@ D1,Diode,UF4007,DO-41,1,146-7590,700-4287,1000V 1A fast recovery
 D2,Zener diode,15V 0.5W,DO-35,1,170-0750,544-3245,BZX55C15
 D3,LED,Green 5mm,5mm,1,102-4030,228-5608,High brightness
 D4,Diode,1N4148,DO-35,1,146-7600,700-4290,Signal diode for gate protection
-R1,Resistor,1kΩ 0.25W,AXIAL-0.3,1,933-1520,707-7694,Carbon film
+R1,Resistor,1kΩ 0.25W,AXIAL-0.3,1,933-1520,707-7694,Carbon film (gate)
+R2,Resistor,1kΩ 0.25W,AXIAL-0.3,1,933-1520,707-7694,Carbon film (optional, not used in final)
 R11,Resistor,1kΩ 50W,Wirewound,1,247-8500,160-2160,Wirewound power resistor (discharge)
 R12,Resistor,220kΩ 1W,AXIAL-0.5,1,933-1560,707-7740,Metal film 1W (LED current limit)
 S1,Switch,Pushbutton SPST,Panel mount,1,108-2240,734-7221,Momentary pushbutton (charge)

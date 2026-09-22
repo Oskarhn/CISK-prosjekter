@@ -1,4 +1,4 @@
-\documentclass{article}
+k\documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath, amssymb}
 \usepackage{siunitx}
@@ -11,7 +11,7 @@
 \maketitle
 
 \section{Innledning}
-Dette dokumentet inneholder alle beregninger som ligger til grunn for designet. Hver beregning er forklart steg for steg, med enheter og konstanter. Vi skiller mellom teoretiske maksimumsverdier og realistiske estimater med dokumenterte tap.
+Dette dokumentet inneholder teoretiske beregninger for designet. Alle verdier er idealiserte og må verifiseres eksperimentelt. Vi skiller mellom matematisk korrekte utledninger, antatte parametere og estimater med usikkerhet.
 
 \section{Hovedkondensator og spole}
 
@@ -21,7 +21,7 @@ Dette dokumentet inneholder alle beregninger som ligger til grunn for designet. 
 \item Spole: Flat spiral, $N = 6$ vindinger, indre diameter $20\,\text{mm}$, ytre diameter $100\,\text{mm}$, tråd: $10\,\text{AWG}$ ($2.588\,\text{mm}$ diameter).
 \end{itemize}
 
-\subsection{Induktans for flat spiralspole (korrigert)}
+\subsection{Induktans for flat spiralspole}
 Wheelers formel for en flat spiralspole i luft, med dimensjoner i tommer og resultat i µH, er:
 \begin{equation}
 L = \frac{r^2 N^2}{8r + 11w},
@@ -32,7 +32,7 @@ Konvertering: $r = 30\,\text{mm} = 1.181\,\text{tommer}$, $w = 40\,\text{mm} = 1
 \begin{equation}
 L = \frac{(1.181)^2 \cdot 6^2}{8 \cdot 1.181 + 11 \cdot 1.575} = \frac{1.395 \cdot 36}{9.448 + 17.325} = \frac{50.22}{26.773} \approx 1.876\,\mu\text{H}.
 \end{equation}
-Vi bruker $L = 1.9\,\mu\text{H}$ i de videre beregningene.
+Vi bruker $L = 1.9\,\mu\text{H}$ som et teoretisk estimat. Målt verdi kan avvike.
 
 \subsection{Energi lagret i kondensator}
 \begin{equation}
@@ -52,7 +52,7 @@ I_{\text{peak, ideal}} = \frac{V_0}{Z_0} = \frac{400}{0.0436} \approx 9\,174\,\t
 \end{equation}
 
 \subsection{Demping og reell toppstrøm}
-Med total motstand $R \approx 80\,\text{m}\Omega$ (ESR + lysbue + ledninger) blir dempingsfaktoren:
+Total motstand $R$ i kretsen er dominert av ESR i kondensator, ledningsmotstand og lysbuemotstand. Vi antar $R \approx 80\,\text{m}\Omega$ basert på typiske verdier, men dette er ikke målt. Dempingsfaktoren:
 \begin{equation}
 \alpha = \frac{R}{2L} = \frac{0.08}{2 \cdot 1.9 \times 10^{-6}} \approx 21\,050\,\text{s}^{-1}.
 \end{equation}
@@ -61,7 +61,7 @@ Resonansvinkelfrekvens:
 \omega_0 = \frac{1}{\sqrt{LC}} = \frac{1}{\sqrt{1.9 \times 10^{-6} \cdot 1000 \times 10^{-6}}} = \frac{1}{\sqrt{1.9 \times 10^{-9}}} \approx 22\,940\,\text{rad/s}.
 \end{equation}
 Frekvens: $f = \omega_0/(2\pi) \approx 3.65\,\text{kHz}$.
-Siden $\alpha \ll \omega_0$, er dempingen moderat. Toppstrømmen reduseres til ca. $8\,000$--$9\,000$ A i praksis.
+Siden $\alpha < \omega_0$, er kretsen underdempet. Toppstrømmen reduseres noe av dempingen; et realistisk estimat er $8\,000$--$9\,000$ A, men dette er ikke verifisert.
 
 \subsection{Pulsvarighet}
 Periode: $T = 1/f \approx 274\,\mu\text{s}$. Tidskonstant for innhyllingskurven: $\tau = 1/\alpha \approx 47.5\,\mu\text{s}$. Etter $5\tau \approx 240\,\mu\text{s}$ er svingningene nesten borte.
@@ -88,31 +88,22 @@ Med $N_p=5$, $A_p=3.14\times10^{-4}\,\text{m}^2$, $\Delta t \approx T/4 = 68.5\,
 \begin{equation}
 \mathcal{E} \approx -5 \cdot 3.14\times10^{-4} \cdot \frac{0.060}{68.5\times10^{-6}} \approx -1.38\,\text{V}.
 \end{equation}
-I virkeligheten kan $dB/dt$ være høyere i det øyeblikket strømmen stiger raskest, så spenningen kan bli 5–10 V.
+Dette er et teoretisk estimat. Faktisk $dB/dt$ kan være høyere.
 
-\section{Termiske beregninger}
+\section{Termiske betraktninger}
+Advarsel: Følgende beregninger er forenklede og antar jevn energifordeling. Lokale varmepunkter, intern komponentsvikt og gjentatt belastning er ikke vurdert. Temperaturøkning alene er ikke tilstrekkelig for å erklære komponenter som trygge.
 
 \subsection{Oppvarming av spole}
-Energi per puls: $80\,\text{J}$. Massen av spolen: $N=6$ vindinger, hver med lengde $\approx \pi \cdot 0.1\,\text{m} = 0.314\,\text{m}$, total lengde $1.884\,\text{m}$. Tråd: $10\,\text{AWG}$, diameter $2.588\,\text{mm}$, tverrsnitt $A_{\text{tråd}} = \pi (1.294\times10^{-3})^2 = 5.26 \times 10^{-6}\,\text{m}^2$. Volum: $V = 1.884 \cdot 5.26\times10^{-6} = 9.91 \times 10^{-6}\,\text{m}^3$. Tetthet kobber: $8960\,\text{kg/m}^3$, masse $m = 8960 \cdot 9.91\times10^{-6} = 0.0888\,\text{kg} = 88.8\,\text{g}$. Varmekapasitet kobber: $c = 385\,\text{J/(kg·K)}$. Temperaturøkning per skudd:
+Energi per puls: $80\,\text{J}$. Massen av spolen er estimert til ca. $89\,\text{g}$ (se tidligere detaljert utledning). Temperaturøkning per skudd:
 \begin{equation}
-\Delta T = \frac{E}{m c} = \frac{80}{0.0888 \cdot 385} \approx \frac{80}{34.2} \approx 2.34\,\text{K}.
+\Delta T \approx \frac{80}{0.089 \cdot 385} \approx 2.3\,\text{K}.
 \end{equation}
-Dette er helt ufarlig for spolen. Ved gjentatte skudd må man likevel passe på at varmen ledes bort.
+Dette er en gjennomsnittsverdi. Lokal oppvarming i kontaktpunkter kan være høyere.
 
 \subsection{Oppvarming av kondensator}
-Kondensatoren har en intern motstand (ESR) på typisk $50\,\text{m}\Omega$. Under utladning vil en del av energien gå tapt som varme i kondensatoren. Tapet kan estimeres ved å anta at strømmen deles mellom ESR og lasten. Siden lastmotstanden (spole + gnistgap) er i samme størrelsesorden, kan omtrent halvparten av energien tapes i kondensatoren, dvs. $40\,\text{J}$. En 1000 µF kondensator veier ca. $50\,\text{g}$ og har en varmekapasitet på ca. $50\,\text{J/K}$ (aluminium). Temperaturøkning: $\Delta T \approx 40/50 = 0.8\,\text{K}$ per skudd. Også akseptabelt.
-
-\section{Komponentpåkjenninger}
-
-\subsection{MOSFET i ladekrets}
-Under avslag kan drain-spenningen nå opp til $2 \times V_{\text{bat}} + V_{\text{reflektert}}$. Med $V_{\text{bat}} = 54\,\text{V}$ og et viklingsforhold $n = 200/10 = 20$, er reflektert spenning $V_{\text{ut}}/n = 400/20 = 20\,\text{V}$. Total spenning: $2 \cdot 54 + 20 = 128\,\text{V}$. IRF840 tåler $500\,\text{V}$, så marginen er god.
-
-\subsection{Dioder}
-UF4007 tåler $1000\,\text{V}$ repeterende. I verste fall kan utgangsspenningen nå $450\,\text{V}$, så marginen er over 2x.
-
-\subsection{Gnistgap}
-Wolframelektroder har et smeltepunkt på $3422\,^{\circ}\text{C}$ og tåler ekstremt høye pulsstrømmer uten å erodere nevneverdig.
+Energitap i kondensator er vanskelig å forutsi uten detaljert modell av strømdeling og ESR. En enkel antagelse om 50\% tap gir $\Delta T \approx 0.8\,\text{K}$ per skudd, men dette er ikke validert.
 
 \section{Konklusjon}
-Designet er robust, men stigetiden er relativt lang (~70 µs). For raskere puls og høyere induserte spenninger kan en peaking-kondensator vurderes (se uløste problemer).
+Alle beregninger er teoretiske. Fysisk prototype må bygges og måles for å bekrefte ytelse og sikkerhet.
 \end{document}
+
