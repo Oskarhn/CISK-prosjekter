@@ -1,0 +1,17 @@
+\documentclass{article}
+\usepackage{circuitikz}
+\begin{document}
+\begin{circuitikz}[american]
+% Battery
+\draw (0,0) to[battery, l=$9\,\text{V}$] (0,3);
+% Pushbutton (charge)
+\draw (0,3) to[switch, l=SW1] (2,3);
+% Capacitor
+\draw (2,3) to[capacitor, l=$1000\,\mu\text{F}$] (2,0) -- (0,0);
+% Coil (connected after charging via a separate switch or manual connection)
+\draw (2,3) -- (4,3) to[switch, l=SW2] (4,1.5) to[inductor, l=L1 (10 turns)] (4,0) -- (2,0);
+% Pickup coil and LED (separate circuit)
+\draw (6,3) to[inductor, l=L2 (20 turns)] (6,0);
+\draw (6,3) -- (7,3) to[resistor, l=$220\,\Omega$] (7,1.5) to[led, l=LED] (7,0) -- (6,0);
+\end{circuitikz}
+\end{document}
